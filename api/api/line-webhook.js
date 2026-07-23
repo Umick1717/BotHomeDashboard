@@ -79,7 +79,7 @@ export default async function handler(request, response) {
             process.env.LINE_CHANNEL_SECRET;
 
         const gasWebAppUrl =
-            process.env.GAS_WEB_APP_URL;
+            process.env.GOOGLE_APPS_SCRIPT_URL;
 
         const sharedSecret =
             process.env.WEBHOOK_SHARED_SECRET;
