@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Family Home Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Snow Malton Gates 36</p>
+        <h1>🏡 Family Home Calendar</h1>
+      </div>
+      <div id="connectionStatus" class="status offline">
+        <span class="status-dot"></span>
+        <span>ยังไม่เชื่อมต่อ</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="calendar-panel card">
+        <div class="calendar-toolbar">
+          <button id="previousMonth" class="icon-button" type="button">‹</button>
+          <div class="month-title">
+            <h2 id="monthLabel">ปฏิทิน</h2>
+            <button id="todayButton" class="text-button" type="button">วันนี้</button>
+          </div>
+          <button id="nextMonth" class="icon-button" type="button">›</button>
+        </div>
+
+        <div class="weekdays">
+          <span>อา.</span><span>จ.</span><span>อ.</span><span>พ.</span><span>พฤ.</span><span>ศ.</span><span>ส.</span>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="card form-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Appointment</p>
+              <h2>เพิ่มนัดหมาย</h2>
+            </div>
+            <span id="selectedDateBadge" class="date-badge">ยังไม่ได้เลือกวัน</span>
+          </div>
+
+          <form id="appointmentForm">
+            <label>ชื่อผู้บันทึก
+              <input id="appointmentUser" type="text" maxlength="60" placeholder="เช่น Umick" required>
+            </label>
+
+            <div class="form-row">
+              <label>วันที่
+                <input id="appointmentDate" type="date" required>
+              </label>
+              <label>เวลา
+                <input id="appointmentTime" type="time" required>
+              </label>
+            </div>
+
+            <label>รายละเอียด
+              <textarea id="appointmentDetails" rows="4" maxlength="1000" placeholder="รายละเอียดนัดหมาย" required></textarea>
+            </label>
+
+            <button id="saveAppointmentButton" class="primary-button" type="submit">บันทึกนัดหมาย</button>
+          </form>
+
+          <p id="formMessage" class="form-message"></p>
+        </section>
+
+        <section class="card appointments-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Schedule</p>
+              <h2>รายการนัดหมาย</h2>
+            </div>
+            <span id="appointmentCount" class="count-badge">0 รายการ</span>
+          </div>
+          <div id="appointmentList" class="appointment-list"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

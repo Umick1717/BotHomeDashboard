@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>
+   Family Home Dashboard
+  </title>
+<meta content="#0f172a" name="theme-color"/>
+<link href="home.css" rel="stylesheet"/>
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- ===================================================
+    SPLASH SCREEN
+    (ใช้ Animation เดิมของ Umick Expender)
+    ==================================================== -->
+<div id="splashScreen">
+<div class="splash-container">
+<img alt="Bear" class="loading-bear" src="images/bear.png"/>
+<h1 class="loading-title">
+     Snow Malton Gates 36
+    </h1>
+<p class="loading-text">
+     Preparing your smart home dashboard...
+    </p>
+<div class="loading-bar">
+<div class="loading-progress">
+</div>
+</div>
+</div>
+</div>
+<!-- ===================================================
+    SNOW
+    ==================================================== -->
+<div id="snowContainer">
+</div>
+<!-- ===================================================
+    MAIN
+    ==================================================== -->
+<div id="app">
+<!-- ==========================================
+        HEADER
+        =========================================== -->
+<header class="top-header">
+<div class="header-left">
+<div class="logo">
+<b>
+<u>
+<i>
+         ❄️Snow Malton Gates 18/36❄️
+        </i>
+</u>
+</b>
+</div>
+</div>
+<button class="hamburger" id="menuToggle" type="button">
+<i class="fas fa-bars">
+</i>
+</button>
+<nav id="mainMenu">
+<ul>
+<li>
+<a data-page="home" href="#home">
+<i class="fas fa-house">
+</i>
+        Home
+       </a>
+</li>
+<li class="dropdown">
+<a href="#">
+<i class="fas fa-folder-open">
+</i>
+        ข้อมูลไฟล์บ้าน
+        <i class="fas fa-chevron-down">
+</i>
+</a>
+<ul class="submenu">
+<li>
+<a data-page="blueprint-files" href="#blueprint-files">
+          📐 ไฟล์พิมพ์เขียว
+         </a>
+</li>
+<li>
+<a data-page="adam-files" href="#adam-files">
+          👷 ผู้รับเหมา Adam
+         </a>
+</li>
+<li>
+<a data-page="ggb-files" href="#ggb-files">
+          🏗 ผู้รับเหมา GGB
+         </a>
+</li>
+<li>
+<a data-page="solar-files" href="#solar-files">
+          ☀️ SCG Solar Cell
+         </a>
+</li>
+<li>
+<a data-page="electric-files" href="#electric-files">
+          🔌 เครื่องใช้ไฟฟ้า
+         </a>
+</li>
+</ul>
+</li>
+<li>
+<a data-page="expense" href="#expense">
+<i class="fas fa-wallet">
+</i>
+        รายรับ–รายจ่าย
+       </a>
+</li>
+<li>
+<a data-page="location" href="#location">
+<i class="fas fa-location-dot">
+</i>
+        Location
+       </a>
+</li>
+<li><a data-page="calendar" href="#calendar"><i class="fas fa-calendar-days"></i> Calendar</a></li><li>
+<a data-page="contact" href="#contact">
+<i class="fas fa-address-book"></i>
+    Contact
+  </a>
+</li><li>
+<a data-page="family" href="#family">
+<i class="fas fa-comments">
+</i>
+        ครอบครัว
+       </a>
+</li>
+</ul>
+</nav>
+</header>
+<main id="content">
+<section class="page active" id="home">
+<div class="hero-overlay">
+<div class="hero-card">
+<h1>
+        ❣️ Welcome Home ❣️
+       </h1>
+<h2>
+        Snow36 Happy Place For Our Family
+       </h2>
+<p>
+        Smart Family Management Dashboard
+       </p>
+<div class="hero-buttons">
+<button class="primary-btn" id="startBtn" type="button">
+<i class="fas fa-house">
+</i>
+         เริ่มต้นใช้งาน
+        </button>
+<button class="secondary-btn" id="gotoExpense" type="button">
+<i class="fas fa-wallet">
+</i>
+         รายรับ–รายจ่าย
+        </button>
+</div>
+</div>
+</div>
+</section>
+<section class="quick-menu">
+<div class="menu-card" data-page="files">
+<i class="fas fa-folder-open">
+</i>
+<h3>
+       ข้อมูลไฟล์บ้าน
+      </h3>
+<p>
+       Blueprint / Contractor / Solar
+      </p>
+</div>
+<div class="menu-card" data-page="expense">
+<i class="fas fa-wallet">
+</i>
+<h3>
+       รายรับ–รายจ่าย
+      </h3>
+<p>
+       Income &amp; Expense Tracker
+      </p>
+</div>
+<div class="menu-card" data-page="location">
+<i class="fas fa-map-location-dot">
+</i>
+<h3>
+       Location
+      </h3>
+<p>
+       Google Maps Navigation
+      </p>
+</div>
+<div class="menu-card" data-page="calendar">
+<i class="fas fa-calendar-days"></i>
+<h3>Calendar</h3>
+<p>Family Appointments &amp; Reminders</p>
+</div><div class="menu-card" data-page="contact">
+<i class="fas fa-address-book"></i>
+<h3>Contact</h3>
+<p>Call &amp; LINE Family Members</p>
+</div><div class="menu-card" data-page="family">
+<i class="fas fa-comments">
+</i>
+<h3>
+       Family Board
+      </h3>
+<p>
+       Messages &amp; Announcement
+      </p>
+</div>
+</section>
+<section class="page hidden-page" id="files">
+<div class="page-title">
+<h2>
+<i class="fas fa-folder-open">
+</i>
+       ข้อมูลไฟล์บ้าน
+      </h2>
+<p>
+       เอกสารทั้งหมดของบ้าน
+      </p>
+</div>
+<div class="file-grid">
+<!-- ===================== -->
+<div class="file-card">
+<div class="file-icon">
+        📐
+       </div>
+<h3>
+        ไฟล์พิมพ์เขียว
+       </h3>
+<p>
+        Blueprint Drawing
+       </p>
+<button class="category-page-button" data-page="blueprint-files" type="button">
+        ดูไฟล์พิมพ์เขียว
+       </button>
+</div>
+<!-- ===================== -->
+<div class="file-card">
+<div class="file-icon">
+        👷
+       </div>
+<h3>
+        ผู้รับเหมา Adam
+       </h3>
+<p>
+        Google Sheet / PDF
+       </p>
+<button class="category-page-button" data-page="adam-files" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ===================== -->
+<div class="file-card">
+<div class="file-icon">
+        🏗
+       </div>
+<h3>
+        ผู้รับเหมา GGB
+       </h3>
+<p>
+        Google Sheet
+       </p>
+<button class="category-page-button" data-page="ggb-files" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ===================== -->
+<div class="file-card">
+<div class="file-icon">
+        ☀
+       </div>
+<h3>
+        SCG Solar Cell
+       </h3>
+<p>
+        Solar Installation
+       </p>
+<button class="category-page-button" data-page="solar-files" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ===================== -->
+<div class="file-card">
+<div class="file-icon">
+        🔌
+       </div>
+<h3>
+        เครื่องใช้ไฟฟ้า
+       </h3>
+<p>
+        Warranty / Manual
+       </p>
+<button class="category-page-button" data-page="electric-files" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="blueprint-files">
+<div class="page-title">
+<h2>
+       📐 ไฟล์พิมพ์เขียว
+      </h2>
+<p>
+       เอกสารแบบพิมพ์เขียวของบ้าน
+      </p>
+</div>
+<div class="file-grid">
+<div class="file-card">
+<div class="file-icon">
+        📐
+       </div>
+<h3>
+        แบบพิมพ์เขียวบ้าน
+       </h3>
+<p>
+        Blueprint PDF
+       </p>
+<button class="open-file" data-link="pdf/blueprint.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="adam-files">
+<div class="page-title">
+<h2>
+       👷 ผู้รับเหมา Adam
+      </h2>
+<p>
+       เอกสารทั้งหมดของผู้รับเหมา Adam
+      </p>
+</div>
+<div class="file-grid">
+<!-- ไฟล์ 1 -->
+<div class="file-card">
+<div class="file-icon">
+        🛋️
+       </div>
+<h3>
+        แบบ Interior
+       </h3>
+<p>
+        Interior Drawing PDF
+       </p>
+<button class="open-file" data-link="pdf/Adaminterrior&amp;KNXall.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 2 -->
+<div class="file-card">
+<div class="file-icon">
+        🚘
+       </div>
+<h3>
+        แบบ Garage
+       </h3>
+<p>
+        Garage Drawing PDF
+       </p>
+<button class="open-file" data-link="pdf/Garage.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 3 -->
+<div class="file-card">
+<div class="file-icon">
+        🏡
+       </div>
+<h3>
+        แบบ Pavilion &amp; Laundry
+       </h3>
+<p>
+        Pavilion and Laundry Drawing PDF
+       </p>
+<button class="open-file" data-link="pdf/Pavilion&amp;Laundry.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 4 -->
+<div class="file-card">
+<div class="file-icon">
+        🧾
+       </div>
+<h3>
+        ใบเสนอราคา Interior
+       </h3>
+<p>
+        Interior Quotation PDF
+       </p>
+<button class="open-file" data-link="pdf/AdaminterriorKNXCarpetLFPRICE.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 5 -->
+<div class="file-card">
+<div class="file-icon">
+        📋
+       </div>
+<h3>
+        ใบเสนอราคาโรงรถ ศาลา และห้องซักรีด
+       </h3>
+<p>
+        Garage, Pavilion &amp; Laundry Quotation PDF
+       </p>
+<button class="open-file" data-link="pdf/Adampavilion&amp;laundryPRICE.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="ggb-files">
+<div class="page-title">
+<h2>
+       🏗 ผู้รับเหมา GGB
+      </h2>
+<p>
+       เอกสารทั้งหมดของผู้รับเหมา GGB
+      </p>
+</div>
+<div class="file-grid">
+<!-- ไฟล์ 1 -->
+<div class="file-card">
+<div class="file-icon">
+        🌳
+       </div>
+<h3>
+        แบบ Landscape
+       </h3>
+<p>
+        Landscape Drawing PDF
+       </p>
+<button class="open-file" data-link="pdf/GGB21593D.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 2 -->
+<div class="file-card">
+<div class="file-icon">
+        🧾
+       </div>
+<h3>
+        ใบเสนอราคาสวน ศาลา และครัวต่อเติม
+       </h3>
+<p>
+        Landscape, Pavilion &amp; Kitchen Quotation PDF
+       </p>
+<button class="open-file" data-link="pdf/GGBPRICE.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="solar-files">
+<div class="page-title">
+<h2>
+       ☀️ SCG Solar Cell
+      </h2>
+<p>
+       เอกสารระบบ Solar Cell
+      </p>
+</div>
+<div class="file-grid">
+<!-- ไฟล์ 1 -->
+<div class="file-card">
+<div class="file-icon">
+        📊
+       </div>
+<h3>
+        Specs Sheets
+       </h3>
+<p>
+        Solar Cell Specifications PDF
+       </p>
+<button class="open-file" data-link="pdf/SolarCellMOU.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+<!-- ไฟล์ 2 -->
+<div class="file-card">
+<div class="file-icon">
+        🧾
+       </div>
+<h3>
+        ใบเสนอราคา
+       </h3>
+<p>
+        Solar Cell Quotation PDF
+       </p>
+<button class="open-file" data-link="pdf/SolarCellMOU.pdf" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="electric-files">
+<div class="page-title">
+<h2>
+       🔌 เครื่องใช้ไฟฟ้า
+      </h2>
+<p>
+       เอกสารเครื่องใช้ไฟฟ้าภายในบ้าน
+      </p>
+</div>
+<div class="file-grid">
+<div class="file-card">
+<div class="file-icon">
+        🔌
+       </div>
+<h3>
+        เอกสารเครื่องใช้ไฟฟ้า
+       </h3>
+<p>
+        Electrical Appliances PDF
+       </p>
+<button class="open-file" data-link="วาง_URL_PDF_เครื่องใช้ไฟฟ้า" type="button">
+        เปิดไฟล์
+       </button>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="expense">
+<div class="page-title">
+<h2>
+       💰 รายรับ–รายจ่าย
+      </h2>
+<p>
+       เปิดระบบเดิมของ Umick Expender
+      </p>
+</div>
+<div class="expense-box">
+<img class="expense-bear" src="images/bear.png"/>
+<h3>
+       Smart Income &amp; Expense
+      </h3>
+<p>
+       ระบบเดิมของคุณจะถูกเปิดทันที
+      </p>
+<button id="openExpense" type="button">
+       เปิดระบบ
+      </button>
+</div>
+</section>
+<section class="page hidden-page" id="location">
+<div class="location-wrapper">
+<div class="location-header">
+<div class="location-icon">
+<i class="fas fa-location-dot">
+</i>
+</div>
+<h2>
+        Location บ้าน
+       </h2>
+<p>
+        Snow Malton Gates 18/36
+       </p>
+</div>
+<div class="map-card">
+<div class="map-frame">
+<iframe allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=13.7569722,100.6874444&amp;z=19&amp;output=embed" title="ตำแหน่งบ้าน Snow Malton Gates 18/36">
+</iframe>
+</div>
+<div class="map-information">
+<div class="map-detail">
+<div class="map-detail-icon">
+<i class="fas fa-house">
+</i>
+</div>
+<div>
+<h3>
+           Snow Malton Gates 18/36
+          </h3>
+<p>
+           พิกัด 13.7569722, 100.6874444
+          </p>
+</div>
+</div>
+<button class="google-map-button" id="googleMapButton" type="button">
+<i class="fas fa-diamond-turn-right">
+</i>
+         เปิดเส้นทางใน Google Maps
+        </button>
+</div>
+</div>
+</div>
+</section>
+<section class="page hidden-page" id="calendar">
+<div class="calendar-wrapper">
+<div class="page-title calendar-page-title">
+<h2><i class="fas fa-calendar-days"></i> Family Calendar</h2>
+<p>บันทึกวัน เวลา และรายละเอียดนัดหมายของครอบครัว</p>
+</div>
+<div class="calendar-layout">
+<div class="calendar-panel">
+<div class="calendar-toolbar">
+<button aria-label="เดือนก่อนหน้า" class="calendar-nav-btn" id="calendarPrev" type="button">
+<i class="fas fa-chevron-left"></i>
+</button>
+<h3 id="calendarMonthLabel">เดือน</h3>
+<button aria-label="เดือนถัดไป" class="calendar-nav-btn" id="calendarNext" type="button">
+<i class="fas fa-chevron-right"></i>
+</button>
+</div>
+<div aria-hidden="true" class="calendar-weekdays">
+<span>อา.</span><span>จ.</span><span>อ.</span><span>พ.</span>
+<span>พฤ.</span><span>ศ.</span><span>ส.</span>
+</div>
+<div aria-label="ตารางปฏิทิน" class="calendar-grid" id="calendarGrid"></div>
+</div>
+<aside class="appointment-panel">
+<h3><i class="fas fa-pen-to-square"></i> เพิ่มนัดหมาย</h3>
+<label class="calendar-field">
+<span>ชื่อผู้บันทึก</span>
+<input id="appointmentUser" maxlength="60" placeholder="เช่น Dad, Mom, Umick" type="text"/>
+</label>
+<div class="calendar-field-row">
+<label class="calendar-field">
+<span>วันที่</span>
+<div class="calendar-native-input">
+<input id="appointmentDate" type="date"/>
+</div>
+</label>
+<label class="calendar-field">
+<span>เวลา</span>
+<div class="calendar-native-input">
+<input id="appointmentTime" type="time"/>
+</div>
+</label>
+</div>
+<label class="calendar-field">
+<span>รายละเอียดนัดหมาย</span>
+<textarea id="appointmentDetails" maxlength="1000" placeholder="กรอกรายละเอียด สถานที่ หรือข้อมูลที่ต้องเตรียม..." rows="5"></textarea>
+</label>
+<button class="calendar-save-btn" id="saveAppointment" type="button">
+<i class="fas fa-floppy-disk"></i> บันทึกนัดหมาย
+        </button>
+<p class="calendar-form-note">ระบบจะเก็บข้อมูลในเครื่องเป็นข้อมูลสำรอง และเมื่อเชื่อม Google Apps Script จะบันทึกลง Google Sheets พร้อมแจ้งเตือน LINE และ Telegram ทุกเช้า</p>
+<div class="calendar-connection-status" id="calendarConnectionStatus" role="status">
+<span class="calendar-status-dot"></span>
+<span>กำลังตรวจสอบการเชื่อมต่อ Calendar API...</span>
+</div></aside>
+</div>
+<section class="appointment-list-section">
+<div class="appointment-list-header">
+<div>
+<h3><i class="fas fa-list-check"></i> รายการนัดหมาย</h3>
+<p id="appointmentFilterLabel">แสดงรายการทั้งหมด</p>
+</div>
+<button class="calendar-secondary-btn" id="showAllAppointments" type="button">
+          แสดงทั้งหมด
+        </button>
+</div>
+<div aria-live="polite" class="appointment-list" id="appointmentList"></div>
+</section>
+<div class="calendar-notification-note">
+<i class="fas fa-bell"></i>
+<div>
+<strong>การแจ้งเตือนบนมือถือ</strong>
+<p>
+      เสียงแจ้งเตือนจะดังตามการตั้งค่าเสียงของแอป LINE/Telegram และการตั้งค่าแจ้งเตือนของมือถือแต่ละเครื่อง
+    </p>
+</div>
+</div></div>
+</section><section class="page hidden-page" id="contact">
+<div class="page-title">
+<h2>
+<i class="fas fa-address-book"></i>
+      Contact
+    </h2>
+<p>
+      ติดต่อสมาชิกในครอบครัวผ่านโทรศัพท์หรือ LINE
+    </p>
+</div>
+<div class="file-grid contact-file-grid">
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Dad" src="images/users/dad.jpg"/>
+</div>
+<h3>Dad</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<a aria-label="โทรหา Dad หมายเลข 0955611717" class="contact-button contact-call" href="tel:0955611717">
+<i class="fas fa-phone"></i>
+<span>0955611717</span>
+</a>
+<a aria-label="เพิ่ม LINE ของ Dad ไอดี arony1717" class="contact-button contact-line" href="https://line.me/ti/p/~arony1717" rel="noopener noreferrer" target="_blank">
+<i class="fab fa-line"></i>
+<span>arony1717</span>
+</a>
+</div>
+</article>
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Mom" src="images/users/mom.jpg"/>
+</div>
+<h3>Mom</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<a aria-label="โทรหา Mom หมายเลข 0969985555" class="contact-button contact-call" href="tel:0969985555">
+<i class="fas fa-phone"></i>
+<span>0969985555</span>
+</a>
+<a aria-label="เพิ่ม LINE ของ Mom ไอดี iceutika" class="contact-button contact-line" href="https://line.me/ti/p/~iceutika" rel="noopener noreferrer" target="_blank">
+<i class="fab fa-line"></i>
+<span>iceutika</span>
+</a>
+</div>
+</article>
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Umick" src="images/users/baby.jpg"/>
+</div>
+<h3>Umick</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<span aria-disabled="true" class="contact-button contact-disabled">
+<i class="fas fa-phone-slash"></i>
+<span>ยังไม่ได้ระบุเบอร์</span>
+</span>
+<span aria-disabled="true" class="contact-button contact-disabled">
+<i class="fab fa-line"></i>
+<span>ยังไม่ได้ระบุ LINE</span>
+</span>
+</div>
+</article>
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Imick" src="images/users/baby.jpg"/>
+</div>
+<h3>Imick</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<span aria-disabled="true" class="contact-button contact-disabled">
+<i class="fas fa-phone-slash"></i>
+<span>ยังไม่ได้ระบุเบอร์</span>
+</span>
+<span aria-disabled="true" class="contact-button contact-disabled">
+<i class="fab fa-line"></i>
+<span>ยังไม่ได้ระบุ LINE</span>
+</span>
+</div>
+</article>
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Granddad" src="images/users/granddad.jpg"/>
+</div>
+<h3>Granddad</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<a aria-label="โทรหา Granddad หมายเลข 0854817035" class="contact-button contact-call" href="tel:0854817035">
+<i class="fas fa-phone"></i>
+<span>0854817035</span>
+</a>
+<a aria-label="เพิ่ม LINE ของ Granddad ไอดี 0854817035" class="contact-button contact-line" href="https://line.me/ti/p/~0854817035" rel="noopener noreferrer" target="_blank">
+<i class="fab fa-line"></i>
+<span>0854817035</span>
+</a>
+</div>
+</article>
+<article class="file-card contact-person-card">
+<div class="file-icon contact-person-icon">
+<img alt="Grandmom" src="images/users/grandmom.jpg"/>
+</div>
+<h3>Grandmom</h3>
+<p class="contact-role">Family Contact</p>
+<div class="contact-person-actions">
+<a aria-label="โทรหา Grandmom หมายเลข 0816488877" class="contact-button contact-call" href="tel:0816488877">
+<i class="fas fa-phone"></i>
+<span>0816488877</span>
+</a>
+<span aria-disabled="true" class="contact-button contact-disabled">
+<i class="fab fa-line"></i>
+<span>ใส่ทีหลัง</span>
+</span>
+</div>
+</article>
+</div>
+<p class="contact-help">
+    กดติดต่อสมาชิกในครอบครัวได้เลยครับ
+  </p>
+</section><section class="page hidden-page" id="family">
+<div class="family-wrapper">
+<div class="family-header">
+<h2>
+        💬 Family Board
+       </h2>
+<p>
+        แชร์ข้อความถึงทุกคนในบ้าน
+       </p>
+</div>
+<!-- ========================= -->
+<div class="post-card">
+<div class="post-user">
+<img class="avatar" src="images/avatar.jpg"/>
+<div>
+<h3>
+          ผู้ใช้งาน
+         </h3>
+<p>
+          Family Member
+         </p>
+</div>
+</div>
+<input class="family-input" id="userName" placeholder="ชื่อผู้โพสต์" type="text"/>
+<textarea class="family-text" id="familyMessage" placeholder="เขียนข้อความถึงครอบครัว...">
+
+</textarea>
+<div class="button-group">
+<button class="post-btn" id="postMessage" type="button">
+         📨 โพสต์ข้อความ
+        </button>
+<button class="cancel-btn" id="clearMessage" type="button">
+         ล้างข้อความ
+        </button>
+</div>
+</div>
+<!-- ========================= -->
+<div class="message-list" id="messageContainer">
+</div>
+</div>
+</section>
+<footer class="main-footer">
+<div class="footer-container">
+<h3>
+       🏡 Family Home Dashboard
+      </h3>
+<p>
+       Smart Family Management System
+      </p>
+<p>
+       Developed by Umick © 2026
+      </p>
+</div>
+</footer>
+</main>
+</div>
+<script src="home.js">
+</script>
+</body>
+</html>
