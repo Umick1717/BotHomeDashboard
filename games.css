@@ -1,0 +1,339 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  --glass: rgba(7, 17, 31, 0.72);
+  --line: rgba(255, 255, 255, 0.18);
+  --text-soft: rgba(255, 255, 255, 0.76);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #07111f;
+}
+
+button, select { font: inherit; }
+
+.game-shell {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#camera,
+#handCanvas,
+.camera-fallback,
+.screen-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#camera {
+  object-fit: cover;
+  transform: scaleX(-1);
+  z-index: -4;
+}
+
+#handCanvas {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.camera-fallback {
+  z-index: -5;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(94, 234, 212, 0.28), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(129, 140, 248, 0.30), transparent 32%),
+    linear-gradient(145deg, #06101f, #102744);
+}
+
+.camera-fallback p {
+  margin-top: 45vh;
+  color: var(--text-soft);
+}
+
+.screen-overlay {
+  z-index: -3;
+  background:
+    linear-gradient(to bottom, rgba(2, 8, 23, 0.80), transparent 28%),
+    linear-gradient(to top, rgba(2, 8, 23, 0.90), transparent 35%);
+}
+
+.topbar, .hud, .status-row, .mission-card, .controls {
+  position: relative;
+  z-index: 4;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: max(14px, env(safe-area-inset-top)) 18px 8px;
+}
+
+.back-button,
+.camera-button,
+.controls button,
+.controls select {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  color: white;
+  padding: 10px 14px;
+  text-decoration: none;
+  backdrop-filter: blur(16px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.brand-icon { font-size: 2rem; }
+
+.brand strong,
+.brand small { display: block; }
+
+.brand small { color: var(--text-soft); }
+
+.hud,
+.status-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 7px 16px;
+}
+
+.hud-card,
+.status-chip {
+  border: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+}
+
+.hud-card {
+  min-width: 92px;
+  padding: 10px 16px;
+  text-align: center;
+  border-radius: 18px;
+}
+
+.hud-card span,
+.hud-card strong { display: block; }
+
+.hud-card span {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+}
+
+.hud-card strong {
+  margin-top: 4px;
+  font-size: 1.35rem;
+}
+
+.status-chip {
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+}
+
+.mission-card {
+  width: min(620px, calc(100% - 32px));
+  margin: 8px auto;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(7, 17, 31, 0.58);
+  backdrop-filter: blur(14px);
+}
+
+.eyebrow {
+  margin: 0;
+  color: #99f6e4;
+  font-weight: 700;
+}
+
+.mission-card h1 {
+  margin: 6px 0;
+  font-size: clamp(2rem, 7vw, 4.8rem);
+}
+
+.mission-card p:last-child {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.answer-zone {
+  position: absolute;
+  inset: 39% 5% 20%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.answer-orb {
+  position: absolute;
+  width: clamp(82px, 15vw, 128px);
+  aspect-ratio: 1;
+  border: 2px solid rgba(255,255,255,.78);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,.75), transparent 18%),
+    radial-gradient(circle, rgba(45, 212, 191, .90), rgba(37, 99, 235, .86));
+  color: white;
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 800;
+  box-shadow: 0 0 34px rgba(45, 212, 191,.55);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: floatOrb 3.5s ease-in-out infinite;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.answer-orb.hand-hover {
+  outline: 6px solid rgba(250, 204, 21, .65);
+  transform: scale(1.12);
+}
+
+.answer-orb.correct {
+  background: radial-gradient(circle, #4ade80, #15803d);
+  animation: correctPulse .5s ease;
+}
+
+.answer-orb.wrong {
+  background: radial-gradient(circle, #fb7185, #be123c);
+  animation: shake .4s ease;
+}
+
+.controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: min(850px, calc(100% - 24px));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(7,17,31,.78);
+  backdrop-filter: blur(18px);
+}
+
+.controls label {
+  display: grid;
+  gap: 5px;
+  color: var(--text-soft);
+  font-size: .82rem;
+}
+
+.controls button { cursor: pointer; }
+
+#startButton {
+  background: linear-gradient(135deg, #14b8a6, #2563eb);
+  font-weight: 800;
+}
+
+#voiceButton.listening {
+  background: linear-gradient(135deg, #f43f5e, #7c3aed);
+  animation: listeningPulse 1s infinite;
+}
+
+dialog {
+  border: 0;
+  border-radius: 28px;
+  color: white;
+  background: rgba(7,17,31,.96);
+  box-shadow: 0 24px 80px rgba(0,0,0,.55);
+}
+
+dialog::backdrop {
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+}
+
+.dialog-content {
+  min-width: min(320px, 80vw);
+  text-align: center;
+  padding: 18px;
+}
+
+.trophy { font-size: 4rem; }
+
+#finalScore {
+  display: block;
+  font-size: 4rem;
+  margin: 8px 0 20px;
+}
+
+#playAgainButton {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #14b8a6, #2563eb);
+  color: white;
+  font-weight: 800;
+}
+
+@keyframes floatOrb {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -18px; }
+}
+
+@keyframes correctPulse {
+  50% { transform: scale(1.28); }
+}
+
+@keyframes shake {
+  25% { translate: -10px 0; }
+  75% { translate: 10px 0; }
+}
+
+@keyframes listeningPulse {
+  50% { transform: scale(1.05); }
+}
+
+@media (max-width: 680px) {
+  .topbar { grid-template-columns: auto 1fr; }
+
+  .camera-button {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .brand strong { font-size: .9rem; }
+  .brand small { font-size: .72rem; }
+
+  .hud-card {
+    min-width: 0;
+    flex: 1;
+    padding: 8px;
+  }
+
+  .status-row {
+    flex-wrap: wrap;
+    padding-top: 2px;
+  }
+
+  .mission-card {
+    margin-top: 2px;
+    padding: 10px;
+  }
+
+  .answer-zone { inset: 43% 3% 23%; }
+}
