@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#081426">
+  <title>English Sentence Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sentence-game.css?v=1">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="back-btn" href="games.html">← Games</a>
+      <div class="heading">
+        <p class="eyebrow">Snow36 Kids Learning</p>
+        <h1>🧩 English Sentence Builder</h1>
+        <p>เรียงคำให้เป็นประโยคภาษาอังกฤษที่ถูกต้อง</p>
+      </div>
+      <div class="top-score">⭐ <span id="score">0</span> / 100</div>
+    </header>
+
+    <section class="settings-card">
+      <label>
+        ระดับ
+        <select id="level">
+          <option value="easy">ง่าย</option>
+          <option value="medium">กลาง</option>
+          <option value="hard">ท้าทาย</option>
+          <option value="all">สุ่มทุกระดับ</option>
+        </select>
+      </label>
+
+      <label>
+        เวลาต่อข้อ
+        <select id="timeLimit">
+          <option value="0">ไม่จำกัด</option>
+          <option value="15">15 วินาที</option>
+          <option value="30" selected>30 วินาที</option>
+          <option value="45">45 วินาที</option>
+          <option value="60">60 วินาที</option>
+        </select>
+      </label>
+
+      <button id="startBtn" class="primary-btn" type="button">▶ เริ่มเกม</button>
+    </section>
+
+    <section class="game-card">
+      <div class="progress-row">
+        <span id="questionLabel">พร้อมเริ่มเกม</span>
+        <div class="timer-box" id="timerBox">⏱ <span id="timer">30</span></div>
+      </div>
+
+      <div class="prompt-box">
+        <span class="prompt-label">ความหมายภาษาไทย</span>
+        <h2 id="thaiPrompt">กด “เริ่มเกม” เพื่อเริ่มฝึกเรียงประโยค</h2>
+        <p id="hintText">แตะคำด้านล่างตามลำดับ หรือใช้ Drag & Drop</p>
+      </div>
+
+      <div class="answer-zone" id="answerZone" aria-label="พื้นที่เรียงประโยค">
+        <span class="answer-placeholder">วางคำตอบที่นี่...</span>
+      </div>
+
+      <div class="word-bank" id="wordBank" aria-label="คำศัพท์สำหรับเรียงประโยค"></div>
+
+      <div class="actions">
+        <button id="listenBtn" type="button">🔊 ฟังประโยค</button>
+        <button id="speakBtn" type="button">🎤 พูดประโยค</button>
+        <button id="hintBtn" type="button">💡 ใบ้คำแรก</button>
+        <button id="undoBtn" type="button">↩️ ย้อนกลับ</button>
+        <button id="clearBtn" type="button">🧹 เริ่มเรียงใหม่</button>
+        <button id="checkBtn" class="check-btn" type="button">✅ ตรวจคำตอบ</button>
+      </div>
+
+      <div class="feedback" id="feedback" aria-live="polite">
+        เลือกระดับและเวลา แล้วกดเริ่มเกม
+      </div>
+    </section>
+
+    <section class="how-to">
+      <h3>วิธีเล่น</h3>
+      <p>เรียงคำให้ถูกต้องตามความหมายภาษาไทย เกมละ 10 ข้อ ข้อละ 10 คะแนน สามารถแตะคำ ลากคำ ฟังเสียง และตอบด้วยเสียงได้</p>
+    </section>
+
+    <dialog id="resultDialog">
+      <div class="result-card">
+        <div class="result-icon">🏆</div>
+        <h2>จบเกมแล้ว!</h2>
+        <p>คะแนนของคุณ</p>
+        <strong id="finalScore">0 / 100</strong>
+        <button id="playAgainBtn" class="primary-btn" type="button">เล่นอีกครั้ง</button>
+        <a href="games.html">กลับหน้า Games</a>
+      </div>
+    </dialog>
+  </main>
+
+  <script src="sentence-game.js?v=1"></script>
+</body>
+</html>
