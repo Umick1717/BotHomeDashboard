@@ -4,19 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#081426">
-  <title>English Sentence Builder</title>
+  <title>English Sentence Builder V2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="sentence-game.css?v=1">
+  <link rel="stylesheet" href="sentence-game.css?v=2">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
 </head>
 <body>
+  <video id="camera" class="ar-camera" autoplay playsinline muted aria-label="กล้องสำหรับควบคุมด้วยมือ"></video>
+  <canvas id="handCanvas" class="hand-canvas" aria-hidden="true"></canvas>
+
   <main class="game-shell">
     <header class="topbar">
       <a class="back-btn" href="games.html">← Games</a>
       <div class="heading">
         <p class="eyebrow">Snow36 Kids Learning</p>
         <h1>🧩 English Sentence Builder</h1>
-        <p>เรียงคำให้เป็นประโยคภาษาอังกฤษที่ถูกต้อง</p>
+        <p>เรียงคำด้วยการแตะ ลากบนจอ หรือใช้มือผ่านกล้อง</p>
       </div>
       <div class="top-score">⭐ <span id="score">0</span> / 100</div>
     </header>
@@ -43,7 +48,13 @@
         </select>
       </label>
 
+      <button id="cameraBtn" class="camera-btn" type="button">📷 เปิดกล้อง AR</button>
       <button id="startBtn" class="primary-btn" type="button">▶ เริ่มเกม</button>
+    </section>
+
+    <section class="status-row">
+      <span id="handStatus" class="status-chip">🖐️ มือ: รอเปิดกล้อง</span>
+      <span class="status-chip">🤏 จีบนิ้วค้าง = จับคำ • คลายมือ = วาง</span>
     </section>
 
     <section class="game-card">
@@ -55,14 +66,14 @@
       <div class="prompt-box">
         <span class="prompt-label">ความหมายภาษาไทย</span>
         <h2 id="thaiPrompt">กด “เริ่มเกม” เพื่อเริ่มฝึกเรียงประโยค</h2>
-        <p id="hintText">แตะคำด้านล่างตามลำดับ หรือใช้ Drag & Drop</p>
+        <p id="hintText">แตะคำตามลำดับ หรือลากคำไปวางในช่องคำตอบ</p>
       </div>
 
-      <div class="answer-zone" id="answerZone" aria-label="พื้นที่เรียงประโยค">
+      <div class="answer-zone drop-zone" id="answerZone" aria-label="พื้นที่เรียงประโยค">
         <span class="answer-placeholder">วางคำตอบที่นี่...</span>
       </div>
 
-      <div class="word-bank" id="wordBank" aria-label="คำศัพท์สำหรับเรียงประโยค"></div>
+      <div class="word-bank drop-zone" id="wordBank" aria-label="คำศัพท์สำหรับเรียงประโยค"></div>
 
       <div class="actions">
         <button id="listenBtn" type="button">🔊 ฟังประโยค</button>
@@ -79,8 +90,8 @@
     </section>
 
     <section class="how-to">
-      <h3>วิธีเล่น</h3>
-      <p>เรียงคำให้ถูกต้องตามความหมายภาษาไทย เกมละ 10 ข้อ ข้อละ 10 คะแนน สามารถแตะคำ ลากคำ ฟังเสียง และตอบด้วยเสียงได้</p>
+      <h3>วิธีเล่นแบบ AR</h3>
+      <p>เปิดกล้อง แล้วชี้นิ้วไปที่คำ เมื่อวงกลมอยู่บนคำให้จีบนิ้วโป้งกับนิ้วชี้ค้างไว้ ลากไปยังตำแหน่งที่ต้องการ และคลายนิ้วเพื่อวางคำ ระบบใช้การกรองตำแหน่งและ Pinch Hysteresis เพื่อลดอาการสั่น</p>
     </section>
 
     <dialog id="resultDialog">
@@ -95,6 +106,6 @@
     </dialog>
   </main>
 
-  <script src="sentence-game.js?v=1"></script>
+  <script src="sentence-game.js?v=2"></script>
 </body>
 </html>
