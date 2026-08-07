@@ -4,92 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure</title>
-  <link rel="stylesheet" href="games.css" />
-
-  <!-- MediaPipe Hands: ใช้ตรวจจับมือและนิ้วจากกล้อง -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <title>Kids AR Learning Center</title>
+  <link rel="stylesheet" href="games-center.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <main class="game-shell">
-    <video id="camera" autoplay playsinline muted></video>
-    <canvas id="handCanvas" aria-hidden="true"></canvas>
-
-    <div class="camera-fallback" id="cameraFallback">
-      <p>เปิดกล้องเพื่อเข้าสู่โหมด AR</p>
-    </div>
-
-    <div class="screen-overlay"></div>
-
-    <header class="topbar">
-      <a class="back-button" href="./index.html" aria-label="กลับหน้าหลัก">← Home</a>
-
-      <div class="brand">
-        <span class="brand-icon">🧠</span>
-        <div>
-          <strong>AR Multiplication Adventure</strong>
-          <small>เลือกคำตอบด้วยนิ้วหรือเสียง</small>
-        </div>
+  <main class="center-shell">
+    <header class="center-header">
+      <a href="index.html" class="home-link">← กลับหน้า Home</a>
+      <div>
+        <p class="eyebrow">Snow36 Kids Learning</p>
+        <h1>🎮 AR Learning Center</h1>
+        <p>เรียนรู้ด้วยกล้อง นิ้วมือ เสียง และนิทานภาษาอังกฤษ</p>
       </div>
-
-      <button class="camera-button" id="cameraButton" type="button">📷 เปิดกล้อง</button>
     </header>
 
-    <section class="hud">
-      <div class="hud-card">
-        <span>คะแนน</span>
-        <strong id="score">0</strong>
-      </div>
-      <div class="hud-card">
-        <span>ต่อเนื่อง</span>
-        <strong id="streak">0 🔥</strong>
-      </div>
-      <div class="hud-card">
-        <span>เวลา</span>
-        <strong id="time">60</strong>
-      </div>
+    <section class="game-grid">
+      <a class="game-card math-card" href="multiplication-game.html">
+        <span class="game-icon">✖️</span>
+        <div>
+          <h2>AR Multiplication</h2>
+          <p>ฝึกสูตรคูณ เลือกคำตอบด้วยนิ้วหรือเสียง</p>
+        </div>
+        <span class="play">เล่น →</span>
+      </a>
+
+      <a class="game-card animal-card" href="animal-game.html?v=15">
+        <span class="game-icon">🦁</span>
+        <div>
+          <h2>Animal Name Adventure</h2>
+          <p>ฝึกเรียกชื่อสัตว์และออกเสียงภาษาอังกฤษ</p>
+        </div>
+        <span class="play">เล่น →</span>
+      </a>
+
+      <a class="game-card story-card" href="story-game.html">
+        <span class="game-icon">📖</span>
+        <div>
+          <h2>English Story Time</h2>
+          <p>ฟังนิทานภาษาอังกฤษช้า ๆ แล้วตอบคำถาม</p>
+        </div>
+        <span class="play">เล่น →</span>
+      </a>
     </section>
 
-    <section class="status-row">
-      <span class="status-chip" id="handStatus">🖐️ มือ: รอเปิดกล้อง</span>
-      <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
-    </section>
-
-    <section class="mission-card">
-      <p class="eyebrow">ภารกิจสูตรคูณ</p>
-      <h1 id="question">กดเริ่มเกม</h1>
-      <p id="message">ชูนิ้วชี้ไปที่คำตอบ แล้วจีบนิ้วโป้งกับนิ้วชี้เพื่อเลือก</p>
-    </section>
-
-    <section class="answer-zone" id="answerZone" aria-label="ตัวเลือกคำตอบ"></section>
-
-    <section class="controls">
-      <label>
-        ระดับ
-        <select id="level">
-          <option value="5">ง่าย: แม่ 1–5</option>
-          <option value="9">กลาง: แม่ 1–9</option>
-          <option value="12" selected>ท้าทาย: แม่ 1–12</option>
-        </select>
-      </label>
-
-      <button id="startButton" type="button">เริ่มเกม</button>
-      <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
-      <button id="soundButton" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
-    </section>
-
-    <dialog id="resultDialog">
-      <div class="dialog-content">
-        <div class="trophy">🏆</div>
-        <h2>จบเกมแล้ว</h2>
-        <p>คะแนนของคุณ</p>
-        <strong id="finalScore">0</strong>
-        <button id="playAgainButton" type="button">เล่นอีกครั้ง</button>
-      </div>
-    </dialog>
+    <footer>Developed by Umick © 2026</footer>
   </main>
-
-  <script src="games.js"></script>
 </body>
 </html>
