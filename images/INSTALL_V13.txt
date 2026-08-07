@@ -1,0 +1,35 @@
+HOME DASHBOARD ANIMAL GAME V13 — FULL FRAME IMAGE FIX
+
+จุดที่แก้:
+- สร้างภาพสัตว์ใหม่ครบ 80 ภาพ
+- ลบพื้นที่ว่างสีเข้มรอบภาพเดิม
+- ภาพแต่ละไฟล์มีขนาด 800 x 600 พิกเซล
+- รูปสัตว์ขยายเต็มกรอบด้วย object-fit: cover
+- ปุ่มเริ่มเกมยังใช้ระบบ V12 ที่ทำงานได้แล้ว
+- เปลี่ยนชื่อไฟล์เป็น V13 เพื่อป้องกัน Cache เก่า
+
+วิธีติดตั้ง:
+1. แตกไฟล์ ZIP
+2. เปิดโฟลเดอร์ HomeDashboard ด้านใน
+3. คัดลอกทุกไฟล์ไปวางที่:
+   D:\Viscode\HomeDashboard-Backup\HomeDashboard
+4. เลือก Replace the files in the destination
+5. ตรวจว่ามีไฟล์:
+   animal-game.html
+   animal-game-v13.css
+   animal-game-v13.js
+6. ตรวจว่าภาพอยู่ที่:
+   D:\Viscode\HomeDashboard-Backup\HomeDashboard\images\animals\dog.jpg
+7. เปิด:
+   http://127.0.0.1:5500/HomeDashboard/animal-game.html?v=13
+8. กด Ctrl + Shift + R
+
+ท้ายไฟล์ animal-game.html ต้องเป็น:
+<script src="animal-game-v13.js?v=13"></script>
+
+Push GitHub:
+git status
+git add index.html games.html animal-game.html animal-game-v13.css animal-game-v13.js images/animals
+git commit -m "Update Animal Game V13 full frame images"
+git pull --rebase origin main
+git push origin main

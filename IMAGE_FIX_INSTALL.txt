@@ -1,0 +1,10 @@
+วางไฟล์ทั้งหมดในโฟลเดอร์นี้ลงที่:
+D:\Viscode\HomeDashboard-Backup\HomeDashboard
+
+ตำแหน่งที่ต้องมีจริง:
+D:\Viscode\HomeDashboard-Backup\HomeDashboard\images\animals\lion.jpg
+
+ทดสอบ:
+http://127.0.0.1:5500/HomeDashboard/animal-image-test.html
+หรือถ้า Live Server root อยู่ที่ HomeDashboard:
+http://127.0.0.1:5500/animal-image-test.html

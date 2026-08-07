@@ -1,0 +1,32 @@
+HOME DASHBOARD ANIMAL GAME V15 — CLEARER ANIMAL IMAGES
+
+สิ่งที่แก้:
+- ครอปเฉพาะส่วนรูปสัตว์จริงจากภาพรวม
+- ตัดส่วนชื่อไฟล์ด้านล่างออก
+- เพิ่มความละเอียดเป็น 1800 x 1350
+- เพิ่มความคมชัด ความคอนทราสต์ และรายละเอียด
+- ยังใช้ระบบเกมที่กดเริ่มได้เหมือนเดิม
+- เปลี่ยนเป็น V15 เพื่อกัน cache เดิม
+
+วิธีติดตั้ง:
+1. แตกไฟล์ ZIP
+2. เปิดโฟลเดอร์ HomeDashboard ข้างใน
+3. คัดลอกทุกไฟล์ไปที่:
+   D:\Viscode\HomeDashboard-Backup\HomeDashboard
+4. กด Replace the files in the destination
+5. เปิดในเบราว์เซอร์:
+   http://127.0.0.1:5500/HomeDashboard/animal-game.html?v=15
+6. กด Ctrl + Shift + R
+
+ไฟล์สำคัญ:
+- animal-game.html
+- animal-game-v15.css
+- animal-game-v15.js
+- images\animals\*.jpg
+
+Push GitHub:
+git status
+git add index.html games.html animal-game.html animal-game-v15.css animal-game-v15.js images/animals
+git commit -m "Update Animal Game V15 clearer animal images"
+git pull --rebase origin main
+git push origin main

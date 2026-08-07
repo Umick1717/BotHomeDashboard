@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <title>English Story Time</title>
+  <link rel="stylesheet" href="kids-game.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+</head>
+<body>
+<main class="game-shell">
+  <video id="camera" autoplay playsinline muted></video>
+  <canvas id="handCanvas"></canvas>
+  <div class="backdrop"></div><div class="overlay"></div>
+
+  <header class="topbar">
+    <a href="games.html">← Games</a>
+    <div class="title">
+      <h1>📖 English Story Time</h1>
+      <p>ฟังนิทานและคำถามภาษาอังกฤษแบบช้ามาก แล้วตอบด้วยนิ้วหรือเสียง</p>
+    </div>
+    <button id="cameraButton">📷 เปิดกล้อง</button>
+  </header>
+
+  <div class="status-row">
+    <span class="status" id="handStatus">🖐️ มือ: รอเปิดกล้อง</span>
+    <span class="status" id="voiceStatus">🎤 เสียง: พร้อม</span>
+    <span class="status">⭐ คะแนน: <b id="score">0</b></span>
+  </div>
+
+  <section class="panel">
+    <p class="progress" id="storyProgress">เลือกนิทาน แล้วกดเริ่มเล่า</p>
+    <h2 id="storyTitle">English Story Time</h2>
+    <div class="emoji-stage" id="storyEmoji">📚</div>
+    <div class="story-text" id="storyText">นิทานจะปรากฏตรงนี้</div>
+    <p id="message">เสียง AI จะอ่านช้า เพื่อให้เด็กฟังตามได้ง่าย</p>
+  </section>
+
+  <section class="answer-grid" id="answers"></section>
+
+  <section class="controls">
+    <label>นิทาน
+      <select id="storySelect"></select>
+    </label>
+    <button class="primary" id="startStory">▶️ เริ่มเล่า</button>
+    <button id="repeatButton">🔊 ฟังซ้ำ</button>
+    <button id="voiceButton">🎤 ตอบด้วยเสียง</button>
+    <button id="soundButton">🔊 เสียงเปิด</button>
+  </section>
+</main>
+<script src="shared-game.js"></script>
+<script src="story-game.js"></script>
+</body>
+</html>
