@@ -1,0 +1,131 @@
+/* Mobile layout V2: keep every answer visible and prevent controls from covering content */
+@media (max-width: 900px) {
+  html, body { overflow-x: hidden !important; overflow-y: auto !important; }
+  .game-shell { min-height: 100dvh !important; height: auto !important; overflow: visible !important; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
+
+  .controls {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: calc(100% - 14px) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 10px auto calc(12px + env(safe-area-inset-bottom)) !important;
+    padding: 9px !important;
+  }
+
+  .mobile-permission-note { font-size: .72rem !important; line-height: 1.4; }
+
+  body.game-multiplication .answer-zone {
+    position: relative !important;
+    inset: auto !important;
+    width: calc(100% - 16px) !important;
+    min-height: 0 !important;
+    margin: 8px auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    pointer-events: auto !important;
+  }
+
+  body.game-multiplication .answer-orb {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 76px !important;
+    aspect-ratio: auto !important;
+    border-radius: 20px !important;
+    font-size: clamp(1.55rem, 8vw, 2.4rem) !important;
+    animation: none !important;
+    translate: none !important;
+  }
+
+  body.game-animal .answer-grid,
+  body.game-story .answer-grid {
+    width: calc(100% - 16px) !important;
+    margin: 8px auto !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+
+  body.game-animal .answer,
+  body.game-story .answer {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    font-size: clamp(.95rem, 4.5vw, 1.3rem) !important;
+    padding: 8px !important;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 430px) and (orientation: portrait) {
+  .topbar { gap: 6px !important; }
+  .mobile-permission-note { margin: 3px auto !important; padding: 7px 8px !important; }
+
+  body.game-multiplication .mission-card { margin: 5px auto !important; }
+  body.game-multiplication .answer-zone { gap: 8px !important; }
+  body.game-multiplication .answer-orb { min-height: 70px !important; }
+
+  body.game-animal .animal-photo-frame {
+    width: min(100%, 370px) !important;
+    max-height: 33dvh !important;
+    aspect-ratio: 4 / 3 !important;
+  }
+
+  body.game-story .emoji-stage {
+    font-size: clamp(4.5rem, 20vw, 7rem) !important;
+    margin: 5px 0 !important;
+  }
+  body.game-story .story-text { max-height: 28dvh !important; }
+}
+
+@media (orientation: landscape) and (max-height: 650px) {
+  .controls {
+    position: relative !important;
+    width: calc(100% - 12px) !important;
+    margin: 6px auto calc(8px + env(safe-area-inset-bottom)) !important;
+    flex-wrap: wrap !important;
+    max-height: none !important;
+  }
+
+  body.game-multiplication .answer-zone {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    margin: 5px auto !important;
+  }
+  body.game-multiplication .answer-orb {
+    min-height: 58px !important;
+    font-size: clamp(1.1rem, 5vh, 1.8rem) !important;
+  }
+
+  body.game-animal .answer-grid,
+  body.game-story .answer-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    margin: 5px auto !important;
+  }
+
+  body.game-animal .answer,
+  body.game-story .answer { min-height: 52px !important; font-size: .9rem !important; }
+}
+
+.voice-limited { border-color: rgba(250,204,21,.75) !important; }
+.browser-warning {
+  width: min(900px, calc(100% - 16px));
+  margin: 6px auto;
+  padding: 9px 12px;
+  border: 1px solid rgba(250,204,21,.55);
+  border-radius: 14px;
+  background: rgba(120,53,15,.82);
+  color: #fef3c7;
+  text-align: center;
+  font-size: .78rem;
+  line-height: 1.45;
+  position: relative;
+  z-index: 10;
+}
