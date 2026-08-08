@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>English Story Time V7</title>
-  <link rel="stylesheet" href="kids-game.css?v=7" />
+  <title>English Story Time V8</title>
+  <link rel="stylesheet" href="kids-game.css?v=8" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 
   <header class="topbar">
     <a href="games.html">← Games</a>
-    <div class="title"><h1>📖 English Story Time</h1><p>ฟังนิทาน แล้วตอบด้วยการแตะ มือ AR หรือไมโครโฟน</p></div>
+    <div class="title"><h1>📖 English Story Time</h1><p>ฟังนิทาน แล้วตอบด้วยการแตะ มือ AR หรือ Voice Auto</p></div>
     <button id="cameraButton" type="button">📷 เปิดกล้อง</button>
   </header>
 
@@ -31,7 +31,7 @@
     <span class="status">⭐ คะแนน: <b id="score">0</b></span>
   </div>
 
-  <div class="mobile-permission-note">V7 Final: ปุ่มเริ่มเกมเป็นระบบ standalone • อ่านจบแล้วรอ 3 วินาทีก่อนคำถาม • ไม่ใช้ OpenAI API และไม่มีกล่องกรอกคำตอบ</div>
+  <div class="mobile-permission-note">V8: กดไมค์ครั้งแรกเพียงครั้งเดียว หลังจากนั้น Voice Auto จะฟังทุกคำถามเอง • ใช้ keyword matching ไม่ต้องพูดทั้งประโยคหรือสำเนียงเป๊ะ</div>
 
   <section class="panel">
     <p class="progress" id="storyProgress">เลือกนิทาน แล้วกดเริ่มเล่า</p>
@@ -47,12 +47,12 @@
     <label>นิทาน<select id="storySelect"></select></label>
     <button class="primary" id="startStory" type="button">▶️ เริ่มเล่า</button>
     <button id="repeatButton" type="button">🔊 ฟังซ้ำ</button>
-    <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
+    <button id="voiceButton" type="button">🎤 เปิด Voice Auto</button>
     <button id="soundButton" type="button">🔊 เสียงเปิด</button>
   </section>
 </main>
 <script src="shared-game.js?v=3"></script>
-<script src="story-game-v7.js?v=7"></script>
-<script src="game-voice-direct-v2.js?v=2"></script>
+<script src="story-game-v7.js?v=8"></script>
+<script src="game-voice-auto-v3.js?v=3"></script>
 </body>
 </html>
