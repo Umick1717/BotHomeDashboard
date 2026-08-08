@@ -4,27 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure V3</title>
-  <link rel="stylesheet" href="multiplication-game.css?v=3" />
-  <link rel="stylesheet" href="mobile-game.css?v=1" />
+  <title>AR Multiplication Adventure V4</title>
+  <link rel="stylesheet" href="multiplication-game.css?v=4" />
+  <link rel="stylesheet" href="mobile-game.css?v=2" />
+  <link rel="stylesheet" href="mobile-game-v2.css?v=2" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <script src="mobile-game-compat.js?v=1"></script>
+  <script src="mobile-game-compat.js?v=2"></script>
+  <script src="mobile-voice-fix.js?v=1"></script>
 </head>
 <body>
   <main class="game-shell">
     <video id="camera" autoplay playsinline muted></video>
     <canvas id="handCanvas" aria-hidden="true"></canvas>
-
-    <div class="camera-fallback" id="cameraFallback">
-      <p>เปิดกล้องเพื่อเข้าสู่โหมด AR</p>
-    </div>
-
+    <div class="camera-fallback" id="cameraFallback"><p>เปิดกล้องเพื่อเข้าสู่โหมด AR</p></div>
     <div class="screen-overlay"></div>
 
     <header class="topbar">
-      <a class="back-button" href="./games.html" aria-label="กลับหน้าหลัก">← Games</a>
-
+      <a class="back-button" href="./games.html" aria-label="กลับหน้า Games">← Games</a>
       <div class="brand">
         <span class="brand-icon">🧠</span>
         <div>
@@ -32,7 +29,6 @@
           <small>แตะหน้าจอ ใช้มือ AR หรือพูดคำตอบ • คำถามไม่ซ้ำ</small>
         </div>
       </div>
-
       <button class="camera-button" id="cameraButton" type="button">📷 เปิดกล้อง</button>
     </header>
 
@@ -47,26 +43,30 @@
       <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
     </section>
 
-    <div class="mobile-permission-note">บน iPhone/iPad/Android ให้กดปุ่มกล้องหรือไมค์เพื่ออนุญาต Camera / Microphone ก่อนเริ่มใช้งาน</div>
+    <div class="mobile-permission-note">iPhone/iPad/Android: กล้องใช้ได้ใน HTTPS แต่การตอบด้วยเสียงควรเปิดเว็บด้วย Safari หรือ Chrome โดยตรง ไม่แนะนำเปิดผ่าน LINE</div>
 
     <section class="mission-card">
       <p class="eyebrow">ภารกิจสูตรคูณ</p>
       <h1 id="question">กดเริ่มเกม</h1>
-      <p id="message">แต่ละโจทย์จะไม่ถามซ้ำในเกมเดียวกัน</p>
+      <p id="message">เลือกภาษา ไทย / English ได้ และคำถามจะไม่ซ้ำในเกมเดียวกัน</p>
     </section>
 
     <section class="answer-zone" id="answerZone" aria-label="ตัวเลือกคำตอบ"></section>
 
     <section class="controls">
-      <label>
-        ระดับ
+      <label>ระดับ
         <select id="level">
           <option value="5">ง่าย: แม่ 1–5</option>
           <option value="9">กลาง: แม่ 1–9</option>
           <option value="12" selected>ท้าทาย: แม่ 1–12</option>
         </select>
       </label>
-
+      <label>ภาษา / Language
+        <select id="questionLanguage">
+          <option value="th" selected>ไทย</option>
+          <option value="en">English</option>
+        </select>
+      </label>
       <button id="startButton" type="button">▶ เริ่มเกม</button>
       <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
       <button id="soundButton" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
@@ -74,15 +74,13 @@
 
     <dialog id="resultDialog">
       <div class="dialog-content">
-        <div class="trophy">🏆</div>
-        <h2>จบเกมแล้ว</h2>
-        <p>คะแนนของคุณ</p>
-        <strong id="finalScore">0</strong>
-        <button id="playAgainButton" type="button">เล่นอีกครั้ง</button>
+        <div class="trophy">🏆</div><h2>จบเกมแล้ว</h2><p>คะแนนของคุณ</p>
+        <strong id="finalScore">0</strong><button id="playAgainButton" type="button">เล่นอีกครั้ง</button>
       </div>
     </dialog>
   </main>
 
-  <script src="multiplication-game.js?v=3"></script>
+  <script src="multiplication-game.js?v=4"></script>
+  <script src="game-mobile-v4.js?v=4"></script>
 </body>
 </html>
