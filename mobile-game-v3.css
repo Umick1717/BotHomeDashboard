@@ -1,0 +1,117 @@
+/* FINAL mobile/tablet layout override V3 */
+:root{--game-gap:8px;--safe-b:max(10px,env(safe-area-inset-bottom));}
+
+html,body{overflow-x:hidden!important;}
+body.game-multiplication,body.game-animal,body.game-story{overflow-y:auto!important;}
+body.game-multiplication .game-shell,body.game-animal .game-shell,body.game-story .game-shell{
+  min-height:100svh!important;min-height:100dvh!important;height:auto!important;overflow:visible!important;
+  padding-bottom:var(--safe-b)!important;
+}
+
+/* Never let mobile controls cover answers */
+body.game-multiplication .controls,
+body.game-animal .controls,
+body.game-story .controls{
+  position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  transform:none!important;width:min(960px,calc(100% - 14px))!important;max-height:none!important;
+  margin:8px auto var(--safe-b)!important;overflow:visible!important;z-index:12!important;
+  display:flex!important;justify-content:center!important;align-items:end!important;flex-wrap:wrap!important;gap:7px!important;
+}
+
+/* MULTIPLICATION: answers are always a normal grid in document flow */
+body.game-multiplication .answer-zone{
+  position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  width:min(900px,calc(100% - 16px))!important;height:auto!important;min-height:0!important;
+  margin:8px auto!important;padding:0!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;pointer-events:auto!important;z-index:6!important;
+}
+body.game-multiplication .answer-orb{
+  position:relative!important;inset:auto!important;left:auto!important;top:auto!important;right:auto!important;bottom:auto!important;
+  width:100%!important;height:auto!important;min-width:0!important;min-height:72px!important;aspect-ratio:auto!important;
+  border-radius:20px!important;font-size:clamp(1.5rem,7vw,2.5rem)!important;animation:none!important;translate:none!important;
+  transform:none!important;
+}
+
+/* Animal + Story: always keep all 4 answers in flow */
+body.game-animal .answer-grid,body.game-story .answer-grid{
+  width:min(900px,calc(100% - 16px))!important;margin:8px auto!important;padding:0!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;position:relative!important;z-index:7!important;
+}
+body.game-animal .answer,body.game-story .answer{
+  width:100%!important;min-width:0!important;min-height:62px!important;height:auto!important;padding:9px!important;
+  font-size:clamp(.95rem,4.2vw,1.3rem)!important;overflow-wrap:anywhere!important;white-space:normal!important;
+}
+
+/* Permission messages must not consume a huge part of a phone screen */
+body.game-multiplication .mobile-permission-note,
+body.game-animal .mobile-permission-note,
+body.game-story .mobile-permission-note{
+  width:min(900px,calc(100% - 16px))!important;margin:4px auto!important;padding:7px 9px!important;
+  font-size:.7rem!important;line-height:1.35!important;
+}
+
+/* Safari/iOS dictation fallback */
+.dictation-sheet{position:fixed;inset:0;z-index:10000;background:rgba(2,6,23,.78);display:grid;place-items:end center;padding:12px;}
+.dictation-sheet[hidden]{display:none!important;}
+.dictation-card{width:min(560px,100%);padding:18px;border:1px solid rgba(255,255,255,.2);border-radius:22px;background:#0b1729;color:#fff;box-shadow:0 25px 80px rgba(0,0,0,.55);position:relative;}
+.dictation-card h3{margin:0 36px 8px 0}.dictation-card p{color:rgba(255,255,255,.72);line-height:1.45}
+.dictation-close{position:absolute;right:10px;top:8px;width:42px;height:42px;border:0;border-radius:50%;background:#17243a;color:#fff;font-size:1.7rem;}
+.dictation-input{width:100%;min-height:54px;border:1px solid rgba(255,255,255,.28);border-radius:14px;background:#07111f;color:#fff;padding:10px 12px;font-size:18px;}
+.dictation-submit{width:100%;min-height:50px;margin-top:10px;border:0;border-radius:14px;background:linear-gradient(135deg,#14b8a6,#2563eb);color:#fff;font-weight:800;font-size:16px;}
+.dictation-tip{font-size:.78rem!important;}
+
+@media(max-width:430px) and (orientation:portrait){
+  body.game-multiplication .topbar,body.game-animal .topbar,body.game-story .topbar{gap:5px!important;}
+  body.game-multiplication .answer-orb{min-height:68px!important;}
+  body.game-animal .animal-photo-frame{max-height:31dvh!important;margin-bottom:5px!important;}
+  body.game-story .emoji-stage{font-size:clamp(4rem,18vw,6rem)!important;margin:3px 0!important;}
+  body.game-story .story-text{max-height:24dvh!important;line-height:1.5!important;}
+}
+
+/* FINAL landscape rules: content stays in document flow, answers never hidden behind controls */
+@media(orientation:landscape) and (max-height:700px){
+  html,body{overflow-y:auto!important;overflow-x:hidden!important;}
+  body.game-multiplication .game-shell,body.game-animal .game-shell,body.game-story .game-shell{padding-bottom:8px!important;}
+
+  body.game-multiplication .topbar,body.game-animal .topbar,body.game-story .topbar{
+    grid-template-columns:auto 1fr auto!important;padding-top:calc(4px + env(safe-area-inset-top))!important;padding-bottom:2px!important;gap:6px!important;
+  }
+  body.game-multiplication .topbar button,body.game-animal .topbar button,body.game-story .topbar button{grid-column:auto!important;}
+  .brand small,.title p{display:none!important;}
+
+  body.game-multiplication .mobile-permission-note,
+  body.game-animal .mobile-permission-note,
+  body.game-story .mobile-permission-note{display:none!important;}
+
+  body.game-multiplication .hud,body.game-multiplication .status-row,
+  body.game-animal .status-row,body.game-story .status-row{padding-top:2px!important;padding-bottom:2px!important;gap:5px!important;}
+  .hud-card{padding:4px 8px!important;}.status,.status-chip{padding:4px 7px!important;font-size:.68rem!important;}
+
+  body.game-multiplication .mission-card,
+  body.game-animal .panel,
+  body.game-story .panel{margin:3px auto!important;padding:6px 9px!important;}
+
+  body.game-multiplication .mission-card h1,
+  body.game-animal .panel h2,
+  body.game-story .panel h2{font-size:clamp(1.25rem,6.5vh,2.2rem)!important;margin:2px 0!important;}
+
+  body.game-multiplication .answer-zone{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important;margin:5px auto!important;}
+  body.game-multiplication .answer-orb{min-height:58px!important;font-size:clamp(1.15rem,5vh,1.9rem)!important;border-radius:16px!important;}
+
+  body.game-animal .animal-photo-frame{width:min(42vw,380px)!important;max-height:30vh!important;aspect-ratio:16/9!important;margin:2px auto 4px!important;}
+  body.game-story .emoji-stage{font-size:clamp(3rem,16vh,5rem)!important;margin:2px 0!important;}
+  body.game-story .story-text{max-height:18vh!important;line-height:1.35!important;font-size:.9rem!important;}
+
+  body.game-animal .answer-grid,body.game-story .answer-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;margin:5px auto!important;}
+  body.game-animal .answer,body.game-story .answer{min-height:50px!important;font-size:.84rem!important;padding:6px!important;}
+
+  body.game-multiplication .controls,body.game-animal .controls,body.game-story .controls{
+    position:relative!important;left:auto!important;bottom:auto!important;transform:none!important;
+    width:calc(100% - 12px)!important;margin:5px auto calc(5px + env(safe-area-inset-bottom))!important;
+    flex-wrap:wrap!important;max-height:none!important;overflow:visible!important;padding:5px!important;gap:5px!important;
+  }
+  body.game-multiplication .controls button,body.game-animal .controls button,body.game-story .controls button,
+  body.game-multiplication .controls select,body.game-animal .controls select,body.game-story .controls select{
+    min-height:42px!important;padding:6px 8px!important;font-size:.78rem!important;
+  }
+}
