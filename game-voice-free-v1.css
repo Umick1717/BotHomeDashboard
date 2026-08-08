@@ -1,0 +1,9 @@
+.free-voice-sheet{position:fixed;inset:0;z-index:10000;background:rgba(2,6,23,.80);display:grid;place-items:end center;padding:max(12px,env(safe-area-inset-bottom)) 12px;}
+.free-voice-sheet[hidden]{display:none!important;}
+.free-voice-card{width:min(560px,100%);padding:18px;border:1px solid rgba(255,255,255,.22);border-radius:22px;background:#0b1729;color:#fff;box-shadow:0 25px 80px rgba(0,0,0,.55);position:relative;font-family:inherit;}
+.free-voice-card h3{margin:0 38px 8px 0;font-size:1.2rem;}
+.free-voice-help{color:rgba(255,255,255,.78);line-height:1.5;margin:6px 0 12px;}
+.free-voice-close{position:absolute;right:10px;top:8px;width:42px;height:42px;border:0;border-radius:50%;background:#17243a;color:#fff;font-size:1.6rem;}
+.free-voice-input{width:100%;min-height:56px;border:1px solid rgba(255,255,255,.3);border-radius:14px;background:#07111f;color:#fff;padding:10px 12px;font-size:18px;}
+.free-voice-submit{width:100%;min-height:52px;margin-top:10px;border:0;border-radius:14px;background:linear-gradient(135deg,#14b8a6,#2563eb);color:#fff;font-weight:800;font-size:16px;}
+@media(orientation:landscape) and (max-height:700px){.free-voice-sheet{place-items:center}.free-voice-card{max-height:92dvh;overflow:auto;}}
