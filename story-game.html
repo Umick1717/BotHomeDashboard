@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>English Story Time V3</title>
-  <link rel="stylesheet" href="kids-game.css?v=3" />
-  <link rel="stylesheet" href="mobile-game.css?v=2" />
-  <link rel="stylesheet" href="mobile-game-v2.css?v=2" />
+  <title>English Story Time V4</title>
+  <link rel="stylesheet" href="kids-game.css?v=4" />
+  <link rel="stylesheet" href="mobile-game.css?v=3" />
+  <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="mobile-game-compat.js?v=2"></script>
-  <script src="mobile-voice-fix.js?v=1"></script>
+  <script src="mobile-voice-fix-v2.js?v=2"></script>
 </head>
-<body>
+<body class="game-story">
 <main class="game-shell">
   <video id="camera" autoplay playsinline muted></video>
   <canvas id="handCanvas"></canvas>
@@ -32,7 +32,7 @@
     <span class="status">⭐ คะแนน: <b id="score">0</b></span>
   </div>
 
-  <div class="mobile-permission-note">หลังอ่านเรื่องจบ ระบบจะรอ 3 วินาทีแล้วเข้าสู่คำถาม • หากต้องการตอบด้วยเสียง ให้เปิดเว็บด้วย Safari/Chrome โดยตรง ไม่แนะนำผ่าน LINE</div>
+  <div class="mobile-permission-note">หลังอ่านเรื่องจบ ระบบจะรอ 3 วินาทีแล้วเข้าสู่คำถาม • iPhone/iPad หาก Speech Recognition ไม่ทำงาน ให้ใช้ Dictation สำรองจากปุ่มไมค์</div>
 
   <section class="panel">
     <p class="progress" id="storyProgress">เลือกนิทาน แล้วกดเริ่มเล่า</p>
@@ -53,7 +53,7 @@
   </section>
 </main>
 <script src="shared-game.js?v=3"></script>
-<script src="story-game-v3.js?v=3"></script>
-<script src="game-mobile-v4.js?v=4"></script>
+<script src="story-game-v3.js?v=4"></script>
+<script src="game-mobile-v5.js?v=5"></script>
 </body>
 </html>
