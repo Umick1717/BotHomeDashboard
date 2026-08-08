@@ -33,6 +33,11 @@ let recognition = null;
 let stream = null;
 let hovered = null;
 let lastPinch = 0;
+let mpCamera = null;
+let handsInstance = null;
+let smoothX = null;
+let smoothY = null;
+let pinchActive = false;
 
 const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -81,7 +86,7 @@ function showQuestion(){
   promptEl.textContent="What animal is this?";
   message.textContent="เลือกชื่อสัตว์ที่ถูกต้อง หรือกดไมโครโฟนแล้วพูด";
 
-  photo.src=`${current.image}?v=15`;
+  photo.src=`${current.image}?v=16`;
   photo.alt=current.name;
 
   const wrong=shuffle(ANIMALS.filter(a=>a.slug!==current.slug)).slice(0,3);
@@ -132,27 +137,33 @@ function finishGame(){
   promptEl.textContent="Game Complete!";
   message.textContent=`คะแนนรวม ${score} / 100`;
   answers.replaceChildren();
-  photo.src="images/animals/lion.jpg?v=15";
+  photo.src="images/animals/lion.jpg?v=16";
   speak(`Game complete... Your score is ${score} out of one hundred.`,.48);
 }
 
 function resizeCanvas(){
-  handCanvas.width=window.innerWidth;
-  handCanvas.height=window.innerHeight;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=window.innerWidth,h=window.innerHeight;
+  handCanvas.width=Math.round(w*dpr);
+  handCanvas.height=Math.round(h*dpr);
+  handCanvas.style.width=`${w}px`;
+  handCanvas.style.height=`${h}px`;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 
 function answerAt(x,y){
+  const margin=12;
   return [...document.querySelectorAll(".answer:not(:disabled)")].find(b=>{
     const r=b.getBoundingClientRect();
-    return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
+    return x>=r.left-margin&&x<=r.right+margin&&y>=r.top-margin&&y<=r.bottom+margin;
   })||null;
 }
 
 function drawCursor(x,y,pinch){
-  ctx.clearRect(0,0,handCanvas.width,handCanvas.height);
+  ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
   ctx.beginPath();
-  ctx.arc(x,y,pinch?22:16,0,Math.PI*2);
-  ctx.fillStyle=pinch?"rgba(250,204,21,.9)":"rgba(45,212,191,.85)";
+  ctx.arc(x,y,pinch?24:17,0,Math.PI*2);
+  ctx.fillStyle=pinch?"rgba(250,204,21,.92)":"rgba(45,212,191,.86)";
   ctx.fill();
   ctx.lineWidth=4;
   ctx.strokeStyle="white";
@@ -163,20 +174,27 @@ function onHands(results){
   const lm=results.multiHandLandmarks?.[0];
   if(!lm){
     handStatus.textContent="🖐️ มือ: ยังไม่พบ";
-    ctx.clearRect(0,0,handCanvas.width,handCanvas.height);
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
     hovered?.classList.remove("hand-hover");
     hovered=null;
+    smoothX=smoothY=null;
+    pinchActive=false;
     return;
   }
 
   handStatus.textContent="🖐️ มือ: ตรวจพบ";
   const tip=lm[8], thumb=lm[4];
-  const x=(1-tip.x)*window.innerWidth;
-  const y=tip.y*window.innerHeight;
-  const pinch=Math.hypot(tip.x-thumb.x,tip.y-thumb.y)<.055;
+  const rawX=(1-tip.x)*window.innerWidth;
+  const rawY=tip.y*window.innerHeight;
+  const alpha=.38;
+  smoothX=smoothX==null?rawX:smoothX+(rawX-smoothX)*alpha;
+  smoothY=smoothY==null?rawY:smoothY+(rawY-smoothY)*alpha;
+  const distance=Math.hypot(tip.x-thumb.x,tip.y-thumb.y);
+  if(!pinchActive&&distance<.050) pinchActive=true;
+  if(pinchActive&&distance>.075) pinchActive=false;
 
-  drawCursor(x,y,pinch);
-  const target=answerAt(x,y);
+  drawCursor(smoothX,smoothY,pinchActive);
+  const target=answerAt(smoothX,smoothY);
   if(target!==hovered){
     hovered?.classList.remove("hand-hover");
     target?.classList.add("hand-hover");
@@ -184,80 +202,87 @@ function onHands(results){
   }
 
   const now=Date.now();
-  if(pinch&&target&&now-lastPinch>1100){
+  if(pinchActive&&target&&now-lastPinch>900){
     lastPinch=now;
     target.click();
   }
 }
 
 async function enableCamera(){
-  try{
-    stream=await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{ideal:"user"},width:{ideal:1280},height:{ideal:720}},
-      audio:false
-    });
-    camera.srcObject=stream;
-    await camera.play();
+  if(stream){
     cameraButton.textContent="✅ กล้องพร้อม";
-
-    if(window.Hands&&window.Camera){
-      const hands=new Hands({
+    return;
+  }
+  if(!window.MobileGameCompat){
+    handStatus.textContent="🖐️ ระบบมือถือยังโหลดไม่เสร็จ";
+    return;
+  }
+  cameraButton.disabled=true;
+  cameraButton.textContent="📷 กำลังเปิด...";
+  try{
+    stream=await MobileGameCompat.requestCamera(camera,"user");
+    cameraButton.textContent="✅ กล้องพร้อม";
+    if(window.Hands&&window.Camera&&!mpCamera){
+      handsInstance=new Hands({
         locateFile:file=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
       });
-      hands.setOptions({
-        maxNumHands:1,
-        modelComplexity:1,
-        minDetectionConfidence:.65,
-        minTrackingConfidence:.6
+      handsInstance.setOptions({
+        maxNumHands:1,modelComplexity:1,minDetectionConfidence:.62,minTrackingConfidence:.58
       });
-      hands.onResults(onHands);
-
-      const mpCamera=new Camera(camera,{
-        onFrame:async()=>hands.send({image:camera}),
-        width:1280,
-        height:720
+      handsInstance.onResults(onHands);
+      mpCamera=new Camera(camera,{
+        onFrame:async()=>{ if(document.visibilityState==="visible") await handsInstance.send({image:camera}); },
+        width:1280,height:720
       });
-      mpCamera.start();
+      await mpCamera.start();
     }
+    handStatus.textContent="🖐️ มือ: พร้อม";
   }catch(err){
-    cameraButton.textContent="❌ เปิดกล้องไม่ได้";
-    handStatus.textContent="🖐️ มือ: ใช้เมาส์/สัมผัสแทน";
+    cameraButton.textContent="📷 ลองเปิดกล้องอีกครั้ง";
+    handStatus.textContent=`🖐️ ${MobileGameCompat.mediaErrorMessage(err,"camera")}`;
+  }finally{
+    cameraButton.disabled=false;
   }
 }
 
 function setupVoice(){
-  if(!SpeechRecognitionApi){
+  if(!window.MobileGameCompat?.SpeechRecognitionCtor){
     voiceButton.disabled=true;
-    voiceStatus.textContent="🎤 เสียง: ไม่รองรับ";
+    voiceStatus.textContent="🎤 เสียงพูด: เบราว์เซอร์ไม่รองรับ";
+    voiceButton.title="ยังเล่นได้ด้วยการแตะหรือมือ AR";
     return;
   }
 
-  recognition=new SpeechRecognitionApi();
-  recognition.lang="en-US";
-  recognition.interimResults=false;
-  recognition.maxAlternatives=5;
-
-  recognition.onstart=()=>{
-    voiceButton.classList.add("listening");
-    voiceButton.textContent="🎤 Listening...";
-    voiceStatus.textContent="🎤 เสียง: กำลังฟัง";
-  };
-  recognition.onend=()=>{
-    voiceButton.classList.remove("listening");
-    voiceButton.textContent="🎤 พูดชื่อสัตว์";
-    voiceStatus.textContent="🎤 เสียง: พร้อม";
-  };
-  recognition.onerror=()=>{
-    message.textContent="ไม่ได้ยินชัดเจน กรุณาลองใหม่";
-  };
-  recognition.onresult=e=>{
-    if(!current||answered) return;
-    const heard=[...e.results[0]].map(r=>r.transcript.toLowerCase().trim());
-    const button=[...document.querySelectorAll(".answer")].find(b=>
-      heard.some(t=>t.includes(b.dataset.answer)||b.dataset.answer.includes(t))
-    );
-    checkAnswer(button,button?.dataset.answer||heard[0]);
-  };
+  recognition=MobileGameCompat.createRecognition("en-US",{
+    start:()=>{
+      voiceButton.classList.add("listening");
+      voiceButton.textContent="🎤 Listening...";
+      voiceStatus.textContent="🎤 เสียง: กำลังฟัง";
+    },
+    end:()=>{
+      voiceButton.classList.remove("listening");
+      voiceButton.textContent="🎤 พูดชื่อสัตว์";
+      voiceStatus.textContent="🎤 เสียง: พร้อม";
+    },
+    error:e=>{
+      voiceButton.classList.remove("listening");
+      voiceButton.textContent="🎤 พูดชื่อสัตว์";
+      voiceStatus.textContent=`🎤 เสียง: ${e.error||"error"}`;
+      message.textContent="ไมค์หรือระบบรู้จำเสียงไม่พร้อม กรุณาแตะคำตอบหรือใช้มือ AR";
+    },
+    result:e=>{
+      if(!current||answered) return;
+      const heard=[...e.results[0]].map(r=>r.transcript.toLowerCase().trim());
+      const button=[...document.querySelectorAll(".answer")].find(b=>
+        heard.some(t=>t.includes(b.dataset.answer)||b.dataset.answer.includes(t))
+      );
+      if(!button){
+        message.textContent=`ได้ยินว่า “${heard[0]}” กรุณาลองอีกครั้ง`;
+        return;
+      }
+      checkAnswer(button,button.dataset.answer);
+    }
+  });
 }
 
 startButton.addEventListener("click",startGame);
@@ -266,23 +291,34 @@ listenButton.addEventListener("click",()=>{
   if(current) speak("What... animal... is... this?");
   else message.textContent="กรุณากดเริ่มเกมก่อน";
 });
-voiceButton.addEventListener("click",()=>{
+voiceButton.addEventListener("click",async()=>{
   if(!current||answered){ message.textContent="กรุณากดเริ่มเกมก่อน"; return; }
   speechSynthesis?.cancel();
-  try{ recognition?.start(); }catch{}
+  voiceButton.disabled=true;
+  voiceStatus.textContent="🎤 กำลังขอสิทธิ์ไมโครโฟน...";
+  try{
+    await MobileGameCompat.startRecognition(recognition);
+  }catch(err){
+    voiceStatus.textContent=`🎤 ${MobileGameCompat.mediaErrorMessage(err,"microphone")}`;
+    message.textContent="หากไมค์ใช้ไม่ได้ ยังสามารถแตะคำตอบหรือใช้มือ AR ได้";
+  }finally{
+    voiceButton.disabled=false;
+  }
 });
 soundButton.addEventListener("click",()=>{
   soundOn=!soundOn;
   soundButton.textContent=soundOn?"🔊 เสียงเปิด":"🔇 เสียงปิด";
 });
 
-window.addEventListener("resize",resizeCanvas);
-window.addEventListener("beforeunload",()=>stream?.getTracks().forEach(t=>t.stop()));
+MobileGameCompat?.watchViewport(()=>resizeCanvas());
+window.addEventListener("resize",resizeCanvas,{passive:true});
+window.addEventListener("orientationchange",()=>setTimeout(resizeCanvas,150),{passive:true});
+window.addEventListener("beforeunload",()=>MobileGameCompat?.stopStream(stream));
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){ speechSynthesis?.cancel(); try{recognition?.abort();}catch{} } });
 
 resizeCanvas();
 setupVoice();
-instruction.textContent=`V15 พร้อมแล้ว • ฐานข้อมูล ${ANIMALS.length} ชนิด • กดเริ่มเกมได้เลย`;
-enableCamera();
+instruction.textContent=`V16 Mobile Ready • ฐานข้อมูล ${ANIMALS.length} ชนิด • กดเริ่มเกมได้เลย`;
 
-console.log("Animal Game V15 loaded successfully", ANIMALS.length);
+console.log("Animal Game V16 mobile ready", ANIMALS.length);
 })();
