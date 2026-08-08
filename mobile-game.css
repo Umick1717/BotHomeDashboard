@@ -143,6 +143,14 @@ button {
     gap: 7px !important;
   }
 
+  .answer-zone {
+    inset: 43% 2% 27% !important;
+  }
+
+  .answer-orb {
+    width: clamp(66px, 21vw, 88px) !important;
+  }
+
   .answer {
     min-height: 58px !important;
     border-radius: 14px !important;
@@ -167,7 +175,11 @@ button {
 
 /* Phones/tablets in landscape: prioritize playable area and avoid fixed controls covering answers */
 @media (orientation: landscape) and (max-height: 600px) {
-  body { overflow-y: auto !important; }
+  html,
+  body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 
   .game-shell {
     min-height: 100dvh !important;
@@ -190,6 +202,10 @@ button {
   .brand strong { font-size: 1rem !important; }
   .title p,
   .brand small { display: none !important; }
+
+  .mobile-permission-note {
+    display: none !important;
+  }
 
   .hud,
   .status-row {
@@ -235,6 +251,15 @@ button {
     margin-bottom: 5px !important;
   }
 
+  .answer-zone {
+    inset: 35% 3% 24% !important;
+  }
+
+  .answer-orb {
+    width: clamp(64px, 12vw, 98px) !important;
+    font-size: clamp(1.2rem, 4.5vh, 2rem) !important;
+  }
+
   .answer-grid {
     grid-template-columns: repeat(4, 1fr) !important;
     width: calc(100% - 18px) !important;
@@ -274,6 +299,7 @@ button {
   .answer-grid { width: min(90vw, 850px) !important; }
   .controls { width: min(94vw, 940px) !important; }
   .answer { min-height: 76px !important; }
+  .answer-zone { inset: 38% 5% 20% !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
