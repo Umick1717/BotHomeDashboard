@@ -4,15 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>Animal Name Adventure V18</title>
-  <link rel="stylesheet" href="animal-game-v15.css?v=18" />
+  <title>Animal Name Adventure V19</title>
+  <link rel="stylesheet" href="animal-game-v15.css?v=19" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="mobile-game-compat.js?v=2"></script>
-  <script src="mobile-voice-fix-v2.js?v=2"></script>
 </head>
 <body class="game-animal">
 <main class="game-shell">
@@ -32,11 +31,11 @@
     <span class="status">⭐ คะแนน: <b id="score">0</b> / 100</span>
   </section>
 
-  <div class="mobile-permission-note">iPhone/iPad: หาก Safari Speech Recognition ไม่ทำงาน ให้เปิด Settings › General › Keyboard › Enable Dictation หรือใช้ Dictation สำรองจากปุ่มไมค์</div>
+  <div class="mobile-permission-note">V19: ปุ่มไมค์ใช้อัดเสียงจริงจาก Safari/Chrome โดยตรง และหลังเฉลยระบบจะพูดชื่อสัตว์พร้อมคำอธิบายภาษาอังกฤษ</div>
 
   <section class="panel">
-    <p class="progress" id="instruction">V18 Mobile Final • 10 คำถามไม่ซ้ำ</p>
-    <div class="animal-photo-frame"><img id="animalPhoto" src="images/animals/dog.jpg?v=18" alt="Dog" /></div>
+    <p class="progress" id="instruction">V19 Mobile Final • 10 คำถามไม่ซ้ำ</p>
+    <div class="animal-photo-frame"><img id="animalPhoto" src="images/animals/dog.jpg?v=19" alt="Dog" /></div>
     <h2 id="animalPrompt">What animal is this?</h2>
     <p id="message">กดเริ่มเกม แล้วเลือกด้วยการแตะ มือ AR หรือเสียง</p>
   </section>
@@ -53,7 +52,8 @@
     <button id="soundButton" type="button">🔊 เสียงเปิด</button>
   </section>
 </main>
-<script src="animal-game-v15.js?v=18"></script>
-<script src="game-mobile-v5.js?v=5"></script>
+<script src="animal-game-v15.js?v=19"></script>
+<script src="animal-explanation-v1.js?v=1"></script>
+<script src="game-mobile-v6.js?v=6"></script>
 </body>
 </html>
