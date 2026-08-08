@@ -1,0 +1,285 @@
+/* Mobile/Tablet compatibility layer for learning games */
+:root {
+  --safe-top: max(8px, env(safe-area-inset-top));
+  --safe-right: max(8px, env(safe-area-inset-right));
+  --safe-bottom: max(8px, env(safe-area-inset-bottom));
+  --safe-left: max(8px, env(safe-area-inset-left));
+  --tap-size: 48px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  min-width: 0;
+  min-height: 100svh;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+select,
+input {
+  min-height: var(--tap-size);
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+select,
+button {
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+#camera {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#handCanvas {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mobile-permission-note {
+  width: min(920px, calc(100% - 20px));
+  margin: 6px auto;
+  padding: 9px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  background: rgba(7,17,31,.82);
+  color: rgba(255,255,255,.78);
+  font-size: .78rem;
+  text-align: center;
+  position: relative;
+  z-index: 9;
+}
+
+@media (max-width: 900px) {
+  .game-shell {
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+  }
+
+  .topbar {
+    padding-left: calc(10px + env(safe-area-inset-left)) !important;
+    padding-right: calc(10px + env(safe-area-inset-right)) !important;
+  }
+
+  .topbar a,
+  .topbar button,
+  .controls button,
+  .controls select {
+    min-height: 48px;
+    padding: 10px 12px;
+  }
+
+  .status-row {
+    padding-left: calc(8px + env(safe-area-inset-left)) !important;
+    padding-right: calc(8px + env(safe-area-inset-right)) !important;
+  }
+
+  .status,
+  .status-chip {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .answer,
+  .answer-orb {
+    min-width: 64px;
+    min-height: 64px;
+    touch-action: manipulation;
+  }
+
+  .controls {
+    max-height: min(38svh, 270px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Small phones in portrait */
+@media (max-width: 430px) and (orientation: portrait) {
+  .title p,
+  .brand small { display: none !important; }
+
+  .status-row {
+    gap: 5px !important;
+  }
+
+  .status,
+  .status-chip {
+    font-size: .69rem !important;
+    padding: 6px 8px !important;
+  }
+
+  .panel,
+  .mission-card {
+    width: calc(100% - 14px) !important;
+    margin: 5px auto !important;
+    padding: 9px !important;
+    border-radius: 18px !important;
+  }
+
+  .panel h2,
+  .mission-card h1 {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .answer-grid {
+    width: calc(100% - 14px) !important;
+    gap: 7px !important;
+  }
+
+  .answer {
+    min-height: 58px !important;
+    border-radius: 14px !important;
+    font-size: clamp(.95rem, 4.7vw, 1.25rem) !important;
+  }
+
+  .controls {
+    width: calc(100% - 10px) !important;
+    gap: 6px !important;
+    padding: 7px !important;
+    border-radius: 15px !important;
+  }
+
+  .controls label {
+    flex: 1 1 100%;
+  }
+
+  .controls select {
+    width: 100%;
+  }
+}
+
+/* Phones/tablets in landscape: prioritize playable area and avoid fixed controls covering answers */
+@media (orientation: landscape) and (max-height: 600px) {
+  body { overflow-y: auto !important; }
+
+  .game-shell {
+    min-height: 100dvh !important;
+    padding-bottom: 86px !important;
+    overflow-y: auto !important;
+  }
+
+  .topbar {
+    grid-template-columns: auto 1fr auto !important;
+    padding-top: calc(5px + env(safe-area-inset-top)) !important;
+    padding-bottom: 3px !important;
+    gap: 7px !important;
+  }
+
+  .topbar button {
+    grid-column: auto !important;
+  }
+
+  .title h1,
+  .brand strong { font-size: 1rem !important; }
+  .title p,
+  .brand small { display: none !important; }
+
+  .hud,
+  .status-row {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .hud-card {
+    padding: 5px 10px !important;
+  }
+
+  .status,
+  .status-chip {
+    padding: 4px 8px !important;
+    font-size: .68rem !important;
+  }
+
+  .panel,
+  .mission-card {
+    margin: 3px auto !important;
+    padding: 7px 10px !important;
+  }
+
+  .panel h2,
+  .mission-card h1 {
+    font-size: clamp(1.25rem, 7vh, 2.25rem) !important;
+  }
+
+  .emoji-stage {
+    font-size: clamp(3.5rem, 20vh, 6rem) !important;
+    margin: 3px 0 !important;
+  }
+
+  .story-text {
+    max-height: 22vh !important;
+    line-height: 1.45 !important;
+  }
+
+  .animal-photo-frame {
+    max-width: min(54vw, 430px) !important;
+    max-height: 38vh !important;
+    aspect-ratio: 16 / 9 !important;
+    margin-bottom: 5px !important;
+  }
+
+  .answer-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    width: calc(100% - 18px) !important;
+    gap: 7px !important;
+    margin: 5px auto 76px !important;
+  }
+
+  .answer {
+    min-height: 52px !important;
+    font-size: clamp(.85rem, 2.7vw, 1.15rem) !important;
+  }
+
+  .controls {
+    max-height: 78px !important;
+    width: calc(100% - 16px) !important;
+    flex-wrap: nowrap !important;
+    gap: 5px !important;
+    padding: 5px !important;
+  }
+
+  .controls label {
+    min-width: 125px;
+  }
+
+  .controls button,
+  .controls select {
+    min-height: 44px !important;
+    padding: 7px 9px !important;
+    font-size: .78rem !important;
+  }
+}
+
+/* Tablet portrait */
+@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) {
+  .panel,
+  .mission-card { width: min(90vw, 820px) !important; }
+  .answer-grid { width: min(90vw, 850px) !important; }
+  .controls { width: min(94vw, 940px) !important; }
+  .answer { min-height: 76px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
