@@ -4,11 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>Animal Name Adventure V20</title>
-  <link rel="stylesheet" href="animal-game-v15.css?v=20" />
+  <title>Animal Name Adventure V21</title>
+  <link rel="stylesheet" href="animal-game-v15.css?v=21" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
-  <link rel="stylesheet" href="game-voice-free-v1.css?v=1" />
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
@@ -32,11 +31,11 @@
     <span class="status">⭐ คะแนน: <b id="score">0</b> / 100</span>
   </section>
 
-  <div class="mobile-permission-note">V20 Final: หลังเฉลย ระบบจะพูดชื่อสัตว์และคำอธิบายภาษาอังกฤษ • ไม่ใช้ OpenAI API • Safari มี Dictation สำรอง</div>
+  <div class="mobile-permission-note">V21 Final: ไม่ใช้ OpenAI API และไม่มีกล่องกรอกคำตอบ • หลังเฉลย ระบบพูดชื่อสัตว์พร้อมคำอธิบายภาษาอังกฤษ</div>
 
   <section class="panel">
-    <p class="progress" id="instruction">V20 Mobile Final • 10 คำถามไม่ซ้ำ</p>
-    <div class="animal-photo-frame"><img id="animalPhoto" src="images/animals/dog.jpg?v=20" alt="Dog" /></div>
+    <p class="progress" id="instruction">V21 Mobile Final • 10 คำถามไม่ซ้ำ</p>
+    <div class="animal-photo-frame"><img id="animalPhoto" src="images/animals/dog.jpg?v=21" alt="Dog" /></div>
     <h2 id="animalPrompt">What animal is this?</h2>
     <p id="message">กดเริ่มเกม แล้วเลือกด้วยการแตะ มือ AR หรือเสียง</p>
   </section>
@@ -53,8 +52,8 @@
     <button id="soundButton" type="button">🔊 เสียงเปิด</button>
   </section>
 </main>
-<script src="animal-game-v15.js?v=20"></script>
-<script src="animal-explanation-v1.js?v=2"></script>
-<script src="game-voice-free-v1.js?v=1"></script>
+<script src="animal-game-v15.js?v=21"></script>
+<script src="animal-explanation-v3.js?v=3"></script>
+<script src="game-voice-direct-v2.js?v=2"></script>
 </body>
 </html>
