@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure V2</title>
-  <link rel="stylesheet" href="multiplication-game.css?v=2" />
-
+  <title>AR Multiplication Adventure V3</title>
+  <link rel="stylesheet" href="multiplication-game.css?v=3" />
+  <link rel="stylesheet" href="mobile-game.css?v=1" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="mobile-game-compat.js?v=1"></script>
 </head>
 <body>
   <main class="game-shell">
@@ -22,13 +23,13 @@
     <div class="screen-overlay"></div>
 
     <header class="topbar">
-      <a class="back-button" href="./games.html" aria-label="กลับหน้าหลัก">← Home</a>
+      <a class="back-button" href="./games.html" aria-label="กลับหน้าหลัก">← Games</a>
 
       <div class="brand">
         <span class="brand-icon">🧠</span>
         <div>
           <strong>AR Multiplication Adventure</strong>
-          <small>เลือกคำตอบด้วยนิ้วหรือเสียง • คำถามไม่ซ้ำ</small>
+          <small>แตะหน้าจอ ใช้มือ AR หรือพูดคำตอบ • คำถามไม่ซ้ำ</small>
         </div>
       </div>
 
@@ -36,24 +37,17 @@
     </header>
 
     <section class="hud">
-      <div class="hud-card">
-        <span>คะแนน</span>
-        <strong id="score">0</strong>
-      </div>
-      <div class="hud-card">
-        <span>ต่อเนื่อง</span>
-        <strong id="streak">0 🔥</strong>
-      </div>
-      <div class="hud-card">
-        <span>เวลา</span>
-        <strong id="time">60</strong>
-      </div>
+      <div class="hud-card"><span>คะแนน</span><strong id="score">0</strong></div>
+      <div class="hud-card"><span>ต่อเนื่อง</span><strong id="streak">0 🔥</strong></div>
+      <div class="hud-card"><span>เวลา</span><strong id="time">60</strong></div>
     </section>
 
     <section class="status-row">
       <span class="status-chip" id="handStatus">🖐️ มือ: รอเปิดกล้อง</span>
       <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
     </section>
+
+    <div class="mobile-permission-note">บน iPhone/iPad/Android ให้กดปุ่มกล้องหรือไมค์เพื่ออนุญาต Camera / Microphone ก่อนเริ่มใช้งาน</div>
 
     <section class="mission-card">
       <p class="eyebrow">ภารกิจสูตรคูณ</p>
@@ -73,7 +67,7 @@
         </select>
       </label>
 
-      <button id="startButton" type="button">เริ่มเกม</button>
+      <button id="startButton" type="button">▶ เริ่มเกม</button>
       <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
       <button id="soundButton" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
     </section>
@@ -89,6 +83,6 @@
     </dialog>
   </main>
 
-  <script src="multiplication-game.js?v=2"></script>
+  <script src="multiplication-game.js?v=3"></script>
 </body>
 </html>
