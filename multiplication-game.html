@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure V7</title>
-  <link rel="stylesheet" href="multiplication-game.css?v=7" />
+  <title>AR Multiplication Adventure V8</title>
+  <link rel="stylesheet" href="multiplication-game.css?v=8" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
-  <link rel="stylesheet" href="game-voice-free-v1.css?v=1" />
+  <link rel="stylesheet" href="math-language-toggle-v1.css?v=1" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="mobile-game-compat.js?v=2"></script>
 </head>
-<body class="game-multiplication">
+<body class="game-multiplication" data-question-language="th">
   <main class="game-shell">
     <video id="camera" autoplay playsinline muted></video>
     <canvas id="handCanvas" aria-hidden="true"></canvas>
@@ -37,7 +37,7 @@
       <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
     </section>
 
-    <div class="mobile-permission-note">V7 Final: ไม่ใช้ OpenAI API • ถ้า Safari Web Speech ใช้ไม่ได้ ระบบจะเปิด Dictation สำรองของ iPhone/iPad ให้ทันที</div>
+    <div class="mobile-permission-note">V8 Final: ไม่ใช้ OpenAI API และไม่มีกล่องกรอกคำตอบ • ปุ่มไมค์ใช้ Safari/Chrome Speech Recognition โดยตรง</div>
 
     <section class="mission-card">
       <p class="eyebrow">ภารกิจสูตรคูณ</p>
@@ -51,9 +51,11 @@
       <label>ระดับ
         <select id="level"><option value="5">ง่าย: แม่ 1–5</option><option value="9">กลาง: แม่ 1–9</option><option value="12" selected>ท้าทาย: แม่ 1–12</option></select>
       </label>
-      <label>ภาษา / Language
-        <select id="questionLanguage"><option value="th" selected>ไทย</option><option value="en">English</option></select>
-      </label>
+      <div class="language-switch" aria-label="เลือกภาษา">
+        <button id="langThaiButton" type="button" class="active" aria-pressed="true">🇹🇭 ไทย</button>
+        <button id="langEnglishButton" type="button" aria-pressed="false">🇬🇧 English</button>
+        <select id="questionLanguage" aria-hidden="true" tabindex="-1"><option value="th" selected>ไทย</option><option value="en">English</option></select>
+      </div>
       <button id="startButton" type="button">▶ เริ่มเกม</button>
       <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
       <button id="soundButton" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
@@ -62,7 +64,8 @@
     <dialog id="resultDialog"><div class="dialog-content"><div class="trophy">🏆</div><h2>จบเกมแล้ว</h2><p>คะแนนของคุณ</p><strong id="finalScore">0</strong><button id="playAgainButton" type="button">เล่นอีกครั้ง</button></div></dialog>
   </main>
 
-  <script src="multiplication-game-v7.js?v=7"></script>
-  <script src="game-voice-free-v1.js?v=1"></script>
+  <script src="multiplication-game-v7.js?v=8"></script>
+  <script src="math-language-toggle-v1.js?v=1"></script>
+  <script src="game-voice-direct-v2.js?v=2"></script>
 </body>
 </html>
