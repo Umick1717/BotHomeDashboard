@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure V6</title>
-  <link rel="stylesheet" href="multiplication-game.css?v=6" />
+  <title>AR Multiplication Adventure V7</title>
+  <link rel="stylesheet" href="multiplication-game.css?v=7" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
+  <link rel="stylesheet" href="game-voice-free-v1.css?v=1" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="mobile-game-compat.js?v=2"></script>
@@ -36,7 +37,7 @@
       <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
     </section>
 
-    <div class="mobile-permission-note">V6: ปุ่มไมค์ใช้อัดเสียงจาก Safari/Chrome โดยตรง แล้วส่งไปถอดเสียงที่เซิร์ฟเวอร์ ไม่ใช้ Web Speech Recognition</div>
+    <div class="mobile-permission-note">V7 Final: ไม่ใช้ OpenAI API • ถ้า Safari Web Speech ใช้ไม่ได้ ระบบจะเปิด Dictation สำรองของ iPhone/iPad ให้ทันที</div>
 
     <section class="mission-card">
       <p class="eyebrow">ภารกิจสูตรคูณ</p>
@@ -61,7 +62,7 @@
     <dialog id="resultDialog"><div class="dialog-content"><div class="trophy">🏆</div><h2>จบเกมแล้ว</h2><p>คะแนนของคุณ</p><strong id="finalScore">0</strong><button id="playAgainButton" type="button">เล่นอีกครั้ง</button></div></dialog>
   </main>
 
-  <script src="multiplication-game.js?v=6"></script>
-  <script src="game-mobile-v6.js?v=6"></script>
+  <script src="multiplication-game-v7.js?v=7"></script>
+  <script src="game-voice-free-v1.js?v=1"></script>
 </body>
 </html>
