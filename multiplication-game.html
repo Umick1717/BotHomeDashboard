@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07111f" />
-  <title>AR Multiplication Adventure V8</title>
-  <link rel="stylesheet" href="multiplication-game.css?v=8" />
+  <title>AR Multiplication Adventure V9</title>
+  <link rel="stylesheet" href="multiplication-game.css?v=9" />
   <link rel="stylesheet" href="mobile-game.css?v=3" />
   <link rel="stylesheet" href="mobile-game-v3.css?v=3" />
   <link rel="stylesheet" href="math-language-toggle-v1.css?v=1" />
@@ -22,7 +22,7 @@
 
     <header class="topbar">
       <a class="back-button" href="./games.html" aria-label="กลับหน้า Games">← Games</a>
-      <div class="brand"><span class="brand-icon">🧠</span><div><strong>AR Multiplication Adventure</strong><small>แตะ ใช้มือ AR หรือพูดคำตอบ • คำถามไม่ซ้ำ</small></div></div>
+      <div class="brand"><span class="brand-icon">🧠</span><div><strong>AR Multiplication Adventure</strong><small>แตะ ใช้มือ AR หรือ Voice Auto • คำถามไม่ซ้ำ</small></div></div>
       <button class="camera-button" id="cameraButton" type="button">📷 เปิดกล้อง</button>
     </header>
 
@@ -37,7 +37,7 @@
       <span class="status-chip" id="voiceStatus">🎤 เสียง: พร้อม</span>
     </section>
 
-    <div class="mobile-permission-note">V8 Final: ไม่ใช้ OpenAI API และไม่มีกล่องกรอกคำตอบ • ปุ่มไมค์ใช้ Safari/Chrome Speech Recognition โดยตรง</div>
+    <div class="mobile-permission-note">V9: กดไมค์ครั้งแรกเพียงครั้งเดียว หลังจากนั้น Voice Auto จะฟังคำตอบข้อถัดไปให้อัตโนมัติ • รองรับคำตอบที่ออกเสียงไม่ตรงสำเนียง 100%</div>
 
     <section class="mission-card">
       <p class="eyebrow">ภารกิจสูตรคูณ</p>
@@ -57,15 +57,15 @@
         <select id="questionLanguage" aria-hidden="true" tabindex="-1"><option value="th" selected>ไทย</option><option value="en">English</option></select>
       </div>
       <button id="startButton" type="button">▶ เริ่มเกม</button>
-      <button id="voiceButton" type="button">🎤 ตอบด้วยเสียง</button>
+      <button id="voiceButton" type="button">🎤 เปิด Voice Auto</button>
       <button id="soundButton" type="button" aria-pressed="true">🔊 เสียงเปิด</button>
     </section>
 
     <dialog id="resultDialog"><div class="dialog-content"><div class="trophy">🏆</div><h2>จบเกมแล้ว</h2><p>คะแนนของคุณ</p><strong id="finalScore">0</strong><button id="playAgainButton" type="button">เล่นอีกครั้ง</button></div></dialog>
   </main>
 
-  <script src="multiplication-game-v7.js?v=8"></script>
+  <script src="multiplication-game-v7.js?v=9"></script>
   <script src="math-language-toggle-v1.js?v=1"></script>
-  <script src="game-voice-direct-v2.js?v=2"></script>
+  <script src="game-voice-auto-v3.js?v=3"></script>
 </body>
 </html>
