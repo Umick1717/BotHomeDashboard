@@ -28,11 +28,25 @@
         <button class="cherry-close" id="cherryClose" type="button" aria-label="ปิด Cherry AI">×</button>
       </header>
 
-      <div class="cherry-widget-exact-visual">
+      <div class="cherry-widget-video-visual">
+        <video
+          id="cherryWidgetVideo"
+          class="cherry-widget-video"
+          src="cherry-assets/cherry-floating-agent.mp4?v=7"
+          poster="cherry-assets/cherry-floating-exact.png?v=7"
+          autoplay
+          loop
+          muted
+          playsinline
+          webkit-playsinline
+          preload="auto"
+          aria-label="Cherry AI Avatar"
+        ></video>
+
         <img
-          id="cherryWidgetExactImage"
-          class="cherry-widget-exact-image"
-          src="cherry-assets/cherry-floating-exact.png?v=6"
+          id="cherryWidgetVideoFallback"
+          class="cherry-widget-video-fallback"
+          src="cherry-assets/cherry-floating-exact.png?v=7"
           alt="Cherry AI"
           draggable="false"
         >
@@ -84,17 +98,41 @@
   const actions = document.querySelector("#cherryWidgetActions");
   const status = document.querySelector("#cherryWidgetStatus");
 
-  const exactImage = document.querySelector("#cherryWidgetExactImage");
-  exactImage?.addEventListener("error", () => {
-    exactImage.alt = "Cherry AI image not found";
-    exactImage.classList.add("is-missing");
+  const floatingVideo = document.querySelector("#cherryWidgetVideo");
+  const floatingVideoFallback = document.querySelector("#cherryWidgetVideoFallback");
+
+  const showVideoFallback = () => {
+    if (floatingVideo) floatingVideo.hidden = true;
+    if (floatingVideoFallback) floatingVideoFallback.hidden = false;
+  };
+
+  const showFloatingVideo = () => {
+    if (floatingVideo) floatingVideo.hidden = false;
+    if (floatingVideoFallback) floatingVideoFallback.hidden = true;
+  };
+
+  floatingVideo?.addEventListener("canplay", () => {
+    showFloatingVideo();
+    floatingVideo.play().catch(() => showVideoFallback());
+  });
+
+  floatingVideo?.addEventListener("error", showVideoFallback);
+
+  // iOS/Safari can pause autoplay after a tab becomes inactive.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && floatingVideo && !floatingVideo.hidden) {
+      floatingVideo.play().catch(() => {});
+    }
   });
 
   const setOpen = open => {
     panel.classList.toggle("is-open", open);
     panel.setAttribute("aria-hidden", String(!open));
     fab.classList.toggle("is-hidden", open);
-    if (open) setTimeout(() => input.focus({ preventScroll: true }), 150);
+    if (open) {
+      floatingVideo?.play().catch(() => {});
+      setTimeout(() => input.focus({ preventScroll: true }), 150);
+    }
   };
 
   fab.addEventListener("click", () => setOpen(true));

@@ -650,3 +650,96 @@
     min-height: 190px;
   }
 }
+
+
+/* =========================================================
+   CHERRY FLOATING VIDEO FINAL V7
+   User-provided MP4: cherry-floating-agent.mp4
+   ========================================================= */
+
+.cherry-widget-exact-visual {
+  display: none !important;
+}
+
+.cherry-widget-video-visual {
+  position: relative;
+  width: 100%;
+  height: min(390px, 48dvh);
+  min-height: 260px;
+  padding: 8px 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(139,92,246,.15), transparent 56%),
+    linear-gradient(180deg, rgba(30,27,58,.98), rgba(9,14,29,.98));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.cherry-widget-video,
+.cherry-widget-video-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+}
+
+.cherry-widget-video {
+  position: relative;
+  z-index: 2;
+}
+
+.cherry-widget-video-fallback {
+  position: absolute;
+  z-index: 1;
+  inset: 8px 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 16px);
+}
+
+.cherry-widget-video-fallback[hidden],
+.cherry-widget-video[hidden] {
+  display: none !important;
+}
+
+/* Give the avatar enough space while keeping chat usable. */
+.cherry-widget-panel {
+  height: min(860px, calc(100dvh - 24px));
+}
+
+.cherry-widget-messages {
+  min-height: 110px;
+}
+
+@media (max-width: 640px) {
+  .cherry-widget-panel {
+    width: 100vw;
+    height: min(94dvh, 860px);
+  }
+
+  .cherry-widget-video-visual {
+    height: min(350px, 45dvh);
+    min-height: 235px;
+    padding: 6px 8px;
+  }
+
+  .cherry-widget-video-fallback {
+    inset: 6px 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 12px);
+  }
+}
+
+@media (max-width: 430px) {
+  .cherry-widget-video-visual {
+    height: min(320px, 42dvh);
+    min-height: 220px;
+  }
+}
