@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Cherry AI • Family Home Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="cherry.css?v=6">
+</head>
+<body class="cherry-page-body">
+  <main class="cherry-full-shell">
+    <section class="cherry-avatar-pane">
+      <a class="cherry-back-home" href="index.html#home">
+        <i class="fas fa-arrow-left"></i><span>กลับ Home Dashboard</span>
+      </a>
+
+      <div class="cherry-full-brand">
+        <span class="cherry-brand-dot"></span>
+        <strong>CHERRY AI</strong>
+        <small>FAMILY HOME VOICE AGENT</small>
+      </div>
+
+      <button class="cherry-page-avatar" id="cherryPageAvatar" type="button" data-state="idle"
+        aria-label="แตะ Cherry AI เพื่อทักทาย">
+        <div class="cherry-avatar-halo"></div>
+        <video id="cherryPageVideo" class="cherry-page-video" autoplay loop muted playsinline
+          poster="cherry-assets/avatar-agent.png?v=5"
+          src="cherry-assets/cherry-idle.mp4"></video>
+        <img id="cherryPageImageFallback" class="cherry-page-image-fallback"
+          src="cherry-assets/avatar-agent.png?v=5"
+          alt="Cherry AI Avatar">
+        <span id="cherryPageFallback" class="cherry-page-fallback">C</span>
+        <div class="cherry-voice-ring"></div>
+      </button>
+
+      <div class="cherry-page-state">
+        <span class="cherry-online-dot"></span>
+        <span id="cherryPageState">พร้อมรับคำถามค่ะ</span>
+      </div>
+
+      <div class="cherry-page-suggestions">
+        <button data-cherry-q="วันนี้มีนัดหมายอะไรบ้าง">นัดหมาย</button>
+        <button data-cherry-q="ขอข้อมูล Contact">Contact</button>
+        <button data-cherry-q="ขอไฟล์พิมพ์เขียวบ้าน">ไฟล์บ้าน</button>
+        <button data-cherry-q="บ้านอยู่ที่ไหน">นำทาง</button>
+      </div>
+    </section>
+
+    <section class="cherry-conversation-pane">
+      <header class="cherry-conversation-header">
+        <div>
+          <h1>Cherry AI Assistant</h1>
+          <p>Calendar • Contact • Home Files • Navigation • General Questions</p>
+        </div>
+        <a href="index.html#home" class="cherry-home-icon" aria-label="กลับหน้าบ้าน">
+          <i class="fas fa-house"></i>
+        </a>
+      </header>
+
+      <div id="cherryPageMessages" class="cherry-page-messages" aria-live="polite">
+        <div class="cherry-page-message cherry-assistant">
+          สวัสดีค่ะ ฉันคือ Cherry AI ผู้ช่วยประจำบ้าน ถามข้อมูลบ้านหรือคำถามทั่วไปได้เลยค่ะ
+        </div>
+      </div>
+
+      <div id="cherryPageActions" class="cherry-page-actions"></div>
+
+      <form id="cherryPageForm" class="cherry-page-composer">
+        <button id="cherryPageMic" class="cherry-page-mic" type="button" aria-label="กดเพื่อพูด">
+          <i class="fas fa-microphone"></i><span>พูด</span>
+        </button>
+        <input id="cherryPageInput" type="text" autocomplete="off"
+          placeholder="พิมพ์คำถามถึง Cherry AI..." aria-label="คำถาม">
+        <button class="cherry-page-send" type="submit">
+          <i class="fas fa-paper-plane"></i><span>ส่ง</span>
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script src="cherry-config.js?v=6"></script>
+  <script src="cherry-core.js?v=6"></script>
+  <script src="cherry-page.js?v=6"></script>
+</body>
+</html>

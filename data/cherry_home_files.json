@@ -1,0 +1,127 @@
+[
+  {
+    "category": "ไฟล์พิมพ์เขียว",
+    "name": "ไฟล์พิมพ์เขียวบ้าน",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/blueprint.pdf",
+    "aliases": [
+      "พิมพ์เขียว",
+      "blueprint",
+      "แบบบ้าน",
+      "แบบพิมพ์เขียว"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา Adam",
+    "name": "แบบ Interior",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/Adaminterrior%26KNXall.pdf",
+    "aliases": [
+      "Interior",
+      "อินทีเรีย",
+      "ตกแต่งภายใน",
+      "Adam Interior"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา Adam",
+    "name": "แบบ Garage",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/Garage.pdf",
+    "aliases": [
+      "Garage",
+      "โรงรถ",
+      "แบบโรงรถ",
+      "Adam Garage"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา Adam",
+    "name": "แบบ Pavilion & Laundry",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/Pavilion%26Laundry.pdf",
+    "aliases": [
+      "Pavilion",
+      "Laundry",
+      "ศาลา",
+      "ห้องซักรีด",
+      "Pavilion and Laundry"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา Adam",
+    "name": "ใบเสนอราคา Interior",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/AdaminterriorKNXCarpetLFPRICE.pdf",
+    "aliases": [
+      "ใบเสนอราคา Interior",
+      "ราคา Interior",
+      "Interior quotation",
+      "Adam Interior quotation"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา Adam",
+    "name": "ใบเสนอราคาโรงรถ ศาลา และห้อง",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/Adampavilion%26laundryPRICE.pdf",
+    "aliases": [
+      "ราคาโรงรถ",
+      "ราคาศาลา",
+      "ราคาห้องซักรีด",
+      "Adam quotation"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา GGB",
+    "name": "แบบ Landscape",
+    "url": "https://drive.google.com/uc?export=download&id=1P0riYJ4pMh46IkO5eRKen7x0Mcu74nyK",
+    "aliases": [
+      "Landscape",
+      "สวน",
+      "แบบสวน",
+      "GGB Landscape"
+    ]
+  },
+  {
+    "category": "ผู้รับเหมา GGB",
+    "name": "ใบเสนอราคาสวน ศาลา และครัวต่อเติม",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/GGBPRICE.pdf",
+    "aliases": [
+      "ราคา GGB",
+      "ราคาสวน",
+      "ราคาศาลา",
+      "ราคาครัวต่อเติม",
+      "GGB quotation"
+    ]
+  },
+  {
+    "category": "SCG Solar Cell",
+    "name": "Spec Sheets",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/SolarCellMOU.pdf",
+    "aliases": [
+      "Solar",
+      "Solar Cell",
+      "SCG Solar",
+      "Spec Sheets",
+      "สเปคโซลาร์",
+      "โซลาร์เซลล์"
+    ]
+  },
+  {
+    "category": "SCG Solar Cell",
+    "name": "ใบเสนอราคา",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/SolarCellMOU.pdf",
+    "aliases": [
+      "Solar quotation",
+      "ใบเสนอราคา Solar",
+      "ราคาโซลาร์เซลล์"
+    ]
+  },
+  {
+    "category": "เครื่องใช้ไฟฟ้า",
+    "name": "ข้อมูลเครื่องใช้ไฟฟ้า",
+    "url": "",
+    "aliases": [
+      "เครื่องใช้ไฟฟ้า",
+      "appliance",
+      "electrical",
+      "คู่มือเครื่องใช้ไฟฟ้า"
+    ],
+    "note": "ยังไม่ได้ใส่ URL PDF จริงของเครื่องใช้ไฟฟ้า"
+  }
+]
