@@ -1,3 +1,18 @@
 
 data/cherry_contacts.private.json
 .env.local
+data/cherry_contacts.private.json
+.env.local
+
+# Cherry local backups
+CHERRY-BACKUP-*/
+CHERRY-*-BACKUP-*/
+index.before-cherry-*.html
+
+# Local helper scripts
+PUSH-CHERRY-*.ps1
+UPDATE-CHERRY-*.ps1
+
+# Cherry local unused avatar files
+cherry-assets/avatar.png
+cherry-assets/avatar-sprite.png
