@@ -13,3 +13,15 @@ window.CHERRY_CONFIG = Object.freeze({
   },
   localHostnames: ["localhost", "127.0.0.1"]
 });
+
+/* HomeDashboard Expense Dropdown V13 loader */
+(() => {
+  if (window.__EXPENSE_MENU_V13_LOADER__) return;
+  window.__EXPENSE_MENU_V13_LOADER__ = true;
+
+  const script = document.createElement("script");
+  script.src = "expense-menu-v13.js?v=13";
+  script.async = false;
+  script.dataset.expenseMenuLoader = "v13";
+  document.head.appendChild(script);
+})();
