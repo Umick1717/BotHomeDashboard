@@ -1,14 +1,15 @@
 /**
  * My Expense Tracker 2026 Nu'Ice
- * Google Apps Script Backend V14
+ * Google Apps Script Backend V15
  *
- * Target Spreadsheet:
+ * Spreadsheet:
  * 1_G5dDFWUcAb_dANQ8GVF5VL6v3QDTOxhJD8Fc0nUPos
- * Target Sheet GID / Sheet ID: 34336380
  *
- * Layout follows the existing Mick tracker:
- * Income  = D:G starting row 33
- * Expense = J:M starting row 118
+ * Sheet / gid:
+ * 34336380
+ *
+ * รายรับ  D:G เริ่มแถว 33
+ * รายจ่าย J:M เริ่มแถว 118
  */
 
 const NUICE_SPREADSHEET_ID =
@@ -23,6 +24,7 @@ const NUICE_LAYOUT = Object.freeze({
     dateColumn: 4,
     amountColumn: 6
   },
+
   expense: {
     startRow: 118,
     startColumn: 10,
@@ -32,35 +34,36 @@ const NUICE_LAYOUT = Object.freeze({
 });
 
 function doGet(e) {
-  const action = e && e.parameter
-    ? String(e.parameter.action || "")
-    : "";
+  try {
+    const ss = SpreadsheetApp.openById(NUICE_SPREADSHEET_ID);
+    const sheet = ss.getSheetById(NUICE_SHEET_ID);
 
-  if (action === "health") {
     return jsonOutput_({
       ok: true,
-      name: "NuIce Expense API V14",
-      spreadsheetId: NUICE_SPREADSHEET_ID,
-      sheetId: NUICE_SHEET_ID
+      name: "NuIce Expense API V15",
+      spreadsheetId: ss.getId(),
+      spreadsheetName: ss.getName(),
+      sheetId: NUICE_SHEET_ID,
+      sheetFound: Boolean(sheet),
+      sheetName: sheet ? sheet.getName() : ""
+    });
+  } catch (error) {
+    return jsonOutput_({
+      ok: false,
+      name: "NuIce Expense API V15",
+      error: String(error && error.message ? error.message : error)
     });
   }
-
-  return ContentService
-    .createTextOutput("NuIce Expense API V14 is running")
-    .setMimeType(ContentService.MimeType.TEXT);
 }
 
 function doPost(e) {
   try {
-    if (!e || !e.postData || !e.postData.contents) {
-      throw new Error("ไม่พบข้อมูลที่ส่งมา");
-    }
-
-    const data = JSON.parse(e.postData.contents);
+    const data = parseRequest_(e);
     const result = saveNuIceTransaction_(data);
 
     return jsonOutput_({
       ok: true,
+      status: "success",
       ...result
     });
   } catch (error) {
@@ -68,54 +71,97 @@ function doPost(e) {
 
     return jsonOutput_({
       ok: false,
+      status: "error",
       error: String(error && error.message ? error.message : error)
     });
   }
 }
 
+function parseRequest_(e) {
+  if (!e) {
+    throw new Error("ไม่พบ Event จาก Web App");
+  }
+
+  const p = e.parameter || {};
+
+  if (p.type || p.date || p.item || p.amount || p.group) {
+    return {
+      tracker: String(p.tracker || "nuice"),
+      type: String(p.type || ""),
+      date: String(p.date || ""),
+      item: String(p.item || ""),
+      amount: Number(String(p.amount || "0").replace(/,/g, "")),
+      group: String(p.group || "")
+    };
+  }
+
+  if (e.postData && e.postData.contents) {
+    const raw = String(e.postData.contents || "").trim();
+
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  }
+
+  throw new Error("ไม่พบข้อมูล POST");
+}
+
 function saveNuIceTransaction_(data) {
   validatePayload_(data);
 
-  const ss = SpreadsheetApp.openById(NUICE_SPREADSHEET_ID);
-  const sheet = ss.getSheetById(NUICE_SHEET_ID);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
 
-  if (!sheet) {
-    throw new Error("ไม่พบ Sheet ID " + NUICE_SHEET_ID);
+  try {
+    const ss = SpreadsheetApp.openById(NUICE_SPREADSHEET_ID);
+    const sheet = ss.getSheetById(NUICE_SHEET_ID);
+
+    if (!sheet) {
+      throw new Error("ไม่พบ Sheet ID " + NUICE_SHEET_ID);
+    }
+
+    const layout = NUICE_LAYOUT[data.type];
+
+    if (!layout) {
+      throw new Error("ประเภทข้อมูลไม่ถูกต้อง");
+    }
+
+    const row = getNextEmptyRow_(
+      sheet,
+      layout.startColumn,
+      layout.startRow
+    );
+
+    const date = parseLocalISODate_(data.date);
+
+    sheet
+      .getRange(row, layout.startColumn, 1, 4)
+      .setValues([[
+        date,
+        String(data.item || "").trim(),
+        Number(data.amount),
+        String(data.group || "").trim()
+      ]]);
+
+    sheet
+      .getRange(row, layout.dateColumn)
+      .setNumberFormat("dd/MM/yyyy");
+
+    sheet
+      .getRange(row, layout.amountColumn)
+      .setNumberFormat("#,##0.00");
+
+    SpreadsheetApp.flush();
+
+    return {
+      type: data.type,
+      row: row,
+      sheetName: sheet.getName(),
+      savedAt: new Date().toISOString()
+    };
+  } finally {
+    lock.releaseLock();
   }
-
-  const layout = NUICE_LAYOUT[data.type];
-
-  if (!layout) {
-    throw new Error("ประเภทข้อมูลไม่ถูกต้อง");
-  }
-
-  const row = getNextEmptyRow_(
-    sheet,
-    layout.startColumn,
-    layout.startRow
-  );
-
-  const date = parseLocalISODate_(data.date);
-
-  sheet
-    .getRange(row, layout.startColumn, 1, 4)
-    .setValues([[
-      date,
-      String(data.item || "").trim(),
-      Number(data.amount),
-      String(data.group || "").trim()
-    ]]);
-
-  sheet.getRange(row, layout.dateColumn).setNumberFormat("dd/MM/yyyy");
-  sheet.getRange(row, layout.amountColumn).setNumberFormat("#,##0.00");
-
-  SpreadsheetApp.flush();
-
-  return {
-    type: data.type,
-    row,
-    savedAt: new Date().toISOString()
-  };
 }
 
 function validatePayload_(data) {
@@ -144,7 +190,7 @@ function validatePayload_(data) {
 
   const amount = Number(data.amount);
 
-  if (!Number.isFinite(amount) || amount <= 0) {
+  if (!isFinite(amount) || amount <= 0) {
     throw new Error("จำนวนเงินไม่ถูกต้อง");
   }
 
@@ -168,13 +214,13 @@ function parseLocalISODate_(isoDate) {
 
 function getNextEmptyRow_(sheet, column, startRow) {
   const lastRow = Math.max(sheet.getLastRow(), startRow);
-  const rowCount = lastRow - startRow + 1;
+  const numberOfRows = lastRow - startRow + 1;
 
   const values = sheet
-    .getRange(startRow, column, rowCount, 1)
+    .getRange(startRow, column, numberOfRows, 1)
     .getDisplayValues();
 
-  for (let index = 0; index < values.length; index += 1) {
+  for (let index = 0; index < values.length; index++) {
     if (String(values[index][0] || "").trim() === "") {
       return startRow + index;
     }
@@ -183,21 +229,37 @@ function getNextEmptyRow_(sheet, column, startRow) {
   return lastRow + 1;
 }
 
-function jsonOutput_(value) {
+function jsonOutput_(data) {
   return ContentService
-    .createTextOutput(JSON.stringify(value))
+    .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function testNuIceIncome_() {
-  Logger.log(
-    saveNuIceTransaction_({
-      tracker: "nuice",
-      type: "income",
-      date: "2026-08-11",
-      item: "ทดสอบ Nu'Ice",
-      amount: 100,
-      group: "Bonus"
-    })
-  );
+function testNuIceConnection_() {
+  const ss = SpreadsheetApp.openById(NUICE_SPREADSHEET_ID);
+  const sheet = ss.getSheetById(NUICE_SHEET_ID);
+
+  if (!sheet) {
+    throw new Error("ไม่พบ Sheet ID " + NUICE_SHEET_ID);
+  }
+
+  Logger.log({
+    spreadsheetName: ss.getName(),
+    spreadsheetId: ss.getId(),
+    sheetName: sheet.getName(),
+    sheetId: sheet.getSheetId()
+  });
+}
+
+function testNuIceWrite_() {
+  const result = saveNuIceTransaction_({
+    tracker: "nuice",
+    type: "income",
+    date: "2026-08-11",
+    item: "TEST NuIce V15",
+    amount: 1,
+    group: "Bonus"
+  });
+
+  Logger.log(result);
 }
