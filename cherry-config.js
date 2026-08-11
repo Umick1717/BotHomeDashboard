@@ -38,26 +38,38 @@ window.CHERRY_CONFIG = Object.freeze({
   document.head.appendChild(script);
 })();
 
-/* Cherry Home UI V15
- * - AI avatar image on floating button
- * - animated ♡♡♡♡♡ while thinking/listening/speaking
- * - hide Calendar API connection status from dashboard
+/* Cherry Home UI V16
+ * - Pixabay AI portrait on floating button
+ * - animated hearts on popup + full Cherry page while thinking/listening/speaking
+ * - LINE Add Friend + App Store + Google Play actions
+ * - AI cursor for mouse/trackpad and touch halo for phone/tablet
  */
 (() => {
-  if (window.__CHERRY_HOME_UI_V15_LOADER__) return;
-  window.__CHERRY_HOME_UI_V15_LOADER__ = true;
+  if (window.__CHERRY_HOME_UI_V16_LOADER__) return;
+  window.__CHERRY_HOME_UI_V16_LOADER__ = true;
 
-  if (!document.querySelector('link[data-cherry-home-ui="v15"]')) {
+  const addCss = (href, key) => {
+    if (document.querySelector(`link[data-${key}]`)) return;
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "cherry-home-ui-v15.css?v=15";
-    link.dataset.cherryHomeUi = "v15";
+    link.href = href;
+    link.setAttribute(`data-${key}`, "1");
     document.head.appendChild(link);
-  }
+  };
 
-  const script = document.createElement("script");
-  script.src = "cherry-home-ui-v15.js?v=15";
-  script.defer = true;
-  script.dataset.cherryHomeUi = "v15";
-  document.head.appendChild(script);
+  const addScript = (src, key) => {
+    if (document.querySelector(`script[data-${key}]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
+    script.defer = true;
+    script.setAttribute(`data-${key}`, "1");
+    document.head.appendChild(script);
+  };
+
+  addCss("cherry-home-ui-v15.css?v=16", "cherry-home-ui-v16");
+  addCss("ai-ui-effects.css?v=16", "ai-ui-effects-v16");
+
+  addScript("cherry-home-ui-v15.js?v=16", "cherry-home-ui-v16");
+  addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
+  addScript("ai-ui-effects.js?v=16", "ai-ui-effects-v16");
 })();
