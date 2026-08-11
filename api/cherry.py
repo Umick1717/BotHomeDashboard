@@ -41,6 +41,7 @@ DIGITS = {
 }
 
 _CONTACT_CACHE: list[dict[str, Any]] | None = None
+_CONTACT_LOAD_STATUS = "not_loaded"
 
 
 def _norm(value: Any) -> str:
@@ -57,14 +58,11 @@ def _load_files() -> list[dict[str, Any]]:
 
 
 def _load_contacts() -> list[dict[str, Any]]:
-    global _CONTACT_CACHE
+    global _CONTACT_CACHE, _CONTACT_LOAD_STATUS
 
     if _CONTACT_CACHE is not None:
         return _CONTACT_CACHE
 
-    # V12 preferred source:
-    # the user's exact 454 KB contacts.json, gzip-compressed and Base64 encoded
-    # in a Sensitive Vercel Environment Variable.
     compressed = os.getenv("CHERRY_CONTACTS_GZIP_B64", "").strip()
 
     if compressed:
@@ -72,38 +70,47 @@ def _load_contacts() -> list[dict[str, Any]]:
             raw = gzip.decompress(base64.b64decode(compressed))
             payload = json.loads(raw.decode("utf-8"))
 
-            if isinstance(payload, list):
+            if isinstance(payload, list) and payload:
                 _CONTACT_CACHE = payload
+                _CONTACT_LOAD_STATUS = "gzip_b64"
                 return payload
-        except Exception:
-            pass
 
-    # Backward compatibility with V11.
+            _CONTACT_LOAD_STATUS = "gzip_b64_empty"
+        except Exception:
+            _CONTACT_LOAD_STATUS = "gzip_b64_invalid"
+
     raw_json = os.getenv("CHERRY_CONTACTS_JSON", "").strip()
 
     if raw_json:
         try:
             payload = json.loads(raw_json)
 
-            if isinstance(payload, list):
+            if isinstance(payload, list) and payload:
                 _CONTACT_CACHE = payload
+                _CONTACT_LOAD_STATUS = "json_env"
                 return payload
-        except Exception:
-            pass
 
-    # Optional private local file, never required in Public GitHub.
+            _CONTACT_LOAD_STATUS = "json_env_empty"
+        except Exception:
+            _CONTACT_LOAD_STATUS = "json_env_invalid"
+
     private_path = ROOT / "data" / "cherry_contacts.private.json"
 
     try:
         payload = json.loads(private_path.read_text(encoding="utf-8"))
 
-        if isinstance(payload, list):
+        if isinstance(payload, list) and payload:
             _CONTACT_CACHE = payload
+            _CONTACT_LOAD_STATUS = "private_file"
             return payload
     except Exception:
         pass
 
     _CONTACT_CACHE = []
+
+    if _CONTACT_LOAD_STATUS == "not_loaded":
+        _CONTACT_LOAD_STATUS = "missing"
+
     return []
 
 
@@ -219,7 +226,7 @@ def _calendar_rows() -> list[dict[str, Any]]:
         url = CALENDAR_API_URL + ("&" if "?" in CALENDAR_API_URL else "?") + query
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "CherryAI/12.0"},
+            headers={"User-Agent": "CherryAI/12.3"},
         )
 
         with urllib.request.urlopen(req, timeout=10) as response:
@@ -314,8 +321,8 @@ def _deterministic_answer(
     ):
         if not contacts:
             answer = (
-                "ยังไม่พบข้อมูล Contact ในระบบ Vercel ค่ะ "
-                "กรุณารัน SET-VERCEL-CONTACTS-V12.ps1 หนึ่งครั้งค่ะ"
+                "ยังไม่พบข้อมูล Contact ใน Vercel Production ค่ะ "
+                "กรุณารัน SETUP-VERCEL-CHERRY-V12-3.ps1 แล้ว Deploy ใหม่ค่ะ"
             )
 
             return answer, answer, actions, True
@@ -527,14 +534,19 @@ class handler(BaseHTTPRequestHandler):
 
         return self._json({
             "ok": True,
-            "name": "Cherry AI Vercel API V12",
+            "name": "Cherry AI Vercel API V12.3",
             "contacts_configured": contacts_ready,
+            "contacts_source": _CONTACT_LOAD_STATUS,
+            "female_server_voice_configured": key_ready,
+            "tts_model": os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts"),
+            "tts_voice": os.getenv("OPENAI_TTS_VOICE", "coral"),
             "features": {
                 "chat": True,
                 "tts": key_ready,
                 "stt": key_ready,
                 "general_ai": key_ready,
                 "contacts_configured": contacts_ready,
+                "browser_female_voice_fallback": True,
             },
         })
 

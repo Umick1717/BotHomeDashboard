@@ -1,5 +1,5 @@
 /* =========================================================
-   CHERRY VOICE V12
+   CHERRY VOICE V12.3
    Ported from the user's proven Cherry V6.5 app.js.
 
    Contact timing preserved exactly:
@@ -209,6 +209,163 @@
     return true;
   }
 
+
+  const FEMALE_VOICE_HINTS = [
+    "kanya",
+    "premwadee",
+    "narisa",
+    "siri",
+    "female",
+    "woman",
+    "ผู้หญิง"
+  ];
+
+  const MALE_VOICE_HINTS = [
+    "niwat",
+    "male",
+    "man",
+    "ผู้ชาย"
+  ];
+
+  let cachedFemaleVoice = null;
+
+  function scoreFemaleVoice(voice) {
+    const name = String(voice?.name || "").toLowerCase();
+    const lang = String(voice?.lang || "").toLowerCase();
+
+    let score = 0;
+
+    if (lang === "th-th") score += 100;
+    else if (lang.startsWith("th")) score += 80;
+
+    if (voice?.default) score += 4;
+
+    for (const hint of FEMALE_VOICE_HINTS) {
+      if (name.includes(hint)) score += 40;
+    }
+
+    for (const hint of MALE_VOICE_HINTS) {
+      if (name.includes(hint)) score -= 80;
+    }
+
+    return score;
+  }
+
+  async function getBrowserVoices() {
+    if (!("speechSynthesis" in window)) return [];
+
+    let voices = window.speechSynthesis.getVoices();
+
+    if (voices.length) return voices;
+
+    voices = await new Promise(resolve => {
+      let finished = false;
+
+      const done = () => {
+        if (finished) return;
+        finished = true;
+        window.speechSynthesis.removeEventListener?.("voiceschanged", onChanged);
+        resolve(window.speechSynthesis.getVoices());
+      };
+
+      const onChanged = () => {
+        const now = window.speechSynthesis.getVoices();
+        if (now.length) done();
+      };
+
+      window.speechSynthesis.addEventListener?.("voiceschanged", onChanged);
+      setTimeout(done, 700);
+    });
+
+    return voices || [];
+  }
+
+  async function selectFemaleThaiVoice() {
+    if (cachedFemaleVoice) return cachedFemaleVoice;
+
+    const voices = await getBrowserVoices();
+    if (!voices.length) return null;
+
+    const sorted = [...voices].sort(
+      (a, b) => scoreFemaleVoice(b) - scoreFemaleVoice(a)
+    );
+
+    const best = sorted[0] || null;
+
+    if (best && scoreFemaleVoice(best) > 0) {
+      cachedFemaleVoice = best;
+      return best;
+    }
+
+    return null;
+  }
+
+  function browserRateForSegment(rate, playbackRate) {
+    const rateText = String(rate || "").trim();
+
+    // Keep Contact spelling deliberately slower on browser fallback.
+    if (rateText === PHONE_TTS_RATE || rateText === LINE_TTS_RATE) {
+      return 0.86;
+    }
+
+    if (rateText === CONTACT_NORMAL_RATE) {
+      return 0.92;
+    }
+
+    // General Cherry answer.
+    return Math.max(
+      0.82,
+      Math.min(1.05, Number(playbackRate || 1) * 0.88)
+    );
+  }
+
+  async function browserSpeakFemale(text, rate = "", playbackRate = 1) {
+    if (!("speechSynthesis" in window)) {
+      throw new Error("อุปกรณ์นี้ไม่รองรับระบบเสียงพูดค่ะ");
+    }
+
+    const clean = String(text || "").trim();
+    if (!clean) return;
+
+    const voice = await selectFemaleThaiVoice();
+
+    await new Promise((resolve, reject) => {
+      // Stop previous browser utterance before starting the next segment.
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(clean);
+
+      utterance.lang = "th-TH";
+      utterance.rate = browserRateForSegment(rate, playbackRate);
+      utterance.pitch = 1.06;
+      utterance.volume = 1;
+
+      if (voice) {
+        utterance.voice = voice;
+      }
+
+      utterance.onend = () => resolve();
+      utterance.onerror = event => {
+        // "interrupted" / "canceled" can happen during page state changes.
+        // Treat them as finished rather than showing red errors in the chat.
+        const code = String(event?.error || "").toLowerCase();
+
+        if (
+          code === "interrupted" ||
+          code === "canceled" ||
+          code === "cancelled"
+        ) {
+          resolve();
+          return;
+        }
+
+        reject(new Error(`ระบบเสียงผู้หญิงไม่สำเร็จ: ${code || "unknown"}`));
+      };
+
+      window.speechSynthesis.speak(utterance);
+    });
+  }
+
   async function playSpeechSegment(text, rate = "", playbackRate = NORMAL_AUDIO_PLAYBACK_RATE) {
     const clean = String(text || "").trim();
     if (!clean) return;
@@ -220,16 +377,11 @@
       return;
     }
 
-    // Fallback when Public server TTS is not configured.
-    const client = window.CherryAI?.client;
-    if (!client?.speak) {
-      throw new Error("ระบบเสียง Cherry ยังไม่พร้อมค่ะ");
-    }
-
-    await client.speak(clean, {
-      rate: Math.max(0.5, Math.min(2, playbackRate)),
-      playbackRate
-    });
+    // V12.3 fallback:
+    // Do NOT delegate to client.speak(), because that can select a
+    // device/browser default voice which may be male.
+    // Select a Thai female voice directly through Web Speech API.
+    await browserSpeakFemale(clean, rate, playbackRate);
   }
 
   async function speakPhoneSlow(phone) {
