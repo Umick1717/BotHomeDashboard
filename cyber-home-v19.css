@@ -1,5 +1,5 @@
 /* =========================================================
-   CYBER FUTURISTIC HOME V19.1
+   CYBER FUTURISTIC HOME V19.2
    ========================================================= */
 
 :root {
@@ -27,6 +27,7 @@
 #home,
 main#content > #home.page,
 main#content > #home.page.active {
+  position:relative;
   background-image:
     linear-gradient(90deg, rgba(2,8,23,.34), rgba(4,12,30,.14) 42%, rgba(2,8,23,.38)),
     url("images/home.jpg") !important;
@@ -176,6 +177,86 @@ main#content > #home.page.active {
 }
 .cyber-v19-members b { font-size:12px; font-weight:600; }
 
+/* Header cards: drop entire menu frame slightly lower with icons/text together. */
+@media (min-width:992px) {
+  .top-header {
+    min-height:84px !important;
+    padding-top:10px !important;
+    padding-bottom:8px !important;
+    align-items:center !important;
+  }
+
+  .header-left,
+  #mainMenu {
+    transform:translateY(4px);
+  }
+
+  #mainMenu > ul {
+    gap:6px !important;
+    align-items:center !important;
+  }
+
+  #mainMenu > ul > li > a {
+    min-height:62px !important;
+    padding:10px 14px 8px !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:5px !important;
+    min-width:78px;
+    border-radius:16px !important;
+  }
+
+  #mainMenu > ul > li > a > i:first-child {
+    margin-top:2px !important;
+    transform:translateZ(14px) translateY(2px);
+  }
+}
+
+/* Quick Menu: one continuous background, no uneven side stripes. */
+.quick-menu {
+  position:relative !important;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 82% 12%,rgba(37,99,235,.14),transparent 30%),
+    radial-gradient(circle at 10% 84%,rgba(14,165,233,.09),transparent 34%),
+    linear-gradient(180deg,#071b3a 0%,#071a38 100%) !important;
+  border-top:0 !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.quick-menu::before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:4%;
+  right:4%;
+  height:2px;
+  z-index:3;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--v19-cyan),var(--v19-violet),var(--v19-pink),var(--v19-cyan),transparent);
+  background-size:240% 100%;
+  filter:drop-shadow(0 0 8px rgba(69,228,255,.75));
+  animation:v19QuickDivider 5s linear infinite;
+}
+
+.quick-menu::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(3,15,34,.18),transparent 16% 84%,rgba(20,43,90,.14));
+}
+
+@keyframes v19QuickDivider { to { background-position:240% 0; } }
+
+.quick-menu .menu-card {
+  background:
+    linear-gradient(145deg,rgba(14,38,78,.72),rgba(12,34,69,.68)) !important;
+  border-color:rgba(130,195,255,.25) !important;
+}
+
 /* Futuristic Footer */
 .main-footer {
   position:relative;
@@ -218,19 +299,6 @@ main#content > #home.page.active {
   font-weight:600;
 }
 
-@media (min-width:992px) {
-  #mainMenu > ul { gap:6px !important; }
-  #mainMenu > ul > li > a {
-    min-height:58px !important;
-    padding:8px 14px !important;
-    flex-direction:column !important;
-    justify-content:center !important;
-    gap:4px !important;
-    min-width:74px;
-    border-radius:16px !important;
-  }
-}
-
 @media (max-width:991px) {
   .cyber-v19-status-rail { display:none !important; }
   #home .hero-card { width:min(92vw,620px) !important; padding:32px 20px 30px !important; border-radius:22px !important; }
@@ -244,5 +312,6 @@ main#content > #home.page.active {
 
 @media (prefers-reduced-motion:reduce) {
   #home::after,
+  .quick-menu::before,
   .main-footer::before { animation:none !important; }
 }
