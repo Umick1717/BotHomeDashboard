@@ -1,0 +1,106 @@
+/* =========================================================
+   Snow36 AI Cursor + Touch FX V16
+   Desktop: custom AI cursor trail / click burst
+   Touch: iPhone/iPad/Android/Tablet tap halo (no native cursor)
+   ========================================================= */
+:root{
+  --ai-cyan:#38bdf8;
+  --ai-pink:#ec4899;
+  --ai-violet:#8b5cf6;
+}
+
+.ai-cursor-dot,
+.ai-cursor-ring{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:2147483646;
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(-100px,-100px,0);
+  will-change:transform;
+}
+
+.ai-cursor-dot{
+  width:8px;
+  height:8px;
+  margin:-4px 0 0 -4px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 8px #fff,0 0 18px var(--ai-cyan),0 0 28px var(--ai-pink);
+}
+
+.ai-cursor-ring{
+  width:34px;
+  height:34px;
+  margin:-17px 0 0 -17px;
+  border-radius:50%;
+  border:1px solid rgba(125,211,252,.8);
+  background:radial-gradient(circle,rgba(236,72,153,.12),rgba(56,189,248,.05) 48%,transparent 70%);
+  box-shadow:0 0 20px rgba(56,189,248,.28),inset 0 0 15px rgba(139,92,246,.18);
+  transition:width .16s ease,height .16s ease,margin .16s ease,border-color .16s ease,background .16s ease;
+}
+
+html.ai-pointer-active,
+html.ai-pointer-active body,
+html.ai-pointer-active a,
+html.ai-pointer-active button,
+html.ai-pointer-active input,
+html.ai-pointer-active textarea,
+html.ai-pointer-active select,
+html.ai-pointer-active [role="button"]{
+  cursor:none!important;
+}
+
+html.ai-pointer-active .ai-cursor-dot,
+html.ai-pointer-active .ai-cursor-ring{opacity:1}
+html.ai-pointer-active .ai-cursor-ring.is-hover{
+  width:48px;height:48px;margin:-24px 0 0 -24px;
+  border-color:rgba(244,114,182,.95);
+  background:radial-gradient(circle,rgba(236,72,153,.18),rgba(139,92,246,.09) 50%,transparent 72%);
+}
+html.ai-pointer-active .ai-cursor-ring.is-down{
+  width:24px;height:24px;margin:-12px 0 0 -12px;
+}
+
+.ai-click-burst,
+.ai-touch-halo{
+  position:fixed;
+  z-index:2147483645;
+  pointer-events:none;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+
+.ai-click-burst{
+  width:18px;height:18px;
+  border:2px solid rgba(244,114,182,.9);
+  box-shadow:0 0 16px rgba(56,189,248,.75),0 0 28px rgba(236,72,153,.55);
+  animation:aiClickBurst .55s ease-out forwards;
+}
+@keyframes aiClickBurst{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.35)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(3.2)}
+}
+
+.ai-touch-halo{
+  width:34px;height:34px;
+  border:2px solid rgba(125,211,252,.85);
+  background:radial-gradient(circle,rgba(236,72,153,.22),rgba(139,92,246,.12) 46%,transparent 68%);
+  box-shadow:0 0 20px rgba(56,189,248,.55),0 0 30px rgba(236,72,153,.3);
+  animation:aiTouchHalo .62s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes aiTouchHalo{
+  0%{opacity:.95;transform:translate(-50%,-50%) scale(.45)}
+  65%{opacity:.72}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.35)}
+}
+
+@media (pointer:coarse),(hover:none){
+  .ai-cursor-dot,.ai-cursor-ring{display:none!important}
+  html,body,a,button,input,textarea,select,[role="button"]{cursor:auto!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ai-click-burst,.ai-touch-halo{animation-duration:.01ms!important}
+}
