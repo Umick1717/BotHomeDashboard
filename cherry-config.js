@@ -73,3 +73,30 @@ window.CHERRY_CONFIG = Object.freeze({
   addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
   addScript("ai-ui-effects.js?v=16", "ai-ui-effects-v16");
 })();
+
+/* Future Navigation V17
+ * - Snow Malton Gates hologram logo frame
+ * - 3D tilt/hover for desktop menu
+ * - futuristic scan/glow/energy-line animation
+ * - touch feedback for iPhone/iPad/Android/tablets
+ */
+(() => {
+  if (window.__FUTURE_NAV_V17_LOADER__) return;
+  window.__FUTURE_NAV_V17_LOADER__ = true;
+
+  if (!document.querySelector('link[data-future-nav-v17]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "future-navbar-v17.css?v=17";
+    link.dataset.futureNavV17 = "1";
+    document.head.appendChild(link);
+  }
+
+  if (!document.querySelector('script[data-future-nav-v17]')) {
+    const script = document.createElement("script");
+    script.src = "future-navbar-v17.js?v=17";
+    script.defer = true;
+    script.dataset.futureNavV17 = "1";
+    document.head.appendChild(script);
+  }
+})();
