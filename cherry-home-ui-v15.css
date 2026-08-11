@@ -1,123 +1,69 @@
 /* =========================================================
-   Cherry Home UI V15
-   - Pretty AI avatar on the floating Cherry button
-   - Animated ♡♡♡♡♡ status while thinking/listening/speaking
-   - Hide Calendar API connection status from the dashboard UI
+   Cherry Home UI V16
+   - Pixabay portrait on floating Cherry button
+   - Animated hearts on popup + full Cherry page
+   - LINE response action styling
+   - Hide Calendar API connection status
    ========================================================= */
 
-/* Remove the Calendar API status text from the visible UI. */
-#calendarConnectionStatus {
-  display: none !important;
-}
+#calendarConnectionStatus{display:none!important}
 
-/* Floating Cherry AI button: replace plain C with the Cherry avatar image. */
-.cherry-fab-icon {
-  position: relative;
-  overflow: hidden;
-  padding: 2px;
-  border: 1px solid rgba(255,255,255,.5);
-  background:
-    linear-gradient(135deg, rgba(236,72,153,.95), rgba(139,92,246,.95), rgba(56,189,248,.95));
-  box-shadow:
-    0 0 0 2px rgba(255,255,255,.10),
-    0 0 18px rgba(236,72,153,.38),
-    inset 0 0 0 1px rgba(255,255,255,.18);
+.cherry-fab-icon{
+  position:relative;overflow:hidden;padding:2px;
+  border:1px solid rgba(255,255,255,.5);
+  background:linear-gradient(135deg,rgba(236,72,153,.95),rgba(139,92,246,.95),rgba(56,189,248,.95));
+  box-shadow:0 0 0 2px rgba(255,255,255,.10),0 0 18px rgba(236,72,153,.38),inset 0 0 0 1px rgba(255,255,255,.18)
 }
+.cherry-fab-icon img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 24%;border-radius:50%}
+.cherry-fab-icon::after{content:"";position:absolute;inset:2px;pointer-events:none;border-radius:50%;box-shadow:inset 0 0 12px rgba(255,255,255,.22)}
 
-.cherry-fab-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 22%;
-  border-radius: 50%;
+#cherryWidgetStatus,
+#cherryPageState{
+  display:flex;align-items:center;min-height:34px;gap:8px
 }
-
-.cherry-fab-icon::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  pointer-events: none;
-  border-radius: 50%;
-  box-shadow: inset 0 0 12px rgba(255,255,255,.22);
+#cherryWidgetStatus::before,
+#cherryPageState::before{
+  content:"♡♡♡♡♡";flex:0 0 auto;color:#f9a8d4;opacity:.38;letter-spacing:2px;
+  font-size:13px;line-height:1;transform-origin:center;text-shadow:0 0 8px rgba(244,114,182,.22);
+  transition:opacity .2s ease,color .2s ease,filter .2s ease
 }
-
-/* Status row inside Cherry popup. */
-#cherryWidgetStatus {
-  display: flex;
-  align-items: center;
-  min-height: 34px;
-  gap: 8px;
-}
-
-#cherryWidgetStatus::before {
-  content: "♡♡♡♡♡";
-  flex: 0 0 auto;
-  color: #f9a8d4;
-  opacity: .38;
-  letter-spacing: 2px;
-  font-size: 13px;
-  line-height: 1;
-  transform-origin: center;
-  text-shadow: 0 0 8px rgba(244,114,182,.22);
-  transition: opacity .2s ease, color .2s ease, filter .2s ease;
-}
-
 #cherryWidgetStatus[data-cherry-state="thinking"]::before,
 #cherryWidgetStatus[data-cherry-state="listening"]::before,
-#cherryWidgetStatus[data-cherry-state="speaking"]::before {
-  color: #ff8dcc;
-  opacity: 1;
-  filter: drop-shadow(0 0 7px rgba(244,114,182,.6));
-  animation: cherryHeartsV15 .72s ease-in-out infinite alternate;
+#cherryWidgetStatus[data-cherry-state="speaking"]::before,
+#cherryPageState[data-cherry-state="thinking"]::before,
+#cherryPageState[data-cherry-state="listening"]::before,
+#cherryPageState[data-cherry-state="speaking"]::before{
+  color:#ff8dcc;opacity:1;filter:drop-shadow(0 0 7px rgba(244,114,182,.6));
+  animation:cherryHeartsV16 .72s ease-in-out infinite alternate
 }
-
-#cherryWidgetStatus[data-cherry-state="error"]::before {
-  color: #fca5a5;
-  opacity: .9;
-  animation: cherryHeartsErrorV15 1s ease-in-out infinite;
+#cherryWidgetStatus[data-cherry-state="error"]::before,
+#cherryPageState[data-cherry-state="error"]::before{
+  color:#fca5a5;opacity:.9;animation:cherryHeartsErrorV16 1s ease-in-out infinite
 }
-
-@keyframes cherryHeartsV15 {
-  0% {
-    opacity: .32;
-    transform: translateY(1px) scale(.94);
-    letter-spacing: 1px;
-  }
-  50% {
-    opacity: .78;
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(-1px) scale(1.08);
-    letter-spacing: 3px;
-  }
+@keyframes cherryHeartsV16{
+  0%{opacity:.32;transform:translateY(1px) scale(.94);letter-spacing:1px}
+  50%{opacity:.78}
+  100%{opacity:1;transform:translateY(-1px) scale(1.08);letter-spacing:3px}
 }
+@keyframes cherryHeartsErrorV16{0%,100%{opacity:.45}50%{opacity:1}}
 
-@keyframes cherryHeartsErrorV15 {
-  0%,100% { opacity: .45; }
-  50% { opacity: 1; }
-}
-
-/* Slightly stronger glow while Cherry is active. */
 .cherry-widget-panel:has(#cherryWidgetStatus[data-cherry-state="thinking"]),
 .cherry-widget-panel:has(#cherryWidgetStatus[data-cherry-state="listening"]),
-.cherry-widget-panel:has(#cherryWidgetStatus[data-cherry-state="speaking"]) {
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.52),
-    0 0 28px rgba(236,72,153,.12);
+.cherry-widget-panel:has(#cherryWidgetStatus[data-cherry-state="speaking"]){
+  box-shadow:0 30px 80px rgba(0,0,0,.52),0 0 28px rgba(236,72,153,.12)
 }
 
-/* Mobile / tablet tuning. */
-@media (max-width: 700px) {
-  #cherryWidgetStatus::before {
-    font-size: 12px;
-    letter-spacing: 1.5px;
-  }
-}
+.cherry-line-friend-v16{border-color:rgba(34,197,94,.45)!important;background:rgba(34,197,94,.13)!important;color:#dcfce7!important}
+.cherry-line-store-v16{border-color:rgba(255,255,255,.18)!important;background:rgba(255,255,255,.07)!important}
+.cherry-line-card-v16,.cherry-line-store-card-v16{border-color:rgba(34,197,94,.24)!important}
+.cherry-line-buttons-v16{display:flex!important;flex-direction:row!important;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+.cherry-line-buttons-v16 a{white-space:nowrap}
+.cherry-line-add-v16{background:linear-gradient(135deg,#16a34a,#22c55e)!important}
 
-@media (prefers-reduced-motion: reduce) {
-  #cherryWidgetStatus::before {
-    animation: none !important;
-  }
+@media(max-width:700px){
+  #cherryWidgetStatus::before,#cherryPageState::before{font-size:12px;letter-spacing:1.5px}
+  .cherry-line-buttons-v16{justify-content:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+  #cherryWidgetStatus::before,#cherryPageState::before{animation:none!important}
 }
