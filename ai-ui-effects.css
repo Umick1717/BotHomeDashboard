@@ -1,7 +1,5 @@
 /* =========================================================
-   Snow36 AI Cursor + Touch FX V16
-   Desktop: custom AI cursor trail / click burst
-   Touch: iPhone/iPad/Android/Tablet tap halo (no native cursor)
+   Snow36 Heart Cursor + Touch FX V19.1
    ========================================================= */
 :root{
   --ai-cyan:#38bdf8;
@@ -22,23 +20,34 @@
 }
 
 .ai-cursor-dot{
-  width:8px;
-  height:8px;
-  margin:-4px 0 0 -4px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 0 8px #fff,0 0 18px var(--ai-cyan),0 0 28px var(--ai-pink);
+  width:18px;
+  height:18px;
+  margin:-9px 0 0 -9px;
+  background:none;
+  box-shadow:none;
+}
+.ai-cursor-dot::before{
+  content:"♥";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#ff79bd;
+  font-size:18px;
+  line-height:1;
+  text-shadow:0 0 5px #fff,0 0 12px var(--ai-pink),0 0 18px var(--ai-cyan);
+  transform:rotate(-8deg);
 }
 
 .ai-cursor-ring{
-  width:34px;
-  height:34px;
-  margin:-17px 0 0 -17px;
+  width:30px;
+  height:30px;
+  margin:-15px 0 0 -15px;
   border-radius:50%;
-  border:1px solid rgba(125,211,252,.8);
-  background:radial-gradient(circle,rgba(236,72,153,.12),rgba(56,189,248,.05) 48%,transparent 70%);
-  box-shadow:0 0 20px rgba(56,189,248,.28),inset 0 0 15px rgba(139,92,246,.18);
-  transition:width .16s ease,height .16s ease,margin .16s ease,border-color .16s ease,background .16s ease;
+  border:1px solid rgba(244,114,182,.82);
+  background:radial-gradient(circle,rgba(236,72,153,.12),rgba(56,189,248,.035) 48%,transparent 70%);
+  box-shadow:0 0 14px rgba(56,189,248,.26),inset 0 0 12px rgba(139,92,246,.16);
+  transition:width .12s ease,height .12s ease,margin .12s ease,border-color .12s ease,background .12s ease;
 }
 
 html.ai-pointer-active,
@@ -55,45 +64,34 @@ html.ai-pointer-active [role="button"]{
 html.ai-pointer-active .ai-cursor-dot,
 html.ai-pointer-active .ai-cursor-ring{opacity:1}
 html.ai-pointer-active .ai-cursor-ring.is-hover{
-  width:48px;height:48px;margin:-24px 0 0 -24px;
-  border-color:rgba(244,114,182,.95);
-  background:radial-gradient(circle,rgba(236,72,153,.18),rgba(139,92,246,.09) 50%,transparent 72%);
+  width:42px;height:42px;margin:-21px 0 0 -21px;
+  border-color:rgba(244,114,182,.98);
+  background:radial-gradient(circle,rgba(236,72,153,.16),rgba(139,92,246,.07) 50%,transparent 72%);
 }
 html.ai-pointer-active .ai-cursor-ring.is-down{
-  width:24px;height:24px;margin:-12px 0 0 -12px;
+  width:22px;height:22px;margin:-11px 0 0 -11px;
 }
 
-.ai-click-burst,
-.ai-touch-halo{
+.ai-heart-particle{
   position:fixed;
   z-index:2147483645;
   pointer-events:none;
-  border-radius:50%;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%) scale(var(--hs,1));
+  font-size:18px;
+  line-height:1;
+  filter:drop-shadow(0 0 6px rgba(236,72,153,.6)) drop-shadow(0 0 10px rgba(56,189,248,.25));
+  animation:aiHeartPop .78s cubic-bezier(.16,.78,.26,1) forwards;
 }
-
-.ai-click-burst{
-  width:18px;height:18px;
-  border:2px solid rgba(244,114,182,.9);
-  box-shadow:0 0 16px rgba(56,189,248,.75),0 0 28px rgba(236,72,153,.55);
-  animation:aiClickBurst .55s ease-out forwards;
-}
-@keyframes aiClickBurst{
-  0%{opacity:1;transform:translate(-50%,-50%) scale(.35)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(3.2)}
-}
-
-.ai-touch-halo{
-  width:34px;height:34px;
-  border:2px solid rgba(125,211,252,.85);
-  background:radial-gradient(circle,rgba(236,72,153,.22),rgba(139,92,246,.12) 46%,transparent 68%);
-  box-shadow:0 0 20px rgba(56,189,248,.55),0 0 30px rgba(236,72,153,.3);
-  animation:aiTouchHalo .62s cubic-bezier(.2,.8,.2,1) forwards;
-}
-@keyframes aiTouchHalo{
-  0%{opacity:.95;transform:translate(-50%,-50%) scale(.45)}
-  65%{opacity:.72}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(2.35)}
+@keyframes aiHeartPop{
+  0%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(.4) rotate(0deg);
+  }
+  55%{opacity:.95}
+  100%{
+    opacity:0;
+    transform:translate(calc(-50% + var(--hx)),calc(-50% + var(--hy))) scale(var(--hs,1)) rotate(var(--hr));
+  }
 }
 
 @media (pointer:coarse),(hover:none){
@@ -102,5 +100,5 @@ html.ai-pointer-active .ai-cursor-ring.is-down{
 }
 
 @media (prefers-reduced-motion:reduce){
-  .ai-click-burst,.ai-touch-halo{animation-duration:.01ms!important}
+  .ai-heart-particle{animation-duration:.01ms!important}
 }
