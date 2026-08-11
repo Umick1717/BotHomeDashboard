@@ -1,189 +1,322 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0f172a">
-  <title>My Expense Tracker 2026 Nu'Ice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <link rel="stylesheet" href="nuice-expense.css?v=14">
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <title>My Expense Tracker 2026 Nu'Ice</title>
+
+    <!-- ใช้ CSS ตัวเดียวกับ My Expense Tracker 2026-Mick โดยตรง -->
+    <link rel="stylesheet" href="https://umick.vercel.app/style.css">
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
 </head>
+
 <body>
 
-  <div id="splashScreen" aria-label="กำลังโหลด My Expense Tracker 2026 Nu'Ice">
+<!-- ===================================
+SPLASH SCREEN — โครงเดียวกับ Mick
+=================================== -->
+
+<div id="splashScreen">
+
     <div class="splash-content">
-      <div class="splash-icon">🐻</div>
 
-      <h1 class="splash-title" aria-label="Nu Ice Expender">
-        <span>N</span><span>u</span><span>'</span><span>I</span><span>c</span><span>e</span>
-        <span class="space"></span>
-        <span>E</span><span>x</span><span>p</span><span>e</span><span>n</span><span>d</span><span>e</span><span>r</span>
-      </h1>
+        <div class="splash-icon">
+            🐻
+        </div>
 
-      <p class="splash-subtitle">
-        Smart Income &amp; Expense Management ― Nu'Ice © 2026
-      </p>
+        <h1 class="splash-title">
+            <span>N</span>
+            <span>u</span>
+            <span>'</span>
+            <span>I</span>
+            <span>c</span>
+            <span>e</span>
+            <span class="space"></span>
+            <span>E</span>
+            <span>x</span>
+            <span>p</span>
+            <span>e</span>
+            <span>n</span>
+            <span>d</span>
+            <span>e</span>
+            <span>r</span>
+        </h1>
 
-      <div class="loading-bar">
-        <div class="loading-progress"></div>
-        <div class="walking-bear">🐻</div>
-      </div>
+        <p class="splash-subtitle">
+            Smart Income &amp; Expense Management ― Nu'Ice©
+        </p>
 
-      <p class="loading-text">
-        Preparing your expense tracker 2026...
-      </p>
+        <div class="loading-bar">
+
+            <div class="loading-progress"></div>
+
+            <div class="walking-bear">
+                🐻
+            </div>
+
+        </div>
+
+        <p class="loading-text">
+            Preparing your expense tracker 2026...
+        </p>
+
     </div>
-  </div>
 
-  <main class="container" id="trackerApp">
-    <div class="top-actions">
-      <a class="back-home" href="index.html#home">
-        <i class="fas fa-arrow-left"></i>
-        กลับ Home Dashboard
-      </a>
+</div>
 
-      <div class="backend-status" id="backendStatus">
-        <span class="status-dot"></span>
-        <span>กำลังตรวจสอบระบบบันทึก...</span>
-      </div>
-    </div>
+<div class="container">
 
     <header>
-      <h1>💰 ระบบบันทึกรายรับ - รายจ่าย</h1>
-      <p>
-        My Expense Tracker 2026 Nu'Ice • บันทึกข้อมูลลง Google Sheet อัตโนมัติ
-      </p>
+
+        <h1>💰 ระบบบันทึกรายรับ - รายจ่าย</h1>
+
+        <p>
+            My Expense Tracker 2026 Nu'Ice • บันทึกข้อมูลลง Google Sheet อัตโนมัติ
+        </p>
+
     </header>
 
     <section class="card income-card">
-      <h2>📈 รายรับ</h2>
 
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="incomeDate">วันที่</label>
-          <input type="date" id="incomeDate" autocomplete="off">
+        <h2>📈 รายรับ</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>วันที่</label>
+
+                <input
+                    type="date"
+                    id="incomeDate"
+                    placeholder="dd/mm/yyyy"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>ชื่อรายการ</label>
+
+                <input
+                    type="text"
+                    id="incomeItem"
+                    placeholder="เช่น เงินเดือน"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>จำนวนเงิน</label>
+
+                <input
+                    id="incomeAmount"
+                    type="text"
+                    inputmode="decimal"
+                    placeholder="จำนวนเงิน"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>กลุ่ม</label>
+
+                <select id="incomeGroup">
+
+                    <option value="">เลือกกลุ่ม</option>
+                    <option>เงินเดือนหลัก</option>
+                    <option>Bonus</option>
+                    <option>Dividen</option>
+                    <option>การลงทุน</option>
+                    <option>ดอกเบี้ยพันธบัตรรัฐบาล</option>
+                    <option>ดอกเบี้ยหุ้นกู้</option>
+                    <option>บัญชีกสิกร</option>
+
+                </select>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="incomeItem">ชื่อรายการ</label>
-          <input type="text" id="incomeItem" placeholder="เช่น เงินเดือน" maxlength="200" autocomplete="off">
+        <div class="button-area">
+
+            <button
+                class="btn-income"
+                id="saveIncome"
+                type="button">
+
+                <span class="button-text">
+                    🐻 บันทึกรายรับ
+                </span>
+
+            </button>
+
         </div>
 
-        <div class="form-group">
-          <label for="incomeAmount">จำนวนเงิน</label>
-          <input id="incomeAmount" type="text" inputmode="decimal" placeholder="จำนวนเงิน" autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="incomeGroup">กลุ่ม</label>
-          <select id="incomeGroup">
-            <option value="">เลือกกลุ่ม</option>
-            <option>เงินเดือนหลัก</option>
-            <option>Bonus</option>
-            <option>Dividen</option>
-            <option>การลงทุน</option>
-            <option>ดอกเบี้ยพันธบัตรรัฐบาล</option>
-            <option>ดอกเบี้ยหุ้นกู้</option>
-            <option>บัญชีกสิกร</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="button-area">
-        <button class="btn-income" id="saveIncome" type="button">
-          <span class="button-bear">🐻</span>
-          <span>บันทึกรายรับ</span>
-        </button>
-      </div>
     </section>
 
     <section class="card expense-card">
-      <h2>📉 ค่าใช้จ่าย</h2>
 
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="expenseDate">วันที่</label>
-          <input type="date" id="expenseDate" autocomplete="off">
+        <h2>📉 ค่าใช้จ่าย</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>วันที่</label>
+
+                <input
+                    type="date"
+                    id="expenseDate"
+                    placeholder="dd/mm/yyyy"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>ชื่อรายการ</label>
+
+                <input
+                    type="text"
+                    id="expenseItem"
+                    placeholder="เช่น ค่าอาหาร"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>จำนวนเงิน</label>
+
+                <input
+                    id="expenseAmount"
+                    type="text"
+                    inputmode="decimal"
+                    placeholder="จำนวนเงิน"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>กลุ่ม</label>
+
+                <select id="expenseGroup">
+
+                    <option value="">เลือกกลุ่ม</option>
+                    <option>ค่าอินเตอร์เน็ตบ้าน</option>
+                    <option>ค่าอินเตอร์เน็ตคอนโด</option>
+                    <option>ค่าน้ำ-ไฟบ้าน</option>
+                    <option>ค่าน้ำ-ไฟคอนโด</option>
+                    <option>ค่าส่วนกลางบ้าน Malton</option>
+                    <option>ค่าส่วนกลางคอนโด Noble Ploenchit</option>
+                    <option>ค่าอาหาร</option>
+                    <option>ค่าใช้จ่ายในครอบครัว</option>
+                    <option>การลงทุน</option>
+                    <option>ค่าโทรศัพท์</option>
+                    <option>ค่าเดินทาง</option>
+                    <option>เสื้อผ้า</option>
+                    <option>ซื้อของให้ผู้อื่น</option>
+                    <option>ค่าบุหรี่</option>
+                    <option>ค่าน้ำดื่ม</option>
+                    <option>ค่าขนม</option>
+                    <option>ค่าหาหมอ</option>
+                    <option>ค่าซุปเปอร์มาร์เกต</option>
+                    <option>ค่ากาแฟ</option>
+                    <option>ค่าหนังสือ</option>
+                    <option>ค่างานศิลปะ</option>
+                    <option>ค่าตัดผม</option>
+                    <option>ค่าล้างแอร์บ้าน</option>
+                    <option>ค่าล้างแอร์คอนโด</option>
+                    <option>ค่าเบี้ยประกันรถยนต์ไอซ์</option>
+                    <option>ค่ายา</option>
+                    <option>ค่าภาษีที่ดินคอนโด</option>
+                    <option>ค่าภาษีที่ดินบ้าน</option>
+                    <option>ค่าเซอร์วิสรถยนต์</option>
+                    <option>ค่าโทรศัพท์มือถือ</option>
+                    <option>เครื่องเขียน</option>
+                    <option>ค่าทำบ้าน</option>
+                    <option>อื่นๆ</option>
+
+                </select>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="expenseItem">ชื่อรายการ</label>
-          <input type="text" id="expenseItem" placeholder="เช่น ค่าอาหาร" maxlength="200" autocomplete="off">
+        <div class="button-area">
+
+            <button
+                class="btn-expense"
+                id="saveExpense"
+                type="button">
+
+                <span class="button-text">
+                    🐻 บันทึกค่าใช้จ่าย
+                </span>
+
+            </button>
+
         </div>
 
-        <div class="form-group">
-          <label for="expenseAmount">จำนวนเงิน</label>
-          <input id="expenseAmount" type="text" inputmode="decimal" placeholder="จำนวนเงิน" autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="expenseGroup">กลุ่ม</label>
-          <select id="expenseGroup">
-            <option value="">เลือกกลุ่ม</option>
-            <option>ค่าอินเตอร์เน็ตบ้าน</option>
-            <option>ค่าอินเตอร์เน็ตคอนโด</option>
-            <option>ค่าน้ำ-ไฟบ้าน</option>
-            <option>ค่าน้ำ-ไฟคอนโด</option>
-            <option>ค่าส่วนกลางบ้าน Malton</option>
-            <option>ค่าส่วนกลางคอนโด Noble Ploenchit</option>
-            <option>ค่าอาหาร</option>
-            <option>ค่าใช้จ่ายในครอบครัว</option>
-            <option>การลงทุน</option>
-            <option>ค่าโทรศัพท์</option>
-            <option>ค่าเดินทาง</option>
-            <option>เสื้อผ้า</option>
-            <option>ซื้อของให้ผู้อื่น</option>
-            <option>ค่าบุหรี่</option>
-            <option>ค่าน้ำดื่ม</option>
-            <option>ค่าขนม</option>
-            <option>ค่าหาหมอ</option>
-            <option>ค่าซุปเปอร์มาร์เกต</option>
-            <option>ค่ากาแฟ</option>
-            <option>ค่าหนังสือ</option>
-            <option>ค่างานศิลปะ</option>
-            <option>ค่าตัดผม</option>
-            <option>ค่าล้างแอร์บ้าน</option>
-            <option>ค่าล้างแอร์คอนโด</option>
-            <option>ค่าเบี้ยประกันรถยนต์ไอซ์</option>
-            <option>ค่ายา</option>
-            <option>ค่าภาษีที่ดินคอนโด</option>
-            <option>ค่าภาษีที่ดินบ้าน</option>
-            <option>ค่าเซอร์วิสรถยนต์</option>
-            <option>ค่าโทรศัพท์มือถือ</option>
-            <option>เครื่องเขียน</option>
-            <option>ค่าทำบ้าน</option>
-            <option>อื่นๆ</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="button-area">
-        <button class="btn-expense" id="saveExpense" type="button">
-          <span class="button-bear">🐻</span>
-          <span>บันทึกค่าใช้จ่าย</span>
-        </button>
-      </div>
     </section>
 
-    <div id="loading" class="loading" role="status" aria-live="polite">
-      <div class="spinner"></div>
-      <p>กำลังบันทึกข้อมูล...</p>
+    <div id="loading" class="loading">
+
+        <div class="spinner"></div>
+
+        <p>กำลังบันทึกข้อมูล...</p>
+
     </div>
 
-    <div id="message" class="message" aria-live="polite"></div>
+    <div id="message" class="message"></div>
 
-    <aside class="sheet-note">
-      <i class="fas fa-table"></i>
-      <div>
-        <strong>Google Sheet Nu'Ice</strong>
-        <p>Spreadsheet ID: 1_G5dDFWUcAb_dANQ8GVF5VL6v3QDTOxhJD8Fc0nUPos • Sheet ID: 34336380</p>
-      </div>
-    </aside>
-  </main>
+</div>
 
-  <script src="nuice-expense-config.js?v=14"></script>
-  <script src="nuice-expense.js?v=14"></script>
+<script src="nuice-expense.js?v=15"></script>
+
+<script>
+const selectElements = [
+    document.getElementById("incomeGroup"),
+    document.getElementById("expenseGroup")
+];
+
+selectElements.forEach(select => {
+    if (!select) return;
+
+    select.addEventListener("mousemove", function (event) {
+        const rect = this.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        this.style.setProperty("--mouse-x", `${x}px`);
+        this.style.setProperty("--mouse-y", `${y}px`);
+    });
+
+    select.addEventListener("touchmove", function (event) {
+        const touch = event.touches[0];
+        if (!touch) return;
+
+        const rect = this.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        this.style.setProperty("--mouse-x", `${x}px`);
+        this.style.setProperty("--mouse-y", `${y}px`);
+    }, { passive: true });
+});
+</script>
+
 </body>
 </html>
