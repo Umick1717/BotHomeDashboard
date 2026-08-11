@@ -5,17 +5,26 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
   <title>Cherry AI • Family Home Assistant</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="cherry.css?v=6">
+
+  <link rel="stylesheet" href="cherry.css?v=10">
+  <link rel="stylesheet" href="cherry-3video-v10.css?v=10">
 </head>
+
 <body class="cherry-page-body">
   <main class="cherry-full-shell">
+
     <section class="cherry-avatar-pane">
       <a class="cherry-back-home" href="index.html#home">
-        <i class="fas fa-arrow-left"></i><span>กลับ Home Dashboard</span>
+        <i class="fas fa-arrow-left"></i>
+        <span>กลับ Home Dashboard</span>
       </a>
 
       <div class="cherry-full-brand">
@@ -24,16 +33,37 @@
         <small>FAMILY HOME VOICE AGENT</small>
       </div>
 
-      <button class="cherry-page-avatar" id="cherryPageAvatar" type="button" data-state="idle"
-        aria-label="แตะ Cherry AI เพื่อทักทาย">
+      <button
+        class="cherry-page-avatar"
+        id="cherryPageAvatar"
+        type="button"
+        data-state="idle"
+        aria-label="แตะ Cherry AI เพื่อทักทาย"
+      >
         <div class="cherry-avatar-halo"></div>
-        <video id="cherryPageVideo" class="cherry-page-video" autoplay loop muted playsinline
-          poster="cherry-assets/avatar-agent.png?v=5"
-          src="cherry-assets/cherry-idle.mp4"></video>
-        <img id="cherryPageImageFallback" class="cherry-page-image-fallback"
-          src="cherry-assets/avatar-agent.png?v=5"
-          alt="Cherry AI Avatar">
-        <span id="cherryPageFallback" class="cherry-page-fallback">C</span>
+
+        <video
+          id="cherryPageVideo"
+          class="cherry-page-video"
+          src="cherry-assets/cherry-idle.mp4?v=10"
+          poster="cherry-assets/avatar-agent.png?v=10"
+          autoplay
+          loop
+          muted
+          playsinline
+          webkit-playsinline
+          preload="auto"
+        ></video>
+
+        <img
+          id="cherryPageImageFallback"
+          class="cherry-page-image-fallback"
+          src="cherry-assets/avatar-agent.png?v=10"
+          alt="Cherry AI Avatar"
+          hidden
+        >
+
+        <span id="cherryPageFallback" class="cherry-page-fallback" hidden>C</span>
         <div class="cherry-voice-ring"></div>
       </button>
 
@@ -56,6 +86,7 @@
           <h1>Cherry AI Assistant</h1>
           <p>Calendar • Contact • Home Files • Navigation • General Questions</p>
         </div>
+
         <a href="index.html#home" class="cherry-home-icon" aria-label="กลับหน้าบ้าน">
           <i class="fas fa-house"></i>
         </a>
@@ -71,19 +102,29 @@
 
       <form id="cherryPageForm" class="cherry-page-composer">
         <button id="cherryPageMic" class="cherry-page-mic" type="button" aria-label="กดเพื่อพูด">
-          <i class="fas fa-microphone"></i><span>พูด</span>
+          <i class="fas fa-microphone"></i>
+          <span>พูด</span>
         </button>
-        <input id="cherryPageInput" type="text" autocomplete="off"
-          placeholder="พิมพ์คำถามถึง Cherry AI..." aria-label="คำถาม">
+
+        <input
+          id="cherryPageInput"
+          type="text"
+          autocomplete="off"
+          placeholder="พิมพ์คำถามถึง Cherry AI..."
+          aria-label="คำถาม"
+        >
+
         <button class="cherry-page-send" type="submit">
-          <i class="fas fa-paper-plane"></i><span>ส่ง</span>
+          <i class="fas fa-paper-plane"></i>
+          <span>ส่ง</span>
         </button>
       </form>
     </section>
+
   </main>
 
-  <script src="cherry-config.js?v=6"></script>
-  <script src="cherry-core.js?v=6"></script>
-  <script src="cherry-page.js?v=6"></script>
+  <script src="cherry-config.js?v=10"></script>
+  <script src="cherry-core.js?v=10"></script>
+  <script src="cherry-page.js?v=10"></script>
 </body>
 </html>

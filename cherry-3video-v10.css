@@ -1,0 +1,160 @@
+/* =========================================================
+   CHERRY 3 VIDEO CROSS-DEVICE FINAL V10
+   ========================================================= */
+
+/* Remove old V8 static lock if older files still exist. */
+.cherry-v8-locked-avatar {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure old V9 rules cannot force a static poster above the MP4. */
+.cherry-page-avatar {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+}
+
+.cherry-page-video {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+  object-position: center center !important;
+
+  border-radius: inherit;
+  background: #0b1020;
+}
+
+.cherry-page-video[hidden] {
+  display: none !important;
+}
+
+.cherry-page-image-fallback {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 4 !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+  object-position: center center !important;
+
+  border-radius: inherit;
+}
+
+.cherry-page-image-fallback[hidden],
+.cherry-page-fallback[hidden] {
+  display: none !important;
+}
+
+.cherry-avatar-halo {
+  z-index: 6 !important;
+  pointer-events: none !important;
+}
+
+.cherry-voice-ring {
+  z-index: 7 !important;
+  pointer-events: none !important;
+}
+
+/* When talking, retain the existing visual meter animation. */
+.cherry-page-avatar[data-state="speaking"] .cherry-voice-ring {
+  opacity: 1 !important;
+}
+
+/* ---------- iPhone / Android phones ---------- */
+@media (max-width: 640px) {
+  .cherry-full-shell {
+    min-height: 100svh !important;
+  }
+
+  .cherry-avatar-pane {
+    min-height: auto !important;
+    height: 42svh !important;
+    padding:
+      max(58px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      12px
+      max(14px, env(safe-area-inset-left)) !important;
+  }
+
+  .cherry-conversation-pane {
+    height: 58svh !important;
+  }
+
+  .cherry-page-avatar {
+    width: min(58vw, 245px) !important;
+    aspect-ratio: 4 / 5 !important;
+    border-radius: 26px !important;
+  }
+
+  .cherry-page-composer {
+    padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Small iPhones / compact Android */
+@media (max-width: 390px) {
+  .cherry-avatar-pane {
+    height: 39svh !important;
+  }
+
+  .cherry-conversation-pane {
+    height: 61svh !important;
+  }
+
+  .cherry-page-avatar {
+    width: min(54vw, 215px) !important;
+  }
+}
+
+/* ---------- iPad / Android Tablet portrait ---------- */
+@media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
+  .cherry-full-shell {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cherry-avatar-pane {
+    min-height: auto !important;
+    height: 45svh !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+  }
+
+  .cherry-conversation-pane {
+    height: 55svh !important;
+  }
+
+  .cherry-page-avatar {
+    width: min(310px, 42vw) !important;
+    aspect-ratio: 4 / 5 !important;
+  }
+}
+
+/* ---------- Tablet landscape / compact laptops ---------- */
+@media (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
+  .cherry-page-avatar {
+    width: min(345px, 32vw) !important;
+  }
+}
+
+/* Safari/iOS compositing helps video remain visible during source switches. */
+@supports (-webkit-touch-callout: none) {
+  .cherry-page-video {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .cherry-page-composer {
+    padding-bottom: max(14px, env(safe-area-inset-bottom)) !important;
+  }
+}
