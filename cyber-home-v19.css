@@ -1,9 +1,5 @@
 /* =========================================================
-   CYBER FUTURISTIC HOME V19
-   - Restore original images/home.jpg
-   - Hide Calendar API checking message immediately
-   - Push the Home page closer to Cyber Futuristic 2026 mockup
-   - Preserve Cherry MP4/video assets and existing behavior
+   CYBER FUTURISTIC HOME V19.1
    ========================================================= */
 
 :root {
@@ -15,9 +11,9 @@
   --v19-line:rgba(103,232,249,.34);
 }
 
-/* Hide the Calendar connection text from the first paint. */
 #calendarConnectionStatus,
-.calendar-connection-status {
+.calendar-connection-status,
+[data-calendar-connection-status] {
   display:none !important;
   visibility:hidden !important;
   opacity:0 !important;
@@ -28,10 +24,6 @@
   overflow:hidden !important;
 }
 
-/* =========================================================
-   HOME BACKGROUND RESTORE
-   V18 accidentally replaced the background shorthand.
-   ========================================================= */
 #home,
 main#content > #home.page,
 main#content > #home.page.active {
@@ -49,7 +41,6 @@ main#content > #home.page.active {
     radial-gradient(circle at 50% 46%, rgba(10,24,52,.02), rgba(3,10,27,.12) 48%, rgba(2,7,20,.42) 100%) !important;
 }
 
-/* Cyber vignette / HUD corner rails over original house image. */
 #home::before,
 #home::after {
   content:"";
@@ -72,9 +63,6 @@ main#content > #home.page.active {
 }
 @keyframes v19EnergyRail { to { background-position:220% 0; } }
 
-/* =========================================================
-   HERO PANEL — closer to mockup
-   ========================================================= */
 #home .hero-card {
   z-index:3;
   width:min(620px,82vw) !important;
@@ -89,31 +77,15 @@ main#content > #home.page.active {
     0 0 40px rgba(56,215,255,.10),
     inset 0 1px 0 rgba(255,255,255,.12) !important;
 }
-
-#home .hero-card::before {
-  opacity:.6 !important;
-  background:
-    linear-gradient(90deg, transparent 0 8%, rgba(69,228,255,.2) 14%, transparent 23% 72%, rgba(236,72,153,.18) 82%, transparent 92%),
-    linear-gradient(180deg,rgba(255,255,255,.035),transparent 25%) !important;
-}
-
-#home .hero-card h1 {
-  font-size:clamp(36px,4vw,56px) !important;
-  letter-spacing:-.02em;
-}
-#home .hero-card h2 { font-size:clamp(19px,2vw,26px) !important; }
+#home .hero-card h1 { font-size:clamp(36px,4vw,56px) !important; }
+#home .hero-card h2 { font-size:clamp(19px,2vw,26px) !important; color:#46d8ff !important; }
 #home .hero-card p { color:#dcecff !important; }
-
-#home .hero-buttons {
-  gap:18px !important;
-  margin-top:26px !important;
-}
+#home .hero-buttons { gap:18px !important; margin-top:26px !important; }
 #home .hero-buttons button {
   min-height:56px !important;
   padding:0 24px !important;
   border-radius:14px !important;
   border:1px solid rgba(109,231,255,.42) !important;
-  box-shadow:0 0 22px rgba(56,215,255,.12), inset 0 1px 0 rgba(255,255,255,.16) !important;
 }
 #home .hero-buttons .secondary-btn,
 #home #gotoExpense {
@@ -122,10 +94,6 @@ main#content > #home.page.active {
   border-color:rgba(244,114,182,.45) !important;
 }
 
-/* =========================================================
-   DESKTOP CYBER STATUS RAIL
-   Added by cyber-home-v19.js; uses real browser time only.
-   ========================================================= */
 .cyber-v19-status-rail {
   position:absolute;
   z-index:4;
@@ -136,12 +104,11 @@ main#content > #home.page.active {
   flex-direction:column;
   gap:10px;
   color:#eefaff;
-  pointer-events:none;
 }
 .cyber-v19-card {
   border:1px solid rgba(69,228,255,.22);
   border-radius:16px;
-  background:linear-gradient(145deg,rgba(4,13,34,.84),rgba(7,24,55,.72));
+  background:linear-gradient(145deg,rgba(4,13,34,.86),rgba(7,24,55,.74));
   backdrop-filter:blur(15px);
   -webkit-backdrop-filter:blur(15px);
   box-shadow:0 14px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
@@ -169,12 +136,88 @@ main#content > #home.page.active {
   margin-top:8px;
   font-size:12px;
 }
-.cyber-v19-ok {
-  color:#52f5b5;
-  text-shadow:0 0 10px rgba(82,245,181,.45);
+.cyber-v19-ok { color:#52f5b5; text-shadow:0 0 10px rgba(82,245,181,.45); }
+
+.cyber-v19-weather-main {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+}
+.cyber-v19-weather-icon { font-size:30px; filter:drop-shadow(0 0 9px rgba(69,228,255,.25)); }
+.cyber-v19-weather-main strong { font-size:28px; line-height:1; }
+.cyber-v19-weather-label { margin-top:6px; color:#c6d8f2; font-size:11px; line-height:1.4; }
+
+.cyber-v19-members {
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+.cyber-v19-members > div {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 8px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.025);
+}
+.cyber-v19-member-avatar {
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  background:linear-gradient(135deg,var(--v19-cyan),var(--v19-violet),var(--v19-pink));
+  box-shadow:0 0 14px rgba(139,92,246,.25);
+}
+.cyber-v19-members b { font-size:12px; font-weight:600; }
+
+/* Futuristic Footer */
+.main-footer {
+  position:relative;
+  overflow:hidden;
+  border-top:1px solid rgba(69,228,255,.25) !important;
+  background:
+    radial-gradient(circle at 18% 0%,rgba(56,215,255,.08),transparent 30%),
+    radial-gradient(circle at 82% 100%,rgba(236,72,153,.08),transparent 30%),
+    linear-gradient(180deg,rgba(4,12,29,.98),rgba(6,17,39,.98)) !important;
+  box-shadow:0 -12px 35px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.main-footer::before {
+  content:"";
+  position:absolute;
+  left:8%; right:8%; top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--v19-cyan),var(--v19-violet),var(--v19-pink),transparent);
+  background-size:200% 100%;
+  animation:v19FooterSweep 5s linear infinite;
+}
+@keyframes v19FooterSweep { to { background-position:200% 0; } }
+.main-footer .footer-container {
+  position:relative;
+  padding:22px 16px 24px !important;
+  text-align:center;
+}
+.main-footer h3 {
+  margin:0 0 6px !important;
+  color:#fff !important;
+  font-size:clamp(18px,2vw,24px) !important;
+  text-shadow:0 0 18px rgba(69,228,255,.18);
+}
+.main-footer p {
+  margin:3px 0 !important;
+  color:#b9cae7 !important;
+  letter-spacing:.02em;
+}
+.main-footer p:last-child {
+  color:#7ee8ff !important;
+  font-weight:600;
 }
 
-/* Navbar cards closer to the reference mockup. */
 @media (min-width:992px) {
   #mainMenu > ul { gap:6px !important; }
   #mainMenu > ul > li > a {
@@ -186,58 +229,20 @@ main#content > #home.page.active {
     min-width:74px;
     border-radius:16px !important;
   }
-  #mainMenu > ul > li > a i { font-size:18px; }
-  #mainMenu > ul > li > a:hover,
-  #mainMenu > ul > li > a.active {
-    box-shadow:0 0 24px rgba(56,215,255,.15), inset 0 0 18px rgba(56,215,255,.06) !important;
-  }
 }
 
-/* =========================================================
-   MOBILE / TABLET
-   Keep vertical top-to-bottom layout requested by user.
-   ========================================================= */
 @media (max-width:991px) {
-  #home,
-  main#content > #home.page,
-  main#content > #home.page.active {
-    background-position:center center !important;
-    background-size:cover !important;
-  }
-
   .cyber-v19-status-rail { display:none !important; }
-
-  #home .hero-card {
-    width:min(92vw,620px) !important;
-    padding:32px 20px 30px !important;
-    border-radius:22px !important;
-  }
-
-  #mainMenu > ul {
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:stretch !important;
-  }
+  #home .hero-card { width:min(92vw,620px) !important; padding:32px 20px 30px !important; border-radius:22px !important; }
+  #mainMenu > ul { display:flex !important; flex-direction:column !important; align-items:stretch !important; }
   #mainMenu > ul > li,
   #mainMenu > ul > li > a { width:100% !important; }
-  #mainMenu > ul > li > a {
-    flex-direction:row !important;
-    justify-content:flex-start !important;
-    min-height:52px !important;
-  }
-
-  .quick-menu {
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:stretch !important;
-    overflow-x:hidden !important;
-  }
-  .quick-menu .menu-card {
-    width:100% !important;
-    max-width:100% !important;
-  }
+  #mainMenu > ul > li > a { flex-direction:row !important; justify-content:flex-start !important; min-height:52px !important; }
+  .quick-menu { display:flex !important; flex-direction:column !important; align-items:stretch !important; overflow-x:hidden !important; }
+  .quick-menu .menu-card { width:100% !important; max-width:100% !important; }
 }
 
 @media (prefers-reduced-motion:reduce) {
-  #home::after { animation:none !important; }
+  #home::after,
+  .main-footer::before { animation:none !important; }
 }
