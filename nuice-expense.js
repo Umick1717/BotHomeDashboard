@@ -1,238 +1,293 @@
-(() => {
-  "use strict";
+/****************************************************
+ * My Expense Tracker 2026 Nu'Ice
+ * Frontend V15
+ * UI/behavior based on Mick tracker
+ ****************************************************/
 
-  const CONFIG = window.NUICE_EXPENSE_CONFIG || {};
-  const WEB_APP_URL = String(CONFIG.webAppUrl || "").trim();
-  const $ = selector => document.querySelector(selector);
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZXZkW9xOw_PmX0rgJHDj1I2Y6sM1Rk0ENB3vExW8Qe2cbf5xl7wX6a_xFE9Ob0kU/exec";
 
-  const elements = {
-    splash: $("#splashScreen"),
-    backendStatus: $("#backendStatus"),
-    incomeDate: $("#incomeDate"),
-    incomeItem: $("#incomeItem"),
-    incomeAmount: $("#incomeAmount"),
-    incomeGroup: $("#incomeGroup"),
-    expenseDate: $("#expenseDate"),
-    expenseItem: $("#expenseItem"),
-    expenseAmount: $("#expenseAmount"),
-    expenseGroup: $("#expenseGroup"),
-    saveIncome: $("#saveIncome"),
-    saveExpense: $("#saveExpense"),
-    loading: $("#loading"),
-    message: $("#message")
-  };
+const incomeDate = document.getElementById("incomeDate");
+const incomeItem = document.getElementById("incomeItem");
+const incomeAmount = document.getElementById("incomeAmount");
+const incomeGroup = document.getElementById("incomeGroup");
 
-  let busy = false;
+const expenseDate = document.getElementById("expenseDate");
+const expenseItem = document.getElementById("expenseItem");
+const expenseAmount = document.getElementById("expenseAmount");
+const expenseGroup = document.getElementById("expenseGroup");
 
-  function setToday() {
-    const now = new Date();
-    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-      .toISOString().slice(0, 10);
-    if (elements.incomeDate) elements.incomeDate.value = local;
-    if (elements.expenseDate) elements.expenseDate.value = local;
-  }
+const btnIncome = document.getElementById("saveIncome");
+const btnExpense = document.getElementById("saveExpense");
 
-  function hideSplash() {
-    window.setTimeout(() => {
-      if (!elements.splash) return;
-      elements.splash.classList.add("is-hidden");
-      window.setTimeout(() => {
-        if (elements.splash) elements.splash.style.display = "none";
-      }, 750);
-    }, 4300);
-  }
+const loading = document.getElementById("loading");
+const message = document.getElementById("message");
 
-  function setBackendState(state, text) {
-    if (!elements.backendStatus) return;
-    elements.backendStatus.classList.remove("is-ready", "is-error");
-    if (state === "ready") elements.backendStatus.classList.add("is-ready");
-    if (state === "error") elements.backendStatus.classList.add("is-error");
-    const label = elements.backendStatus.querySelector("span:last-child");
-    if (label) label.textContent = text;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+    setToday();
+    initDarkMode();
+    addEvents();
+});
 
-  function isBackendConfigured() {
-    return /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/i.test(WEB_APP_URL);
-  }
+function addEvents() {
+    btnIncome.addEventListener("click", saveIncome);
+    btnExpense.addEventListener("click", saveExpense);
 
-  function updateBackendAvailability() {
-    const ready = isBackendConfigured();
-    setBackendState(
-      ready ? "ready" : "error",
-      ready ? "ระบบ Google Sheet Nu'Ice พร้อมใช้งาน" : "ยังไม่ได้ใส่ Google Apps Script Web App URL"
-    );
-    if (elements.saveIncome) elements.saveIncome.disabled = !ready;
-    if (elements.saveExpense) elements.saveExpense.disabled = !ready;
-  }
+    incomeAmount.addEventListener("blur", formatMoneyInput);
+    expenseAmount.addEventListener("blur", formatMoneyInput);
 
-  function cleanAmount(value) {
-    const raw = String(value || "").replace(/,/g, "").replace(/[^\d.]/g, "");
-    const firstDot = raw.indexOf(".");
-    const normalized = firstDot === -1
-      ? raw
-      : raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, "");
-    const number = Number(normalized);
-    return Number.isFinite(number) ? number : 0;
-  }
+    document.addEventListener("keydown", enterKeySave);
+}
 
-  function formatAmountInput(input) {
-    if (!input) return;
-    if (input.value.trim() === "") return;
-    const number = cleanAmount(input.value);
-    input.value = number.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
+function setToday() {
+    const today = new Date();
 
-  function showMessage(text, type = "success") {
-    if (!elements.message) return;
-    elements.message.className = `message ${type}`;
-    elements.message.textContent = `${type === "success" ? "✅" : "❌"} ${text}`;
-    window.clearTimeout(showMessage.timer);
-    showMessage.timer = window.setTimeout(() => {
-      elements.message.className = "message";
-      elements.message.textContent = "";
-    }, 3500);
-  }
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-  function showLoading() {
-    busy = true;
-    elements.loading?.classList.add("is-visible");
-    if (elements.saveIncome) elements.saveIncome.disabled = true;
-    if (elements.saveExpense) elements.saveExpense.disabled = true;
-  }
+    const todayISO = `${year}-${month}-${day}`;
 
-  function hideLoading() {
-    busy = false;
-    elements.loading?.classList.remove("is-visible");
-    updateBackendAvailability();
-  }
+    incomeDate.value = todayISO;
+    expenseDate.value = todayISO;
+}
 
-  function validate(type) {
-    const isIncome = type === "income";
-    const date = isIncome ? elements.incomeDate : elements.expenseDate;
-    const item = isIncome ? elements.incomeItem : elements.expenseItem;
-    const amount = isIncome ? elements.incomeAmount : elements.expenseAmount;
-    const group = isIncome ? elements.incomeGroup : elements.expenseGroup;
+function enterKeySave(e) {
+    if (e.key !== "Enter") return;
 
-    if (!date?.value) {
-      showMessage("กรุณาเลือกวันที่", "error");
-      date?.focus(); return false;
+    const active = document.activeElement;
+
+    if (active && active.closest(".income-card")) {
+        saveIncome();
     }
-    if (!item?.value.trim()) {
-      showMessage("กรุณากรอกชื่อรายการ", "error");
-      item?.focus(); return false;
+
+    if (active && active.closest(".expense-card")) {
+        saveExpense();
     }
-    if (cleanAmount(amount?.value) <= 0) {
-      showMessage("กรุณากรอกจำนวนเงินให้ถูกต้อง", "error");
-      amount?.focus(); return false;
+}
+
+function cleanNumber(value) {
+    const cleaned = String(value || "")
+        .replace(/,/g, "")
+        .trim();
+
+    const number = Number(cleaned);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+function validateIncome() {
+    if (incomeDate.value === "") {
+        showError("กรุณาเลือกวันที่");
+        incomeDate.focus();
+        return false;
     }
-    if (!group?.value) {
-      showMessage("กรุณาเลือกกลุ่ม", "error");
-      group?.focus(); return false;
+
+    if (incomeItem.value.trim() === "") {
+        showError("กรุณากรอกชื่อรายการ");
+        incomeItem.focus();
+        return false;
     }
+
+    if (cleanNumber(incomeAmount.value) <= 0) {
+        showError("กรุณากรอกจำนวนเงิน");
+        incomeAmount.focus();
+        return false;
+    }
+
+    if (incomeGroup.value === "") {
+        showError("กรุณาเลือกกลุ่ม");
+        incomeGroup.focus();
+        return false;
+    }
+
     return true;
-  }
+}
 
-  function buildPayload(type) {
-    const isIncome = type === "income";
-    return {
-      tracker: "nuice",
-      type,
-      date: isIncome ? elements.incomeDate.value : elements.expenseDate.value,
-      item: (isIncome ? elements.incomeItem.value : elements.expenseItem.value).trim(),
-      amount: cleanAmount(isIncome ? elements.incomeAmount.value : elements.expenseAmount.value),
-      group: isIncome ? elements.incomeGroup.value : elements.expenseGroup.value,
-      clientTime: new Date().toISOString()
+function validateExpense() {
+    if (expenseDate.value === "") {
+        showError("กรุณาเลือกวันที่");
+        expenseDate.focus();
+        return false;
+    }
+
+    if (expenseItem.value.trim() === "") {
+        showError("กรุณากรอกชื่อรายการ");
+        expenseItem.focus();
+        return false;
+    }
+
+    if (cleanNumber(expenseAmount.value) <= 0) {
+        showError("กรุณากรอกจำนวนเงิน");
+        expenseAmount.focus();
+        return false;
+    }
+
+    if (expenseGroup.value === "") {
+        showError("กรุณาเลือกกลุ่ม");
+        expenseGroup.focus();
+        return false;
+    }
+
+    return true;
+}
+
+function formatMoneyInput(e) {
+    let value = e.target.value;
+
+    if (value === "") return;
+
+    value = value.replace(/,/g, "");
+
+    const number = Number(value);
+
+    if (Number.isNaN(number)) {
+        e.target.value = "";
+        return;
+    }
+
+    e.target.value = number.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function showLoading() {
+    loading.style.display = "block";
+    btnIncome.disabled = true;
+    btnExpense.disabled = true;
+}
+
+function hideLoading() {
+    loading.style.display = "none";
+    btnIncome.disabled = false;
+    btnExpense.disabled = false;
+}
+
+function showSuccess(text) {
+    message.className = "message success";
+    message.innerHTML = "✅ " + text;
+
+    setTimeout(() => {
+        message.className = "message";
+        message.innerHTML = "";
+    }, 3500);
+}
+
+function showError(text) {
+    message.className = "message error";
+    message.innerHTML = "❌ " + text;
+
+    setTimeout(() => {
+        message.className = "message";
+        message.innerHTML = "";
+    }, 4000);
+}
+
+function initDarkMode() {
+    const dark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    applyTheme(dark.matches);
+
+    if (dark.addEventListener) {
+        dark.addEventListener("change", e => applyTheme(e.matches));
+    }
+}
+
+function applyTheme(isDark) {
+    document.body.classList.toggle("dark-mode", !!isDark);
+}
+
+function clearIncome() {
+    incomeItem.value = "";
+    incomeAmount.value = "";
+    incomeGroup.selectedIndex = 0;
+    incomeItem.focus();
+}
+
+function clearExpense() {
+    expenseItem.value = "";
+    expenseAmount.value = "";
+    expenseGroup.selectedIndex = 0;
+    expenseItem.focus();
+}
+
+async function saveIncome() {
+    if (!validateIncome()) return;
+
+    const data = {
+        tracker: "nuice",
+        type: "income",
+        date: incomeDate.value,
+        item: incomeItem.value.trim(),
+        amount: cleanNumber(incomeAmount.value),
+        group: incomeGroup.value
     };
-  }
 
-  function saveLocalHistory(data) {
-    try {
-      const key = "nuiceExpenseHistoryV14";
-      const current = JSON.parse(localStorage.getItem(key) || "[]");
-      current.unshift({ ...data, savedAt: new Date().toISOString() });
-      localStorage.setItem(key, JSON.stringify(current.slice(0, 30)));
-    } catch (error) {
-      console.warn("Local history unavailable:", error);
-    }
-  }
+    await sendData(data, clearIncome);
+}
 
-  function clearForm(type) {
-    if (type === "income") {
-      elements.incomeItem.value = "";
-      elements.incomeAmount.value = "";
-      elements.incomeGroup.selectedIndex = 0;
-      elements.incomeItem.focus();
-    } else {
-      elements.expenseItem.value = "";
-      elements.expenseAmount.value = "";
-      elements.expenseGroup.selectedIndex = 0;
-      elements.expenseItem.focus();
-    }
-  }
+async function saveExpense() {
+    if (!validateExpense()) return;
 
-  async function sendData(data) {
-    if (!isBackendConfigured()) {
-      showMessage("ยังไม่ได้เชื่อม Google Apps Script สำหรับ Nu'Ice", "error");
-      return false;
+    const data = {
+        tracker: "nuice",
+        type: "expense",
+        date: expenseDate.value,
+        item: expenseItem.value.trim(),
+        amount: cleanNumber(expenseAmount.value),
+        group: expenseGroup.value
+    };
+
+    await sendData(data, clearExpense);
+}
+
+/*
+ * V15 ส่งเป็น application/x-www-form-urlencoded
+ * Google Apps Script จะอ่านจาก e.parameter ได้ตรง ๆ
+ * และไม่ต้อง parse JSON ก่อน
+ */
+async function sendData(data, callback) {
+    if (!WEB_APP_URL || !WEB_APP_URL.endsWith("/exec")) {
+        showError("Google Apps Script Web App URL ไม่ถูกต้อง");
+        return;
     }
 
     showLoading();
+
     try {
-      await fetch(WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(data)
-      });
+        const params = new URLSearchParams();
 
-      saveLocalHistory(data);
-      showMessage("ส่งข้อมูลไปยัง Google Sheet Nu'Ice เรียบร้อยแล้ว", "success");
-      return true;
-    } catch (error) {
-      console.error("Nu'Ice SEND ERROR:", error);
-      showMessage("ไม่สามารถเชื่อมต่อ Google Sheet Nu'Ice ได้", "error");
-      return false;
-    } finally {
-      hideLoading();
+        Object.entries(data).forEach(([key, value]) => {
+            params.set(key, String(value));
+        });
+
+        await fetch(WEB_APP_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: params.toString()
+        });
+
+        showSuccess("ส่งข้อมูลไปยัง Google Sheet Nu'Ice แล้ว");
+        callback();
+
+        localStorage.setItem(
+            "nuiceLastRecordV15",
+            JSON.stringify({
+                ...data,
+                datetime: new Date().toISOString()
+            })
+        );
     }
-  }
-
-  async function save(type) {
-    if (busy || !validate(type)) return;
-    const data = buildPayload(type);
-    const success = await sendData(data);
-    if (success) clearForm(type);
-  }
-
-  function bindAmountInput(input) {
-    if (!input) return;
-    input.addEventListener("input", () => {
-      let value = input.value.replace(/,/g, "").replace(/[^\d.]/g, "");
-      const firstDot = value.indexOf(".");
-      if (firstDot !== -1) {
-        value = value.slice(0, firstDot + 1) + value.slice(firstDot + 1).replace(/\./g, "");
-      }
-      input.value = value;
-    });
-    input.addEventListener("blur", () => formatAmountInput(input));
-  }
-
-  function init() {
-    setToday();
-    updateBackendAvailability();
-    elements.saveIncome?.addEventListener("click", () => save("income"));
-    elements.saveExpense?.addEventListener("click", () => save("expense"));
-    bindAmountInput(elements.incomeAmount);
-    bindAmountInput(elements.expenseAmount);
-    hideSplash();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
-    init();
-  }
-})();
+    catch (error) {
+        console.error("NUICE SEND ERROR:", error);
+        showError("ไม่สามารถเชื่อมต่อ Google Apps Script ได้");
+    }
+    finally {
+        hideLoading();
+    }
+}
