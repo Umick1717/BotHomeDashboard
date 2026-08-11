@@ -1,0 +1,243 @@
+/* =========================================================
+   CYBER FUTURISTIC HOME V19
+   - Restore original images/home.jpg
+   - Hide Calendar API checking message immediately
+   - Push the Home page closer to Cyber Futuristic 2026 mockup
+   - Preserve Cherry MP4/video assets and existing behavior
+   ========================================================= */
+
+:root {
+  --v19-cyan:#45e4ff;
+  --v19-blue:#1d4ed8;
+  --v19-violet:#8b5cf6;
+  --v19-pink:#ec4899;
+  --v19-panel:rgba(4,13,34,.80);
+  --v19-line:rgba(103,232,249,.34);
+}
+
+/* Hide the Calendar connection text from the first paint. */
+#calendarConnectionStatus,
+.calendar-connection-status {
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+}
+
+/* =========================================================
+   HOME BACKGROUND RESTORE
+   V18 accidentally replaced the background shorthand.
+   ========================================================= */
+#home,
+main#content > #home.page,
+main#content > #home.page.active {
+  background-image:
+    linear-gradient(90deg, rgba(2,8,23,.34), rgba(4,12,30,.14) 42%, rgba(2,8,23,.38)),
+    url("images/home.jpg") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:scroll !important;
+}
+
+#home .hero-overlay {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(10,24,52,.02), rgba(3,10,27,.12) 48%, rgba(2,7,20,.42) 100%) !important;
+}
+
+/* Cyber vignette / HUD corner rails over original house image. */
+#home::before,
+#home::after {
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:1;
+}
+#home::before {
+  inset:14px;
+  border:1px solid rgba(69,228,255,.09);
+  clip-path:polygon(0 0, 18% 0, 18% 1px, 82% 1px, 82% 0, 100% 0, 100% 100%, 84% 100%, 84% calc(100% - 1px), 16% calc(100% - 1px), 16% 100%, 0 100%);
+  box-shadow:inset 0 0 40px rgba(69,228,255,.015);
+}
+#home::after {
+  left:4%; right:4%; top:16px; height:2px;
+  background:linear-gradient(90deg,transparent,#38d7ff,#8b5cf6,#ec4899,#38d7ff,transparent);
+  background-size:220% 100%;
+  filter:drop-shadow(0 0 7px rgba(56,215,255,.65));
+  animation:v19EnergyRail 6s linear infinite;
+}
+@keyframes v19EnergyRail { to { background-position:220% 0; } }
+
+/* =========================================================
+   HERO PANEL — closer to mockup
+   ========================================================= */
+#home .hero-card {
+  z-index:3;
+  width:min(620px,82vw) !important;
+  padding:50px 54px 46px !important;
+  border-radius:26px !important;
+  border:1px solid rgba(69,228,255,.42) !important;
+  background:
+    linear-gradient(135deg, rgba(4,14,36,.91), rgba(8,27,64,.83) 58%, rgba(22,17,62,.78)) !important;
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.46),
+    0 0 0 1px rgba(139,92,246,.08),
+    0 0 40px rgba(56,215,255,.10),
+    inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+#home .hero-card::before {
+  opacity:.6 !important;
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(69,228,255,.2) 14%, transparent 23% 72%, rgba(236,72,153,.18) 82%, transparent 92%),
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 25%) !important;
+}
+
+#home .hero-card h1 {
+  font-size:clamp(36px,4vw,56px) !important;
+  letter-spacing:-.02em;
+}
+#home .hero-card h2 { font-size:clamp(19px,2vw,26px) !important; }
+#home .hero-card p { color:#dcecff !important; }
+
+#home .hero-buttons {
+  gap:18px !important;
+  margin-top:26px !important;
+}
+#home .hero-buttons button {
+  min-height:56px !important;
+  padding:0 24px !important;
+  border-radius:14px !important;
+  border:1px solid rgba(109,231,255,.42) !important;
+  box-shadow:0 0 22px rgba(56,215,255,.12), inset 0 1px 0 rgba(255,255,255,.16) !important;
+}
+#home .hero-buttons .secondary-btn,
+#home #gotoExpense {
+  color:#f6f7ff !important;
+  background:linear-gradient(135deg,rgba(124,58,237,.82),rgba(219,39,119,.72)) !important;
+  border-color:rgba(244,114,182,.45) !important;
+}
+
+/* =========================================================
+   DESKTOP CYBER STATUS RAIL
+   Added by cyber-home-v19.js; uses real browser time only.
+   ========================================================= */
+.cyber-v19-status-rail {
+  position:absolute;
+  z-index:4;
+  left:18px;
+  top:90px;
+  width:190px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  color:#eefaff;
+  pointer-events:none;
+}
+.cyber-v19-card {
+  border:1px solid rgba(69,228,255,.22);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(4,13,34,.84),rgba(7,24,55,.72));
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  box-shadow:0 14px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
+  padding:14px;
+}
+.cyber-v19-card small {
+  color:#9bdfff;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:10px;
+}
+.cyber-v19-clock {
+  margin-top:4px;
+  font-size:30px;
+  line-height:1;
+  font-weight:700;
+  text-shadow:0 0 16px rgba(69,228,255,.3);
+}
+.cyber-v19-date { margin-top:5px; color:#c6d8f2; font-size:11px; }
+.cyber-v19-system-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:8px;
+  font-size:12px;
+}
+.cyber-v19-ok {
+  color:#52f5b5;
+  text-shadow:0 0 10px rgba(82,245,181,.45);
+}
+
+/* Navbar cards closer to the reference mockup. */
+@media (min-width:992px) {
+  #mainMenu > ul { gap:6px !important; }
+  #mainMenu > ul > li > a {
+    min-height:58px !important;
+    padding:8px 14px !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    gap:4px !important;
+    min-width:74px;
+    border-radius:16px !important;
+  }
+  #mainMenu > ul > li > a i { font-size:18px; }
+  #mainMenu > ul > li > a:hover,
+  #mainMenu > ul > li > a.active {
+    box-shadow:0 0 24px rgba(56,215,255,.15), inset 0 0 18px rgba(56,215,255,.06) !important;
+  }
+}
+
+/* =========================================================
+   MOBILE / TABLET
+   Keep vertical top-to-bottom layout requested by user.
+   ========================================================= */
+@media (max-width:991px) {
+  #home,
+  main#content > #home.page,
+  main#content > #home.page.active {
+    background-position:center center !important;
+    background-size:cover !important;
+  }
+
+  .cyber-v19-status-rail { display:none !important; }
+
+  #home .hero-card {
+    width:min(92vw,620px) !important;
+    padding:32px 20px 30px !important;
+    border-radius:22px !important;
+  }
+
+  #mainMenu > ul {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+  #mainMenu > ul > li,
+  #mainMenu > ul > li > a { width:100% !important; }
+  #mainMenu > ul > li > a {
+    flex-direction:row !important;
+    justify-content:flex-start !important;
+    min-height:52px !important;
+  }
+
+  .quick-menu {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    overflow-x:hidden !important;
+  }
+  .quick-menu .menu-card {
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  #home::after { animation:none !important; }
+}
