@@ -100,3 +100,37 @@ window.CHERRY_CONFIG = Object.freeze({
     document.head.appendChild(script);
   }
 })();
+
+/* Cyber Futuristic Home V18
+ * - Cyber Futuristic 2026 visual system
+ * - preserve original Home background image
+ * - preserve all existing Cherry MP4 avatar/video behavior
+ * - mobile/tablet navigation and Quick Menu forced vertical top-to-bottom
+ * - Cherry visual sound pulse + helper prompt every 5 seconds while closed
+ */
+(() => {
+  if (window.__CYBER_HOME_V18_LOADER__) return;
+  window.__CYBER_HOME_V18_LOADER__ = true;
+
+  const addCss = (href, key) => {
+    if (document.querySelector(`link[data-${key}]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    link.setAttribute(`data-${key}`, "1");
+    document.head.appendChild(link);
+  };
+
+  const addScript = (src, key) => {
+    if (document.querySelector(`script[data-${key}]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
+    script.defer = true;
+    script.setAttribute(`data-${key}`, "1");
+    document.head.appendChild(script);
+  };
+
+  addCss("cyber-home-v18.css?v=18", "cyber-home-v18");
+  addCss("cyber-cherry-v18.css?v=18", "cyber-cherry-v18");
+  addScript("cyber-home-v18.js?v=18", "cyber-home-v18");
+})();
