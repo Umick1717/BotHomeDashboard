@@ -16,3 +16,10 @@ UPDATE-CHERRY-*.ps1
 # Cherry local unused avatar files
 cherry-assets/avatar.png
 cherry-assets/avatar-sprite.png
+CHERRY-V12-BACKUP-*/
+SOURCE_LOCAL/
+SET-VERCEL-CONTACTS-V12.ps1
+INSTALL-CHERRY-EXACT-V12.ps1
+PUSH-CHERRY-V12-SAFE.ps1
+.vercel
+.env*

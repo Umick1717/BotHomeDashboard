@@ -1,17 +1,21 @@
 /* =========================================================
-   CHERRY AI FULL PAGE - 3 VIDEO CROSS-DEVICE FINAL V10
+   CHERRY FULL PAGE V12
+   3 videos + exact Contact voice timing from user's app.js
 
-   idle      -> cherry-idle.mp4
-   reaction  -> cherry-reaction.mp4
-   talking   -> cherry-talking.mp4
-
-   iPhone / iPad / Android / Tablet / Desktop
+   idle                 -> cherry-idle.mp4
+   listening/thinking   -> cherry-reaction.mp4
+   speaking             -> cherry-talking.mp4
    ========================================================= */
 (() => {
   "use strict";
 
   const client = window.CherryAI?.client;
-  if (!client) return;
+  const voiceEngine = window.CherryVoiceV12;
+
+  if (!client || !voiceEngine) {
+    console.error("Cherry V12 core/voice module not loaded");
+    return;
+  }
 
   const $ = s => document.querySelector(s);
 
@@ -27,46 +31,41 @@
   const letterFallback = $("#cherryPageFallback");
 
   const VIDEO_SOURCES = Object.freeze({
-    idle: "cherry-assets/cherry-idle.mp4?v=10",
-    reaction: "cherry-assets/cherry-reaction.mp4?v=10",
-    talking: "cherry-assets/cherry-talking.mp4?v=10"
+    idle: "cherry-assets/cherry-idle.mp4?v=12",
+    reaction: "cherry-assets/cherry-reaction.mp4?v=12",
+    talking: "cherry-assets/cherry-talking.mp4?v=12"
   });
 
-  let currentMode = "idle";
   let desiredMode = "idle";
-  let switchingToken = 0;
+  let switchToken = 0;
 
-  // Preload all three videos so switching is faster on mobile.
-  const preloadVideos = () => {
-    Object.values(VIDEO_SOURCES).forEach(src => {
-      const probe = document.createElement("video");
-      probe.preload = "auto";
-      probe.muted = true;
-      probe.playsInline = true;
-      probe.src = src;
-      probe.load();
-    });
+  const normalizedPath = src => {
+    try {
+      return new URL(src || "", location.href).pathname;
+    } catch (_) {
+      return "";
+    }
   };
 
-  const configureVideoElement = () => {
+  const configureVideo = () => {
     if (!video) return;
 
     video.muted = true;
     video.defaultMuted = true;
     video.autoplay = true;
-    video.playsInline = true;
     video.loop = true;
+    video.playsInline = true;
 
     video.setAttribute("muted", "");
     video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
     video.setAttribute("preload", "auto");
   };
 
   const showVideo = () => {
-    if (!video) return;
-    video.hidden = false;
+    if (video) video.hidden = false;
     if (imageFallback) imageFallback.hidden = true;
     if (letterFallback) letterFallback.hidden = true;
   };
@@ -77,61 +76,22 @@
     if (letterFallback) letterFallback.hidden = true;
   };
 
-  const showLetterFallback = () => {
-    if (video) video.hidden = true;
-    if (imageFallback) imageFallback.hidden = true;
-    if (letterFallback) letterFallback.hidden = false;
-  };
-
-  imageFallback?.addEventListener("error", showLetterFallback);
-
-  const normalizedPath = src => {
-    try {
-      return new URL(src || "", location.href).pathname;
-    } catch (_) {
-      return "";
-    }
-  };
-
-  const playCurrentVideo = async () => {
-    if (!video) return false;
-
-    configureVideoElement();
-
-    try {
-      await video.play();
-      showVideo();
-      return true;
-    } catch (err) {
-      // iOS/in-app browsers may temporarily reject autoplay.
-      // The same requested video remains selected; a real user gesture retries it.
-      showImageFallback();
-      return false;
-    }
-  };
-
   const setAvatarMode = async mode => {
     if (!VIDEO_SOURCES[mode]) mode = "idle";
     desiredMode = mode;
 
     if (!video) return false;
 
-    const token = ++switchingToken;
+    configureVideo();
+
+    const token = ++switchToken;
     const wanted = VIDEO_SOURCES[mode];
 
-    configureVideoElement();
-
-    const currentPath = normalizedPath(video.currentSrc || video.src);
-    const wantedPath = normalizedPath(wanted);
-
-    // Keep looping for all 3 states so short videos do not freeze on mobile.
-    video.loop = true;
-
-    if (currentPath !== wantedPath) {
-      try {
-        video.pause();
-      } catch (_) {}
-
+    if (
+      normalizedPath(video.currentSrc || video.src) !==
+      normalizedPath(wanted)
+    ) {
+      try { video.pause(); } catch (_) {}
       video.src = wanted;
       video.load();
     }
@@ -139,15 +99,14 @@
     try {
       await video.play();
 
-      // Ignore stale async play() completions when states changed quickly.
-      if (token !== switchingToken || desiredMode !== mode) return false;
+      if (token !== switchToken || desiredMode !== mode) {
+        return false;
+      }
 
-      currentMode = mode;
       showVideo();
       return true;
-    } catch (err) {
-      if (token !== switchingToken) return false;
-      showImageFallback();
+    } catch (_) {
+      if (token === switchToken) showImageFallback();
       return false;
     }
   };
@@ -156,7 +115,6 @@
     if (state) state.textContent = text;
     if (avatar) avatar.dataset.state = mode;
 
-    // State -> video mapping.
     if (mode === "speaking") {
       setAvatarMode("talking");
     } else if (
@@ -170,43 +128,39 @@
     }
   };
 
-  video?.addEventListener("loadeddata", () => {
-    if (normalizedPath(video.currentSrc || video.src) === normalizedPath(VIDEO_SOURCES[desiredMode])) {
-      showVideo();
-      playCurrentVideo().catch(() => {});
-    }
+  // Preload all 3 videos for faster switching on iOS/Android.
+  Object.values(VIDEO_SOURCES).forEach(src => {
+    const probe = document.createElement("video");
+    probe.preload = "auto";
+    probe.muted = true;
+    probe.playsInline = true;
+    probe.src = src;
+    probe.load();
   });
 
-  video?.addEventListener("canplay", () => {
-    showVideo();
-  });
-
+  video?.addEventListener("canplay", showVideo);
   video?.addEventListener("playing", showVideo);
+  video?.addEventListener("error", showImageFallback);
 
-  video?.addEventListener("error", () => {
-    showImageFallback();
+  imageFallback?.addEventListener("error", () => {
+    if (imageFallback) imageFallback.hidden = true;
+    if (letterFallback) letterFallback.hidden = false;
   });
 
-  // If a mobile browser pauses video when backgrounded, resume the requested state.
+  ["pointerdown", "touchstart"].forEach(eventName => {
+    document.addEventListener(
+      eventName,
+      () => setAvatarMode(desiredMode),
+      { passive: true }
+    );
+  });
+
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      setAvatarMode(desiredMode);
-    }
+    if (!document.hidden) setAvatarMode(desiredMode);
   });
 
   window.addEventListener("pageshow", () => {
     setAvatarMode(desiredMode);
-  });
-
-  // Real user gestures unlock video playback on iOS/WebViews.
-  const unlockPlayback = () => {
-    setAvatarMode(desiredMode);
-  };
-
-  ["pointerdown", "touchstart"].forEach(eventName => {
-    document.addEventListener(eventName, unlockPlayback, {
-      passive: true
-    });
   });
 
   const bubble = (text, type = "assistant") => {
@@ -253,13 +207,13 @@
     (data?.contacts || []).forEach(c => {
       card(
         c.name,
-        `${c.phone || "-"} • LINE: ${c.line_id || "-"}`,
+        `${voiceEngine.formatPhoneDisplay(c.phone)} • LINE: ${c.line_id || "-"}`,
         c.phone ? `tel:${String(c.phone).replace(/\D/g, "")}` : "",
         "โทร"
       );
     });
 
-    (data?.files || []).slice(0, 8).forEach(f => {
+    (data?.files || []).forEach(f => {
       card(f.name, f.category, f.url, "เปิดไฟล์");
     });
 
@@ -273,6 +227,13 @@
     });
   };
 
+  const speakResponse = async (question, data) => {
+    await voiceEngine.speakAnswer(question, data, {
+      onStart: () => setState("speaking", "กำลังพูดค่ะ"),
+      onEnd: () => setState("idle", "พร้อมรับคำถามค่ะ")
+    });
+  };
+
   const ask = async text => {
     const q = String(text || "").trim();
     if (!q) return;
@@ -281,25 +242,18 @@
     input.value = "";
     actions.innerHTML = "";
 
-    // Reaction video while Cherry searches/thinks.
     setState("thinking", "กำลังค้นหาข้อมูล...");
 
     try {
       const data = await client.chat(q);
-      const answer = data.answer || "ยังไม่มีคำตอบค่ะ";
 
-      bubble(answer, "assistant");
+      bubble(data.answer || "ยังไม่มีคำตอบค่ะ", "assistant");
       renderActions(data.actions || {});
 
-      // Talking video during TTS.
-      setState("speaking", "กำลังพูดค่ะ");
-      await client.speak(data.speech_answer || answer);
-
-      // Return to idle video.
-      setState("idle", "พร้อมรับคำถามค่ะ");
+      await speakResponse(q, data);
     } catch (err) {
       bubble(err.message || "เกิดข้อผิดพลาด", "error");
-      setState("idle", "กรุณาลองใหม่ค่ะ");
+      setState("idle", "กรุณาตรวจสอบการเชื่อมต่อแล้วลองใหม่");
     }
   };
 
@@ -310,19 +264,20 @@
 
   mic.addEventListener("click", async () => {
     mic.classList.add("is-listening");
-
-    // Reaction video while listening.
     setState("listening", "กำลังฟัง... พูดได้เลยค่ะ");
 
     try {
       const text = await client.listen();
-      if (!text) throw new Error("ไม่ได้ยินคำถามค่ะ");
+
+      if (!text) {
+        throw new Error("ไม่ได้ยินคำถาม กรุณาลองอีกครั้งค่ะ");
+      }
 
       input.value = text;
       await ask(text);
     } catch (err) {
       bubble(err.message || "รับเสียงไม่สำเร็จ", "error");
-      setState("idle", "พิมพ์คำถามได้เลยค่ะ");
+      setState("idle", "ลองกดไมโครโฟนใหม่ค่ะ");
     } finally {
       mic.classList.remove("is-listening");
     }
@@ -334,22 +289,18 @@
     });
   });
 
-  // Tap avatar -> reaction video + greeting voice -> idle.
   avatar.addEventListener("click", async () => {
-    setState("reacting", "Cherry กำลังทักทายค่ะ");
+    setState("reacting", "เชอร์รี่กำลังยิ้มและทักทายค่ะ ♡");
 
     try {
-      await client.speak(
-        "สวัสดีค่ะ ฉันคือ Cherry AI ผู้ช่วยประจำบ้าน พร้อมช่วยคุณเสมอค่ะ"
+      await voiceEngine.speakNormal(
+        "สวัสดีค่ะ ฉันคือเชอร์รี่เอไอ พร้อมช่วยเหลือคุณค่ะ"
       );
     } finally {
       setState("idle", "พร้อมรับคำถามค่ะ");
     }
   });
 
-  configureVideoElement();
-  preloadVideos();
-
-  // Initial page state must always be idle video.
+  configureVideo();
   setAvatarMode("idle");
 })();
