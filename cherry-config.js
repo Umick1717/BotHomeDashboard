@@ -150,7 +150,7 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "cyber-home-v19.css?v=19.2";
+  css.href = "cyber-home-v19.css?v=19.3";
   css.dataset.cyberHomeV19 = "1";
   document.head.appendChild(css);
 
