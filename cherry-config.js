@@ -14,6 +14,47 @@ window.CHERRY_CONFIG = Object.freeze({
   localHostnames: ["localhost", "127.0.0.1"]
 });
 
+/* V19.2 FIRST-PAINT STATUS GUARD
+ * Starts synchronously before DOMContentLoaded so startup Calendar/Google Sheets
+ * messages do not flash in the lower-right corner during the splash screen.
+ */
+(() => {
+  if (window.__SNOW36_STARTUP_STATUS_GUARD__) return;
+  window.__SNOW36_STARTUP_STATUS_GUARD__ = true;
+
+  const blocked = [
+    "กำลังตรวจสอบการเชื่อมต่อ Calendar API",
+    "กำลังโหลดนัดหมายจาก Google Sheets",
+    "กำลังโหลดข้อความจาก Google Sheets"
+  ];
+
+  const hide = node => {
+    if (!(node instanceof Element)) return;
+    const text = String(node.textContent || "").replace(/\s+/g, " ").trim();
+    if (!blocked.some(phrase => text.includes(phrase))) return;
+    node.hidden = true;
+    node.setAttribute("aria-hidden", "true");
+    node.style.setProperty("display", "none", "important");
+  };
+
+  const scan = root => {
+    if (!(root instanceof Element || root instanceof Document)) return;
+    if (root instanceof Element) hide(root);
+    root.querySelectorAll?.("#calendarConnectionStatus,.calendar-connection-status,.dashboard-toast,[role='status'],[role='alert']").forEach(hide);
+  };
+
+  scan(document);
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
+      if (node instanceof Element) scan(node);
+    }));
+  });
+
+  const target = document.documentElement;
+  if (target) observer.observe(target, { childList: true, subtree: true });
+  window.setTimeout(() => observer.disconnect(), 12000);
+})();
+
 (() => {
   if (window.__EXPENSE_MENU_V13_LOADER__) return;
   window.__EXPENSE_MENU_V13_LOADER__ = true;
@@ -54,10 +95,10 @@ window.CHERRY_CONFIG = Object.freeze({
     document.head.appendChild(script);
   };
   addCss("cherry-home-ui-v15.css?v=16", "cherry-home-ui-v16");
-  addCss("ai-ui-effects.css?v=19.1", "ai-ui-effects-v16");
+  addCss("ai-ui-effects.css?v=19.2", "ai-ui-effects-v16");
   addScript("cherry-home-ui-v15.js?v=16", "cherry-home-ui-v16");
   addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
-  addScript("ai-ui-effects.js?v=19.1", "ai-ui-effects-v16");
+  addScript("ai-ui-effects.js?v=19.2", "ai-ui-effects-v16");
 })();
 
 (() => {
@@ -109,12 +150,12 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "cyber-home-v19.css?v=19.1";
+  css.href = "cyber-home-v19.css?v=19.2";
   css.dataset.cyberHomeV19 = "1";
   document.head.appendChild(css);
 
   const script = document.createElement("script");
-  script.src = "cyber-home-v19.js?v=19.1";
+  script.src = "cyber-home-v19.js?v=19.2";
   script.defer = true;
   script.dataset.cyberHomeV19 = "1";
   document.head.appendChild(script);
