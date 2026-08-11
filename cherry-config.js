@@ -14,7 +14,6 @@ window.CHERRY_CONFIG = Object.freeze({
   localHostnames: ["localhost", "127.0.0.1"]
 });
 
-/* HomeDashboard Expense Dropdown V13 loader */
 (() => {
   if (window.__EXPENSE_MENU_V13_LOADER__) return;
   window.__EXPENSE_MENU_V13_LOADER__ = true;
@@ -25,7 +24,6 @@ window.CHERRY_CONFIG = Object.freeze({
   document.head.appendChild(script);
 })();
 
-/* Nu'Ice dedicated Expense page V14 route */
 (() => {
   if (window.__NUICE_EXPENSE_MENU_V14_LOADER__) return;
   window.__NUICE_EXPENSE_MENU_V14_LOADER__ = true;
@@ -36,7 +34,6 @@ window.CHERRY_CONFIG = Object.freeze({
   document.head.appendChild(script);
 })();
 
-/* Cherry Home UI V16 */
 (() => {
   if (window.__CHERRY_HOME_UI_V16_LOADER__) return;
   window.__CHERRY_HOME_UI_V16_LOADER__ = true;
@@ -57,13 +54,12 @@ window.CHERRY_CONFIG = Object.freeze({
     document.head.appendChild(script);
   };
   addCss("cherry-home-ui-v15.css?v=16", "cherry-home-ui-v16");
-  addCss("ai-ui-effects.css?v=16", "ai-ui-effects-v16");
+  addCss("ai-ui-effects.css?v=19.1", "ai-ui-effects-v16");
   addScript("cherry-home-ui-v15.js?v=16", "cherry-home-ui-v16");
   addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
-  addScript("ai-ui-effects.js?v=16", "ai-ui-effects-v16");
+  addScript("ai-ui-effects.js?v=19.1", "ai-ui-effects-v16");
 })();
 
-/* Future Navigation V17 */
 (() => {
   if (window.__FUTURE_NAV_V17_LOADER__) return;
   window.__FUTURE_NAV_V17_LOADER__ = true;
@@ -83,7 +79,6 @@ window.CHERRY_CONFIG = Object.freeze({
   }
 })();
 
-/* Cyber Futuristic Home V18 */
 (() => {
   if (window.__CYBER_HOME_V18_LOADER__) return;
   window.__CYBER_HOME_V18_LOADER__ = true;
@@ -108,22 +103,18 @@ window.CHERRY_CONFIG = Object.freeze({
   addScript("cyber-home-v18.js?v=18", "cyber-home-v18");
 })();
 
-/* Cyber Futuristic Home V19 FIX
- * IMPORTANT: this loads AFTER V18 so its background restoration and
- * first-paint Calendar-status suppression win the cascade.
- */
 (() => {
   if (window.__CYBER_HOME_V19_LOADER__) return;
   window.__CYBER_HOME_V19_LOADER__ = true;
 
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "cyber-home-v19.css?v=19";
+  css.href = "cyber-home-v19.css?v=19.1";
   css.dataset.cyberHomeV19 = "1";
   document.head.appendChild(css);
 
   const script = document.createElement("script");
-  script.src = "cyber-home-v19.js?v=19";
+  script.src = "cyber-home-v19.js?v=19.1";
   script.defer = true;
   script.dataset.cyberHomeV19 = "1";
   document.head.appendChild(script);
