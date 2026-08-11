@@ -37,3 +37,27 @@ window.CHERRY_CONFIG = Object.freeze({
   script.dataset.expenseNuIceLoader = "v14";
   document.head.appendChild(script);
 })();
+
+/* Cherry Home UI V15
+ * - AI avatar image on floating button
+ * - animated ♡♡♡♡♡ while thinking/listening/speaking
+ * - hide Calendar API connection status from dashboard
+ */
+(() => {
+  if (window.__CHERRY_HOME_UI_V15_LOADER__) return;
+  window.__CHERRY_HOME_UI_V15_LOADER__ = true;
+
+  if (!document.querySelector('link[data-cherry-home-ui="v15"]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "cherry-home-ui-v15.css?v=15";
+    link.dataset.cherryHomeUi = "v15";
+    document.head.appendChild(link);
+  }
+
+  const script = document.createElement("script");
+  script.src = "cherry-home-ui-v15.js?v=15";
+  script.defer = true;
+  script.dataset.cherryHomeUi = "v15";
+  document.head.appendChild(script);
+})();
