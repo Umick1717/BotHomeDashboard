@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import base64
 import gzip
 import json
@@ -57,20 +58,72 @@ def _load_files() -> list[dict[str, Any]]:
         return []
 
 
+def _decode_contacts_blob(encoded: str) -> list[dict[str, Any]]:
+    raw = gzip.decompress(base64.b64decode(encoded))
+    payload = json.loads(raw.decode("utf-8"))
+
+    if isinstance(payload, list) and payload:
+        return payload
+
+    return []
+
+
 def _load_contacts() -> list[dict[str, Any]]:
     global _CONTACT_CACHE, _CONTACT_LOAD_STATUS
 
     if _CONTACT_CACHE is not None:
         return _CONTACT_CACHE
 
+    # V12.4 preferred source:
+    # split the exact compressed contacts across several Vercel
+    # Environment Variables. This avoids large single-value / Windows
+    # CLI piping issues and is easy to diagnose.
+    try:
+        chunk_count = int(
+            os.getenv("CHERRY_CONTACTS_CHUNK_COUNT", "0").strip() or "0"
+        )
+    except Exception:
+        chunk_count = 0
+
+    if 0 < chunk_count <= 20:
+        chunks: list[str] = []
+        missing_chunk = False
+
+        for index in range(1, chunk_count + 1):
+            value = os.getenv(
+                f"CHERRY_CONTACTS_CHUNK_{index:02d}",
+                "",
+            ).strip()
+
+            if not value:
+                missing_chunk = True
+                break
+
+            chunks.append(value)
+
+        if not missing_chunk and len(chunks) == chunk_count:
+            try:
+                payload = _decode_contacts_blob("".join(chunks))
+
+                if payload:
+                    _CONTACT_CACHE = payload
+                    _CONTACT_LOAD_STATUS = f"chunks:{chunk_count}"
+                    return payload
+
+                _CONTACT_LOAD_STATUS = "chunks_empty"
+            except Exception:
+                _CONTACT_LOAD_STATUS = "chunks_invalid"
+        else:
+            _CONTACT_LOAD_STATUS = "chunks_missing"
+
+    # Backward compatibility with V12/V12.3 single variable.
     compressed = os.getenv("CHERRY_CONTACTS_GZIP_B64", "").strip()
 
     if compressed:
         try:
-            raw = gzip.decompress(base64.b64decode(compressed))
-            payload = json.loads(raw.decode("utf-8"))
+            payload = _decode_contacts_blob(compressed)
 
-            if isinstance(payload, list) and payload:
+            if payload:
                 _CONTACT_CACHE = payload
                 _CONTACT_LOAD_STATUS = "gzip_b64"
                 return payload
@@ -226,7 +279,7 @@ def _calendar_rows() -> list[dict[str, Any]]:
         url = CALENDAR_API_URL + ("&" if "?" in CALENDAR_API_URL else "?") + query
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "CherryAI/12.3"},
+            headers={"User-Agent": "CherryAI/12.4"},
         )
 
         with urllib.request.urlopen(req, timeout=10) as response:
@@ -463,6 +516,113 @@ def _chat(message: str) -> dict[str, Any]:
     }
 
 
+def _edge_rate(value: Any) -> str:
+    raw = str(value if value is not None else "").strip()
+
+    if not raw:
+        return "+0%"
+
+    if raw.endswith("%"):
+        number_text = raw[:-1].strip()
+
+        try:
+            number = int(round(float(number_text)))
+        except Exception:
+            number = 0
+
+        if number > 100:
+            number = 100
+        if number < -100:
+            number = -100
+
+        return f"{number:+d}%"
+
+    return "+0%"
+
+
+async def _edge_tts_bytes(
+    text: str,
+    rate: str,
+) -> bytes:
+    import edge_tts
+
+    voice = os.getenv(
+        "EDGE_TTS_VOICE",
+        "th-TH-PremwadeeNeural",
+    ).strip() or "th-TH-PremwadeeNeural"
+
+    pitch = os.getenv(
+        "EDGE_TTS_PITCH",
+        "+2Hz",
+    ).strip() or "+2Hz"
+
+    communicate = edge_tts.Communicate(
+        text=text,
+        voice=voice,
+        rate=_edge_rate(rate),
+        pitch=pitch,
+    )
+
+    parts: list[bytes] = []
+
+    async for chunk in communicate.stream():
+        if chunk.get("type") == "audio":
+            data = chunk.get("data", b"")
+
+            if data:
+                parts.append(data)
+
+    return b"".join(parts)
+
+
+def _server_tts_bytes(
+    text: str,
+    rate: Any,
+    instructions: str,
+) -> tuple[bytes, str]:
+    # Primary provider for V12.4:
+    # same Thai female neural voice family used by the local Cherry project.
+    try:
+        audio = asyncio.run(
+            _edge_tts_bytes(
+                text=text,
+                rate=str(rate or ""),
+            )
+        )
+
+        if audio:
+            return audio, "edge-tts"
+    except Exception:
+        pass
+
+    # Optional fallback: OpenAI TTS, if a key is configured.
+    client = _openai_client()
+
+    if client is None:
+        raise RuntimeError(
+            "ระบบเสียงผู้หญิงบน Server ยังไม่พร้อมค่ะ"
+        )
+
+    speed = _rate_to_speed(rate)
+
+    response = client.audio.speech.create(
+        model=os.getenv(
+            "OPENAI_TTS_MODEL",
+            "gpt-4o-mini-tts",
+        ),
+        voice=os.getenv(
+            "OPENAI_TTS_VOICE",
+            "coral",
+        ),
+        input=text,
+        instructions=instructions,
+        response_format="mp3",
+        speed=speed,
+    )
+
+    return response.read(), "openai"
+
+
 class handler(BaseHTTPRequestHandler):
     def _cors(self) -> None:
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -532,17 +692,29 @@ class handler(BaseHTTPRequestHandler):
 
         contacts_ready = bool(_load_contacts())
 
+        try:
+            chunk_count = int(
+                os.getenv("CHERRY_CONTACTS_CHUNK_COUNT", "0").strip() or "0"
+            )
+        except Exception:
+            chunk_count = 0
+
         return self._json({
             "ok": True,
-            "name": "Cherry AI Vercel API V12.3",
+            "name": "Cherry AI Vercel API V12.4",
             "contacts_configured": contacts_ready,
             "contacts_source": _CONTACT_LOAD_STATUS,
-            "female_server_voice_configured": key_ready,
-            "tts_model": os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts"),
-            "tts_voice": os.getenv("OPENAI_TTS_VOICE", "coral"),
+            "contacts_chunk_count": chunk_count,
+            "female_server_voice_configured": True,
+            "tts_provider": "edge-tts",
+            "tts_voice": os.getenv(
+                "EDGE_TTS_VOICE",
+                "th-TH-PremwadeeNeural",
+            ),
+            "openai_configured": key_ready,
             "features": {
                 "chat": True,
-                "tts": key_ready,
+                "tts": True,
                 "stt": key_ready,
                 "general_ai": key_ready,
                 "contacts_configured": contacts_ready,
@@ -569,14 +741,6 @@ class handler(BaseHTTPRequestHandler):
                 return self._json(_chat(message))
 
             if action == "speech":
-                client = _openai_client()
-
-                if client is None:
-                    return self._json({
-                        "fallback": "browser",
-                        "error": "TTS key not configured",
-                    })
-
                 text = str(
                     body.get("text", "")
                 ).strip()[:4000]
@@ -587,13 +751,7 @@ class handler(BaseHTTPRequestHandler):
                         400,
                     )
 
-                # V12 accepts both normal numeric speed and the user's
-                # original app.js rate strings such as '0%' / '10%'.
                 rate = body.get("rate", "")
-                speed = _rate_to_speed(
-                    rate if str(rate).strip()
-                    else body.get("speed", 1)
-                )
 
                 instructions = (
                     str(body.get("instructions", "")).strip()
@@ -604,25 +762,33 @@ class handler(BaseHTTPRequestHandler):
                     )
                 )
 
-                response = client.audio.speech.create(
-                    model=os.getenv(
-                        "OPENAI_TTS_MODEL",
-                        "gpt-4o-mini-tts",
-                    ),
-                    voice=os.getenv(
-                        "OPENAI_TTS_VOICE",
-                        "coral",
-                    ),
-                    input=text,
+                audio, provider = _server_tts_bytes(
+                    text=text,
+                    rate=rate,
                     instructions=instructions,
-                    response_format="mp3",
-                    speed=speed,
                 )
 
-                return self._bytes(
-                    response.read(),
-                    "audio/mpeg",
+                if not audio:
+                    return self._json(
+                        {"error": "ไม่สามารถสร้างเสียงผู้หญิงได้"},
+                        500,
+                    )
+
+                self.send_response(200)
+                self.send_header("Content-Type", "audio/mpeg")
+                self.send_header("Content-Length", str(len(audio)))
+                self.send_header("X-Cherry-TTS-Provider", provider)
+                self.send_header(
+                    "X-Cherry-TTS-Voice",
+                    os.getenv(
+                        "EDGE_TTS_VOICE",
+                        "th-TH-PremwadeeNeural",
+                    ),
                 )
+                self._cors()
+                self.end_headers()
+                self.wfile.write(audio)
+                return
 
             if action == "transcribe":
                 client = _openai_client()
