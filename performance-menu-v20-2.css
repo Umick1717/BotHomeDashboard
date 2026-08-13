@@ -1,0 +1,64 @@
+/* =========================================================
+   SNOW36 PERFORMANCE LITE V20.2
+   Desktop header spacing fix for dropdown arrows.
+   Lightweight static CSS only.
+   ========================================================= */
+
+@media (min-width: 992px) {
+  .top-header {
+    min-height: 96px !important;
+    padding-top: 9px !important;
+    padding-bottom: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  #mainMenu {
+    align-self: stretch !important;
+    display: flex !important;
+    align-items: center !important;
+    padding-top: 2px !important;
+    padding-bottom: 5px !important;
+    box-sizing: border-box !important;
+  }
+
+  #mainMenu > ul {
+    align-items: center !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    transform: translateY(3px) !important;
+  }
+
+  #mainMenu > ul > li > a {
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+    padding: 8px 14px 10px !important;
+    box-sizing: border-box !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul > li.dropdown > a,
+  #mainMenu > ul > li:nth-child(3) > a {
+    padding-bottom: 8px !important;
+  }
+
+  #mainMenu > ul > li.dropdown > a .fa-chevron-down,
+  #mainMenu > ul > li > a .fa-chevron-down {
+    display: block !important;
+    position: relative !important;
+    margin: 3px 0 0 !important;
+    top: 0 !important;
+    bottom: auto !important;
+    font-size: 11px !important;
+    line-height: 11px !important;
+    height: 11px !important;
+    min-height: 11px !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul > li.dropdown.dropdown-open > a .fa-chevron-down,
+  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(180deg) !important;
+  }
+}
