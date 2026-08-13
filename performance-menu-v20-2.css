@@ -1,14 +1,16 @@
 /* =========================================================
-   SNOW36 PERFORMANCE LITE V20.2
-   Desktop header spacing fix for dropdown arrows.
-   Lightweight static CSS only.
+   SNOW36 PERFORMANCE LITE V20.3
+   Fix clipped dropdown arrows on Desktop Header.
+   Root cause: V19 used contain:paint on menu anchors, so the
+   lower part of each chevron was being clipped.
+   Static CSS only — no additional animation/GPU workload.
    ========================================================= */
 
 @media (min-width: 992px) {
   .top-header {
-    min-height: 96px !important;
+    min-height: 98px !important;
     padding-top: 9px !important;
-    padding-bottom: 15px !important;
+    padding-bottom: 14px !important;
     box-sizing: border-box !important;
   }
 
@@ -16,49 +18,65 @@
     align-self: stretch !important;
     display: flex !important;
     align-items: center !important;
-    padding-top: 2px !important;
-    padding-bottom: 5px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
   }
 
   #mainMenu > ul {
     align-items: center !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    transform: translateY(3px) !important;
+    padding: 0 !important;
+    transform: translateY(2px) !important;
+  }
+
+  #mainMenu > ul > li {
+    overflow: visible !important;
   }
 
   #mainMenu > ul > li > a {
-    height: 66px !important;
-    min-height: 66px !important;
-    max-height: 66px !important;
-    padding: 8px 14px 10px !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+    padding: 8px 14px 13px !important;
     box-sizing: border-box !important;
     justify-content: flex-start !important;
-    overflow: visible !important;
   }
 
+  /* IMPORTANT: remove the old paint containment only from the two
+     dropdown buttons so their chevrons can render completely. */
   #mainMenu > ul > li.dropdown > a,
-  #mainMenu > ul > li:nth-child(3) > a {
-    padding-bottom: 8px !important;
+  #mainMenu > ul > li.expense-dropdown > a {
+    position: relative !important;
+    contain: none !important;
+    overflow: visible !important;
+    padding-bottom: 18px !important;
   }
 
+  /* Position both arrows explicitly inside the bottom of each card. */
   #mainMenu > ul > li.dropdown > a .fa-chevron-down,
-  #mainMenu > ul > li > a .fa-chevron-down {
+  #mainMenu > ul > li.expense-dropdown > a .expense-chevron {
     display: block !important;
-    position: relative !important;
-    margin: 3px 0 0 !important;
-    top: 0 !important;
-    bottom: auto !important;
-    font-size: 11px !important;
-    line-height: 11px !important;
-    height: 11px !important;
-    min-height: 11px !important;
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: 5px !important;
+    width: 14px !important;
+    height: 12px !important;
+    min-height: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: visible !important;
+    font-size: 11px !important;
+    line-height: 12px !important;
+    text-align: center !important;
+    transform: translateX(-50%) !important;
+    transform-origin: 50% 50% !important;
   }
 
   #mainMenu > ul > li.dropdown.dropdown-open > a .fa-chevron-down,
-  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] .fa-chevron-down {
-    transform: rotate(180deg) !important;
+  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] .fa-chevron-down,
+  #mainMenu > ul > li.expense-dropdown.is-open > a .expense-chevron,
+  #mainMenu > ul > li.expense-dropdown > a[aria-expanded="true"] .expense-chevron {
+    transform: translateX(-50%) rotate(180deg) !important;
   }
 }
