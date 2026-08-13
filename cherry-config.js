@@ -14,10 +14,7 @@ window.CHERRY_CONFIG = Object.freeze({
   localHostnames: ["localhost", "127.0.0.1"]
 });
 
-/* V19.2 FIRST-PAINT STATUS GUARD
- * Starts synchronously before DOMContentLoaded so startup Calendar/Google Sheets
- * messages do not flash in the lower-right corner during the splash screen.
- */
+/* V19.2 FIRST-PAINT STATUS GUARD */
 (() => {
   if (window.__SNOW36_STARTUP_STATUS_GUARD__) return;
   window.__SNOW36_STARTUP_STATUS_GUARD__ = true;
@@ -52,7 +49,7 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const target = document.documentElement;
   if (target) observer.observe(target, { childList: true, subtree: true });
-  window.setTimeout(() => observer.disconnect(), 12000);
+  window.setTimeout(() => observer.disconnect(), 6000);
 })();
 
 (() => {
@@ -155,8 +152,26 @@ window.CHERRY_CONFIG = Object.freeze({
   document.head.appendChild(css);
 
   const script = document.createElement("script");
-  script.src = "cyber-home-v19.js?v=19.2";
+  script.src = "cyber-home-v19.js?v=20";
   script.defer = true;
   script.dataset.cyberHomeV19 = "1";
+  document.head.appendChild(script);
+})();
+
+/* Performance Lite V20 must load last so it can neutralize expensive legacy FX. */
+(() => {
+  if (window.__PERFORMANCE_LITE_V20_LOADER__) return;
+  window.__PERFORMANCE_LITE_V20_LOADER__ = true;
+
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "performance-lite-v20.css?v=20";
+  css.dataset.performanceLiteV20 = "1";
+  document.head.appendChild(css);
+
+  const script = document.createElement("script");
+  script.src = "performance-lite-v20.js?v=20";
+  script.defer = true;
+  script.dataset.performanceLiteV20 = "1";
   document.head.appendChild(script);
 })();
