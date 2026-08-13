@@ -162,6 +162,12 @@ window.CHERRY_CONFIG = Object.freeze({
   css.dataset.performanceLiteV20 = "1";
   document.head.appendChild(css);
 
+  const menuFixCss = document.createElement("link");
+  menuFixCss.rel = "stylesheet";
+  menuFixCss.href = "performance-menu-v20-2.css?v=20.2";
+  menuFixCss.dataset.performanceMenuV202 = "1";
+  document.head.appendChild(menuFixCss);
+
   const script = document.createElement("script");
   script.src = "performance-lite-v20.js?v=20.1";
   script.defer = true;
