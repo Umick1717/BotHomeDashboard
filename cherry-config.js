@@ -164,7 +164,7 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const menuFixCss = document.createElement("link");
   menuFixCss.rel = "stylesheet";
-  menuFixCss.href = "performance-menu-v20-2.css?v=20.2";
+  menuFixCss.href = "performance-menu-v20-2.css?v=20.3";
   menuFixCss.dataset.performanceMenuV202 = "1";
   document.head.appendChild(menuFixCss);
 
