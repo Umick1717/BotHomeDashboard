@@ -109,6 +109,59 @@
   contain-intrinsic-size:800px;
 }
 
+/* =========================================================
+   V20.1 MENU ARROW SPACING FIX
+   Give dropdown arrows more room inside the header card.
+   ========================================================= */
+@media (min-width:992px) {
+  .top-header {
+    min-height:90px !important;
+    padding-top:8px !important;
+    padding-bottom:10px !important;
+  }
+
+  #mainMenu > ul {
+    align-items:flex-start !important;
+    padding-top:2px !important;
+    padding-bottom:6px !important;
+  }
+
+  #mainMenu > ul > li > a {
+    min-height:68px !important;
+    height:68px !important;
+    max-height:68px !important;
+    padding:9px 14px 13px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:3px !important;
+    overflow:visible !important;
+  }
+
+  #mainMenu > ul > li > a > i:first-child {
+    margin-top:0 !important;
+    line-height:1 !important;
+  }
+
+  #mainMenu > ul > li.dropdown > a .fa-chevron-down,
+  #mainMenu > ul > li > a .fa-chevron-down {
+    display:block !important;
+    margin-top:2px !important;
+    margin-left:0 !important;
+    font-size:11px !important;
+    line-height:1 !important;
+    transform:none !important;
+    position:relative !important;
+    bottom:auto !important;
+  }
+
+  #mainMenu > ul > li.dropdown.dropdown-open > a .fa-chevron-down,
+  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] .fa-chevron-down {
+    transform:rotate(180deg) !important;
+  }
+}
+
 /* Mobile/tablet: aggressively simplify visual effects. */
 @media (max-width:991px), (pointer:coarse), (hover:none) {
   #snowContainer .snowflake:nth-child(n+11) {
