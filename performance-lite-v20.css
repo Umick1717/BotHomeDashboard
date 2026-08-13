@@ -1,0 +1,147 @@
+/* =========================================================
+   SNOW36 PERFORMANCE LITE V20
+   Keeps Cyber Futuristic identity while reducing GPU/CPU cost.
+   ========================================================= */
+
+/* Kill expensive always-running decorative animation layers. */
+.top-header::before,
+.top-header::after,
+.logo::before,
+#home::after,
+.quick-menu::before,
+.main-footer::before,
+.cyber-cherry-helper::after,
+.cyber-helper-kicker i,
+.cyber-cherry-fab.is-calling::before,
+.cyber-cherry-fab.is-calling::after,
+.cyber-cherry-fab.is-calling .cyber-cherry-soundwaves i {
+  animation:none !important;
+}
+
+/* Reduce glass blur / saturation cost. */
+.top-header,
+.logo,
+.cyber-v19-card,
+.main-footer,
+.cyber-cherry-helper,
+#mainMenu .submenu,
+.menu-card,
+.file-card,
+.hero-card {
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Keep depth but simplify multi-layer shadows. */
+.top-header {
+  box-shadow:0 8px 22px rgba(0,0,0,.28), inset 0 -1px 0 rgba(103,232,249,.12) !important;
+}
+
+.logo,
+.cyber-v19-card,
+.menu-card,
+.file-card,
+#home .hero-card,
+.cyber-cherry-helper {
+  box-shadow:0 10px 26px rgba(0,0,0,.22) !important;
+}
+
+/* Disable 3D transforms and hover glint. */
+.top-header,
+#mainMenu > ul,
+#mainMenu > ul > li,
+#mainMenu > ul > li > a,
+.logo {
+  perspective:none !important;
+  transform-style:flat !important;
+}
+
+#mainMenu > ul > li > a,
+#mainMenu > ul > li > a:hover,
+#mainMenu > ul > li > a:focus-visible,
+#mainMenu > ul > li > a.future-nav-hover {
+  transform:none !important;
+}
+
+#mainMenu > ul > li > a::after {
+  display:none !important;
+}
+
+#mainMenu > ul > li > a i,
+#mainMenu > ul > li > a:hover i,
+#mainMenu > ul > li > a.future-nav-hover i {
+  transform:none !important;
+  filter:none !important;
+}
+
+/* Hover remains readable without continuous animation. */
+#mainMenu > ul > li > a:hover,
+#mainMenu > ul > li > a:focus-visible {
+  background:rgba(18,52,91,.78) !important;
+  border-color:rgba(125,211,252,.30) !important;
+}
+
+/* Snow is intentionally reduced; JS also removes excess nodes. */
+#snowContainer .snowflake {
+  animation-duration:14s !important;
+  opacity:.45 !important;
+  will-change:auto !important;
+}
+
+/* Keep Cherry helper static when visible. */
+.cyber-cherry-helper.is-visible {
+  animation:none !important;
+  transform:none !important;
+}
+
+/* Heart/cursor particles are reduced by JS; avoid expensive filters. */
+.ai-heart-particle,
+.ai-cursor-dot::before,
+.ai-cursor-ring {
+  filter:none !important;
+  text-shadow:none !important;
+  box-shadow:none !important;
+}
+
+/* Reduce layout work for off-screen SPA sections. */
+.page.hidden-page {
+  content-visibility:auto;
+  contain-intrinsic-size:800px;
+}
+
+/* Mobile/tablet: aggressively simplify visual effects. */
+@media (max-width:991px), (pointer:coarse), (hover:none) {
+  #snowContainer .snowflake:nth-child(n+11) {
+    display:none !important;
+  }
+
+  .top-header,
+  #home .hero-card,
+  .menu-card,
+  .file-card,
+  .main-footer,
+  .cyber-cherry-helper {
+    box-shadow:none !important;
+  }
+
+  #home::before,
+  #home::after,
+  .quick-menu::before,
+  .main-footer::before,
+  .cyber-cherry-soundwaves {
+    display:none !important;
+  }
+
+  .cyber-cherry-helper {
+    background:rgba(7,18,42,.96) !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after {
+    scroll-behavior:auto !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
