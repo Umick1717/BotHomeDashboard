@@ -14,10 +14,7 @@ window.CHERRY_CONFIG = Object.freeze({
   localHostnames: ["localhost", "127.0.0.1"]
 });
 
-/* V19.2 FIRST-PAINT STATUS GUARD
- * Starts synchronously before DOMContentLoaded so startup Calendar/Google Sheets
- * messages do not flash in the lower-right corner during the splash screen.
- */
+/* V19.2 FIRST-PAINT STATUS GUARD */
 (() => {
   if (window.__SNOW36_STARTUP_STATUS_GUARD__) return;
   window.__SNOW36_STARTUP_STATUS_GUARD__ = true;
@@ -52,7 +49,7 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const target = document.documentElement;
   if (target) observer.observe(target, { childList: true, subtree: true });
-  window.setTimeout(() => observer.disconnect(), 12000);
+  window.setTimeout(() => observer.disconnect(), 6000);
 })();
 
 (() => {
@@ -75,6 +72,7 @@ window.CHERRY_CONFIG = Object.freeze({
   document.head.appendChild(script);
 })();
 
+/* Cherry Home UI V20: keep useful UI, remove custom cursor RAF/heart particles. */
 (() => {
   if (window.__CHERRY_HOME_UI_V16_LOADER__) return;
   window.__CHERRY_HOME_UI_V16_LOADER__ = true;
@@ -95,28 +93,20 @@ window.CHERRY_CONFIG = Object.freeze({
     document.head.appendChild(script);
   };
   addCss("cherry-home-ui-v15.css?v=16", "cherry-home-ui-v16");
-  addCss("ai-ui-effects.css?v=19.2", "ai-ui-effects-v16");
   addScript("cherry-home-ui-v15.js?v=16", "cherry-home-ui-v16");
   addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
-  addScript("ai-ui-effects.js?v=19.2", "ai-ui-effects-v16");
 })();
 
+/* Future Navigation V20: keep static CSS styling, do not load 3D pointermove runtime. */
 (() => {
   if (window.__FUTURE_NAV_V17_LOADER__) return;
   window.__FUTURE_NAV_V17_LOADER__ = true;
   if (!document.querySelector('link[data-future-nav-v17]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "future-navbar-v17.css?v=17";
+    link.href = "future-navbar-v17.css?v=20-lite";
     link.dataset.futureNavV17 = "1";
     document.head.appendChild(link);
-  }
-  if (!document.querySelector('script[data-future-nav-v17]')) {
-    const script = document.createElement("script");
-    script.src = "future-navbar-v17.js?v=17";
-    script.defer = true;
-    script.dataset.futureNavV17 = "1";
-    document.head.appendChild(script);
   }
 })();
 
@@ -139,9 +129,9 @@ window.CHERRY_CONFIG = Object.freeze({
     script.setAttribute(`data-${key}`, "1");
     document.head.appendChild(script);
   };
-  addCss("cyber-home-v18.css?v=18", "cyber-home-v18");
-  addCss("cyber-cherry-v18.css?v=18", "cyber-cherry-v18");
-  addScript("cyber-home-v18.js?v=18", "cyber-home-v18");
+  addCss("cyber-home-v18.css?v=20-lite", "cyber-home-v18");
+  addCss("cyber-cherry-v18.css?v=20-lite", "cyber-cherry-v18");
+  addScript("cyber-home-v18.js?v=20-lite", "cyber-home-v18");
 })();
 
 (() => {
@@ -150,13 +140,37 @@ window.CHERRY_CONFIG = Object.freeze({
 
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "cyber-home-v19.css?v=19.3";
+  css.href = "cyber-home-v19.css?v=20-lite";
   css.dataset.cyberHomeV19 = "1";
   document.head.appendChild(css);
 
   const script = document.createElement("script");
-  script.src = "cyber-home-v19.js?v=19.2";
+  script.src = "cyber-home-v19.js?v=20";
   script.defer = true;
   script.dataset.cyberHomeV19 = "1";
+  document.head.appendChild(script);
+})();
+
+/* Performance Lite V20 loads last. */
+(() => {
+  if (window.__PERFORMANCE_LITE_V20_LOADER__) return;
+  window.__PERFORMANCE_LITE_V20_LOADER__ = true;
+
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "performance-lite-v20.css?v=20.1";
+  css.dataset.performanceLiteV20 = "1";
+  document.head.appendChild(css);
+
+  const menuFixCss = document.createElement("link");
+  menuFixCss.rel = "stylesheet";
+  menuFixCss.href = "performance-menu-v20-2.css?v=20.3";
+  menuFixCss.dataset.performanceMenuV202 = "1";
+  document.head.appendChild(menuFixCss);
+
+  const script = document.createElement("script");
+  script.src = "performance-lite-v20.js?v=20.1";
+  script.defer = true;
+  script.dataset.performanceLiteV20 = "1";
   document.head.appendChild(script);
 })();

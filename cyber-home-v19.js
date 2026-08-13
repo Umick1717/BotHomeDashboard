@@ -1,8 +1,8 @@
 /* =========================================================
-   CYBER FUTURISTIC HOME V19.1
+   CYBER FUTURISTIC HOME V20 LITE
    - Snow36 time / weather / smart-home / member rail
-   - Aggressive Calendar API status suppression
-   - No changes to Cherry MP4 assets
+   - Lightweight Calendar-status suppression
+   - No continuous full-DOM scanning
    ========================================================= */
 (() => {
   "use strict";
@@ -22,17 +22,11 @@
 
   const hideCalendarStatus = root => {
     const scope = root?.querySelectorAll ? root : document;
+    scope.querySelectorAll?.("#calendarConnectionStatus,.calendar-connection-status,[data-calendar-connection-status]").forEach(hideElement);
 
-    scope.querySelectorAll?.(
-      "#calendarConnectionStatus, .calendar-connection-status, [data-calendar-connection-status]"
-    ).forEach(hideElement);
-
-    const candidates = scope.querySelectorAll?.("[role='status'], [role='alert'], .toast, .notification, .status, div, p, span") || [];
-    candidates.forEach(node => {
+    scope.querySelectorAll?.("[role='status'],[role='alert'],.dashboard-toast").forEach(node => {
       const text = String(node.textContent || "").replace(/\s+/g, " ").trim();
-      if (text && text.length < 180 && text.includes(CALENDAR_TEXT)) {
-        hideElement(node);
-      }
+      if (text.includes(CALENDAR_TEXT)) hideElement(node);
     });
   };
 
@@ -77,7 +71,7 @@
 
   const buildStatusRail = () => {
     const home = document.querySelector("#home");
-    if (!home || home.querySelector(".cyber-v19-status-rail")) return;
+    if (!home || home.querySelector(".cyber-v19-status-rail")) return null;
 
     const rail = document.createElement("aside");
     rail.className = "cyber-v19-status-rail";
@@ -88,7 +82,6 @@
         <div class="cyber-v19-clock" data-v19-clock>--:--</div>
         <div class="cyber-v19-date" data-v19-date>กำลังโหลดเวลา...</div>
       </section>
-
       <section class="cyber-v19-card cyber-v19-weather-card">
         <small>SNOW36 WEATHER</small>
         <div class="cyber-v19-weather-main">
@@ -98,13 +91,11 @@
         <div class="cyber-v19-weather-label" data-v19-weather-label>กำลังโหลดสภาพอากาศ...</div>
         <div class="cyber-v19-system-row"><span>Feels like</span><strong data-v19-weather-feels>--°</strong></div>
       </section>
-
       <section class="cyber-v19-card cyber-v19-smart-card">
         <small>SMART HOME</small>
         <div class="cyber-v19-system-row"><span>Dashboard</span><strong class="cyber-v19-ok">ONLINE</strong></div>
         <div class="cyber-v19-system-row"><span>Cherry AI</span><strong class="cyber-v19-ok">READY</strong></div>
       </section>
-
       <section class="cyber-v19-card cyber-v19-member-card">
         <small>SNOW36 MEMBER</small>
         <div class="cyber-v19-members">
@@ -119,32 +110,22 @@
 
     const clock = rail.querySelector("[data-v19-clock]");
     const date = rail.querySelector("[data-v19-date]");
+    const timeFormatter = new Intl.DateTimeFormat("th-TH", { hour:"2-digit", minute:"2-digit", hour12:false, timeZone:"Asia/Bangkok" });
+    const dateFormatter = new Intl.DateTimeFormat("th-TH", { weekday:"short", day:"numeric", month:"short", year:"numeric", timeZone:"Asia/Bangkok" });
 
     const renderTime = () => {
       const now = new Date();
-      if (clock) {
-        clock.textContent = new Intl.DateTimeFormat("th-TH", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-          timeZone: "Asia/Bangkok"
-        }).format(now);
-      }
-      if (date) {
-        date.textContent = new Intl.DateTimeFormat("th-TH", {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-          timeZone: "Asia/Bangkok"
-        }).format(now);
-      }
+      if (clock) clock.textContent = timeFormatter.format(now);
+      if (date) date.textContent = dateFormatter.format(now);
     };
 
     renderTime();
     updateWeather(rail);
-    window.setInterval(renderTime, 30000);
-    window.setInterval(() => updateWeather(rail), 10 * 60 * 1000);
+    window.setInterval(renderTime, 60000);
+    window.setInterval(() => {
+      if (!document.hidden) updateWeather(rail);
+    }, 15 * 60 * 1000);
+    return rail;
   };
 
   const enhance = () => {
@@ -153,25 +134,22 @@
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", enhance, { once: true });
+    document.addEventListener("DOMContentLoaded", enhance, { once:true });
   } else {
     enhance();
   }
 
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
-        if (node instanceof Element) hideCalendarStatus(node);
-      });
+  /* Observe only briefly during startup, then disconnect. */
+  const target = document.documentElement;
+  if (target) {
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node instanceof Element) hideCalendarStatus(node);
+        }
+      }
     });
-    hideCalendarStatus(document);
-    buildStatusRail();
-  });
-
-  const startObserver = () => {
-    const target = document.documentElement || document.body;
-    if (target) observer.observe(target, { childList: true, subtree: true });
-  };
-
-  startObserver();
+    observer.observe(target, { childList:true, subtree:true });
+    window.setTimeout(() => observer.disconnect(), 6000);
+  }
 })();
