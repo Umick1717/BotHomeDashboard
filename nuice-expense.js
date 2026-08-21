@@ -1,7 +1,7 @@
 /****************************************************
  * My Expense Tracker 2026 Nu'Ice
- * Frontend V15
- * UI/behavior based on Mick tracker
+ * Frontend V16
+ * Mobile decimal input compatibility for iOS / Android / tablets
  ****************************************************/
 
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZXZkW9xOw_PmX0rgJHDj1I2Y6sM1Rk0ENB3vExW8Qe2cbf5xl7wX6a_xFE9Ob0kU/exec";
@@ -32,8 +32,11 @@ function addEvents() {
     btnIncome.addEventListener("click", saveIncome);
     btnExpense.addEventListener("click", saveExpense);
 
-    incomeAmount.addEventListener("blur", formatMoneyInput);
-    expenseAmount.addEventListener("blur", formatMoneyInput);
+    [incomeAmount, expenseAmount].forEach(input => {
+        if (!input) return;
+        input.addEventListener("input", normalizeMoneyInputWhileTyping);
+        input.addEventListener("blur", formatMoneyInput);
+    });
 
     document.addEventListener("keydown", enterKeySave);
 }
@@ -65,16 +68,55 @@ function enterKeySave(e) {
     }
 }
 
+function thaiDigitsToArabic(value) {
+    const thaiDigits = "๐๑๒๓๔๕๖๗๘๙";
+    return String(value ?? "").replace(/[๐-๙]/g, digit => String(thaiDigits.indexOf(digit)));
+}
+
+function normalizeMoneyText(value) {
+    let raw = thaiDigitsToArabic(value)
+        .replace(/\s+/g, "")
+        .replace(/[^0-9.,]/g, "");
+
+    if (!raw) return "";
+
+    const lastDot = raw.lastIndexOf(".");
+    const lastComma = raw.lastIndexOf(",");
+
+    // รองรับทั้ง 1,234.50 และ 1234,50 จากคีย์บอร์ดตาม Locale
+    if (lastComma > lastDot) {
+        const commaLooksDecimal = raw.length - lastComma - 1 <= 2;
+        if (commaLooksDecimal) {
+            raw = raw.replace(/\./g, "").replace(/,/g, (match, offset) => offset === lastComma ? "." : "");
+        } else {
+            raw = raw.replace(/,/g, "");
+        }
+    } else {
+        raw = raw.replace(/,/g, "");
+    }
+
+    const firstDot = raw.indexOf(".");
+    if (firstDot !== -1) {
+        raw = raw.slice(0, firstDot + 1) + raw.slice(firstDot + 1).replace(/\./g, "");
+    }
+
+    return raw;
+}
+
+function normalizeMoneyInputWhileTyping(e) {
+    const input = e.target;
+    const normalized = normalizeMoneyText(input.value);
+
+    if (input.value !== normalized) {
+        input.value = normalized;
+    }
+}
+
 function cleanNumber(value) {
-    const cleaned = String(value || "")
-        .replace(/,/g, "")
-        .trim();
+    const normalized = normalizeMoneyText(value);
+    const number = Number(normalized);
 
-    const number = Number(cleaned);
-
-    return Number.isFinite(number)
-        ? number
-        : 0;
+    return Number.isFinite(number) ? number : 0;
 }
 
 function validateIncome() {
@@ -134,15 +176,11 @@ function validateExpense() {
 }
 
 function formatMoneyInput(e) {
-    let value = e.target.value;
+    if (String(e.target.value || "").trim() === "") return;
 
-    if (value === "") return;
+    const number = cleanNumber(e.target.value);
 
-    value = value.replace(/,/g, "");
-
-    const number = Number(value);
-
-    if (Number.isNaN(number)) {
+    if (!Number.isFinite(number)) {
         e.target.value = "";
         return;
     }
@@ -244,9 +282,8 @@ async function saveExpense() {
 }
 
 /*
- * V15 ส่งเป็น application/x-www-form-urlencoded
+ * V16 ส่งเป็น application/x-www-form-urlencoded
  * Google Apps Script จะอ่านจาก e.parameter ได้ตรง ๆ
- * และไม่ต้อง parse JSON ก่อน
  */
 async function sendData(data, callback) {
     if (!WEB_APP_URL || !WEB_APP_URL.endsWith("/exec")) {
@@ -276,7 +313,7 @@ async function sendData(data, callback) {
         callback();
 
         localStorage.setItem(
-            "nuiceLastRecordV15",
+            "nuiceLastRecordV16",
             JSON.stringify({
                 ...data,
                 datetime: new Date().toISOString()
