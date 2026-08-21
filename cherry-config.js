@@ -195,3 +195,15 @@ window.CHERRY_CONFIG = Object.freeze({
   script.dataset.cyberHomeV19 = "1";
   document.head.appendChild(script);
 })();
+
+/* HEADER + CUTE BEAR CURSOR V21 */
+(() => {
+  if (window.__SNOW36_HEADER_BEAR_V21__) return;
+  window.__SNOW36_HEADER_BEAR_V21__ = true;
+
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "header-bear-v21.css?v=21.1";
+  css.dataset.headerBearV21 = "1";
+  document.head.appendChild(css);
+})();
