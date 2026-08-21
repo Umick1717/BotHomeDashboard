@@ -124,8 +124,12 @@ SPLASH SCREEN — โครงเดียวกับ Mick
                     id="incomeAmount"
                     type="text"
                     inputmode="decimal"
-                    placeholder="จำนวนเงิน"
-                    autocomplete="off">
+                    pattern="[0-9๐-๙]*[.,]?[0-9๐-๙]*"
+                    enterkeyhint="done"
+                    placeholder="เช่น 1250.50"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false">
 
             </div>
 
@@ -207,8 +211,12 @@ SPLASH SCREEN — โครงเดียวกับ Mick
                     id="expenseAmount"
                     type="text"
                     inputmode="decimal"
-                    placeholder="จำนวนเงิน"
-                    autocomplete="off">
+                    pattern="[0-9๐-๙]*[.,]?[0-9๐-๙]*"
+                    enterkeyhint="done"
+                    placeholder="เช่น 1250.50"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false">
 
             </div>
 
@@ -279,39 +287,7 @@ SPLASH SCREEN — โครงเดียวกับ Mick
 
 </div>
 
-<script src="nuice-expense.js?v=15"></script>
-
-<script>
-const selectElements = [
-    document.getElementById("incomeGroup"),
-    document.getElementById("expenseGroup")
-];
-
-selectElements.forEach(select => {
-    if (!select) return;
-
-    select.addEventListener("mousemove", function (event) {
-        const rect = this.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        this.style.setProperty("--mouse-x", `${x}px`);
-        this.style.setProperty("--mouse-y", `${y}px`);
-    });
-
-    select.addEventListener("touchmove", function (event) {
-        const touch = event.touches[0];
-        if (!touch) return;
-
-        const rect = this.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        this.style.setProperty("--mouse-x", `${x}px`);
-        this.style.setProperty("--mouse-y", `${y}px`);
-    }, { passive: true });
-});
-</script>
+<script src="nuice-expense.js?v=16"></script>
 
 </body>
 </html>
