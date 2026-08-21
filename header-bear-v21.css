@@ -1,0 +1,148 @@
+/* =========================================================
+   SNOW36 HEADER COMFORT + CUTE BEAR CURSOR V21
+   - Taller desktop header so dropdown chevrons stay fully visible.
+   - Keeps submenus outside the header without clipping.
+   - Uses a lightweight static bear cursor (no mouse-follow JS animation).
+   ========================================================= */
+
+:root {
+  --snow36-bear-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='9' cy='9' r='6' fill='%238b5e3c' stroke='%233f2a20' stroke-width='1.4'/%3E%3Ccircle cx='23' cy='9' r='6' fill='%238b5e3c' stroke='%233f2a20' stroke-width='1.4'/%3E%3Ccircle cx='9' cy='9' r='2.5' fill='%23d9a77e'/%3E%3Ccircle cx='23' cy='9' r='2.5' fill='%23d9a77e'/%3E%3Ccircle cx='16' cy='17' r='12' fill='%23b97a56' stroke='%233f2a20' stroke-width='1.5'/%3E%3Cellipse cx='16' cy='20' rx='7' ry='5.5' fill='%23f6dab9'/%3E%3Ccircle cx='12' cy='15' r='1.6' fill='%231f2937'/%3E%3Ccircle cx='20' cy='15' r='1.6' fill='%231f2937'/%3E%3Ccircle cx='11.5' cy='14.5' r='.45' fill='white'/%3E%3Ccircle cx='19.5' cy='14.5' r='.45' fill='white'/%3E%3Cellipse cx='16' cy='19' rx='2.2' ry='1.7' fill='%232f241f'/%3E%3Cpath d='M13.5 22c1.6 1.8 3.4 1.8 5 0' fill='none' stroke='%232f241f' stroke-width='1.3' stroke-linecap='round'/%3E%3Ccircle cx='8.5' cy='19' r='1.2' fill='%23ef9aa7' opacity='.8'/%3E%3Ccircle cx='23.5' cy='19' r='1.2' fill='%23ef9aa7' opacity='.8'/%3E%3C/svg%3E") 16 16, auto;
+}
+
+/* Static cursor only: no requestAnimationFrame, no trailing ring, no heart burst. */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  #app,
+  .top-header,
+  main,
+  section,
+  .hero-overlay,
+  .hero-card,
+  .quick-menu,
+  .main-footer,
+  a,
+  button,
+  [role="button"],
+  .menu-card,
+  .file-card,
+  .contact-button,
+  .expense-tracker-card-v13 {
+    cursor: var(--snow36-bear-cursor) !important;
+  }
+}
+
+/* Desktop / notebook */
+@media (min-width: 992px) {
+  .top-header {
+    min-height: 106px !important;
+    height: auto !important;
+    padding: 12px 18px 14px !important;
+    align-items: center !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .top-header .header-left,
+  .top-header #mainMenu {
+    transform: none !important;
+  }
+
+  #mainMenu {
+    align-self: stretch !important;
+    display: flex !important;
+    align-items: center !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul {
+    min-height: 80px !important;
+    gap: 7px !important;
+    align-items: center !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul > li {
+    min-height: 80px !important;
+    display: flex !important;
+    align-items: center !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul > li > a {
+    position: relative !important;
+    height: 76px !important;
+    min-height: 76px !important;
+    max-height: 76px !important;
+    padding: 8px 13px 12px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Reserve a clear bottom strip for dropdown triangles. */
+  #mainMenu > ul > li.dropdown > a,
+  #mainMenu > ul > li.expense-dropdown > a {
+    padding-bottom: 20px !important;
+  }
+
+  #mainMenu > ul > li.dropdown > a > .fa-chevron-down,
+  #mainMenu > ul > li.expense-dropdown > a > .expense-chevron {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 5px !important;
+    margin: 0 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    color: #a5f3fc !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 6 !important;
+    filter: drop-shadow(0 0 5px rgba(69, 228, 255, .7)) !important;
+    transform: translateX(-50%) rotate(0deg) !important;
+    transform-origin: 50% 50% !important;
+  }
+
+  #mainMenu > ul > li.dropdown.dropdown-open > a > .fa-chevron-down,
+  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] > .fa-chevron-down,
+  #mainMenu > ul > li.expense-dropdown.is-open > a > .expense-chevron,
+  #mainMenu > ul > li.expense-dropdown > a[aria-expanded="true"] > .expense-chevron {
+    transform: translateX(-50%) rotate(180deg) !important;
+  }
+
+  /* Let the dropdown panel/its top pointer extend below the taller header. */
+  #mainMenu .submenu,
+  #mainMenu .expense-submenu {
+    overflow: visible !important;
+  }
+}
+
+/* Tablet / mobile menu keeps arrows on the right, not at the bottom. */
+@media (max-width: 991px) {
+  .top-header {
+    min-height: 74px !important;
+    height: auto !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    overflow: visible !important;
+  }
+
+  #mainMenu > ul > li.dropdown > a > .fa-chevron-down,
+  #mainMenu > ul > li.expense-dropdown > a > .expense-chevron {
+    position: static !important;
+    left: auto !important;
+    bottom: auto !important;
+    margin-left: auto !important;
+    font-size: 13px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: rotate(0deg) !important;
+    filter: none !important;
+  }
+
+  #mainMenu > ul > li.dropdown.dropdown-open > a > .fa-chevron-down,
+  #mainMenu > ul > li.dropdown > a[aria-expanded="true"] > .fa-chevron-down,
+  #mainMenu > ul > li.expense-dropdown.is-open > a > .expense-chevron,
+  #mainMenu > ul > li.expense-dropdown > a[aria-expanded="true"] > .expense-chevron {
+    transform: rotate(180deg) !important;
+  }
+}
