@@ -14,6 +14,43 @@ window.CHERRY_CONFIG = Object.freeze({
   localHostnames: ["localhost", "127.0.0.1"]
 });
 
+/* PERFORMANCE V21
+ * Stop mouse-follow effects before HomeDashboard initializes.
+ * home.js registers its hero mousemove listener during DOMContentLoaded;
+ * this temporary guard blocks only that listener and restores the native
+ * addEventListener immediately after initialization.
+ */
+(() => {
+  if (window.__SNOW36_MOUSE_EFFECT_GUARD__) return;
+  window.__SNOW36_MOUSE_EFFECT_GUARD__ = true;
+
+  const originalAddEventListener = EventTarget.prototype.addEventListener;
+
+  EventTarget.prototype.addEventListener = function(type, listener, options) {
+    const isHeroMouseMove =
+      type === "mousemove" &&
+      this instanceof Element &&
+      this.classList?.contains("hero-overlay");
+
+    if (isHeroMouseMove) return;
+
+    return originalAddEventListener.call(this, type, listener, options);
+  };
+
+  originalAddEventListener.call(
+    document,
+    "DOMContentLoaded",
+    () => {
+      EventTarget.prototype.addEventListener = originalAddEventListener;
+      document.documentElement.classList.remove("ai-pointer-active");
+      document
+        .querySelectorAll(".ai-cursor-dot,.ai-cursor-ring,.ai-heart-particle")
+        .forEach(node => node.remove());
+    },
+    { once: true }
+  );
+})();
+
 /* V19.2 FIRST-PAINT STATUS GUARD
  * Starts synchronously before DOMContentLoaded so startup Calendar/Google Sheets
  * messages do not flash in the lower-right corner during the splash screen.
@@ -95,10 +132,8 @@ window.CHERRY_CONFIG = Object.freeze({
     document.head.appendChild(script);
   };
   addCss("cherry-home-ui-v15.css?v=16", "cherry-home-ui-v16");
-  addCss("ai-ui-effects.css?v=19.2", "ai-ui-effects-v16");
   addScript("cherry-home-ui-v15.js?v=16", "cherry-home-ui-v16");
   addScript("cherry-line-actions-v16.js?v=16", "cherry-line-actions-v16");
-  addScript("ai-ui-effects.js?v=19.2", "ai-ui-effects-v16");
 })();
 
 (() => {
