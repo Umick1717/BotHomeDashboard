@@ -123,5 +123,23 @@
       "คู่มือเครื่องใช้ไฟฟ้า"
     ],
     "note": "ยังไม่ได้ใส่ URL PDF จริงของเครื่องใช้ไฟฟ้า"
+  },
+  {
+    "category": "Bang & Olufsen",
+    "name": "ใบเสนอราคา Bang & Olufsen",
+    "url": "https://bot-home-dashboard.vercel.app/pdf/Bang-Olufsen-Quotation.pdf",
+    "aliases": [
+      "Bang & Olufsen",
+      "Bang and Olufsen",
+      "B&O",
+      "B and O",
+      "Beolab",
+      "Beosound",
+      "ใบเสนอราคา B&O",
+      "ใบเสนอราคา Bang Olufsen",
+      "ราคาเครื่องเสียง",
+      "เครื่องเสียงบ้าน"
+    ],
+    "note": "Bang & Olufsen proposal / quotation"
   }
 ]
