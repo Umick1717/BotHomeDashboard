@@ -207,3 +207,15 @@ window.CHERRY_CONFIG = Object.freeze({
   css.dataset.headerBearV21 = "1";
   document.head.appendChild(css);
 })();
+
+/* HOME FILES - BANG & OLUFSEN V22 */
+(() => {
+  if (window.__BANG_OLUFSEN_FILES_V22_LOADER__) return;
+  window.__BANG_OLUFSEN_FILES_V22_LOADER__ = true;
+
+  const script = document.createElement("script");
+  script.src = "home-files-bang-olufsen-v22.js?v=22";
+  script.async = false;
+  script.dataset.bangOlufsenFilesV22 = "1";
+  document.head.appendChild(script);
+})();
