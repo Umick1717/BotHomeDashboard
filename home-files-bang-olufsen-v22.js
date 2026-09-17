@@ -23,12 +23,12 @@
   init(); if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
 })();
 
-/* MICK INVESTMENT HOME V25 LOADER */
+/* MICK INVESTMENT HOME V26 LOADER */
 (() => {
-  if (window.__MICK_INVESTMENT_HOME_V25_LOADER__) return;
-  window.__MICK_INVESTMENT_HOME_V25_LOADER__ = true;
+  if (window.__MICK_INVESTMENT_HOME_V26_LOADER__) return;
+  window.__MICK_INVESTMENT_HOME_V26_LOADER__ = true;
   const script = document.createElement('script');
-  script.src = 'home-investment-inject-v23.js?v=25';
+  script.src = 'home-investment-inject-v23.js?v=26';
   script.defer = true;
   document.head.appendChild(script);
 })();
