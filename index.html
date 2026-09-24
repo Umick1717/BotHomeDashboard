@@ -8,7 +8,8 @@
    Family Home Dashboard
   </title>
 <meta content="#0f172a" name="theme-color"/>
-<link href="home.css" rel="stylesheet"/>
+<link href="home.css?v=27" rel="stylesheet"/>
+<link href="expense-choice.css?v=27" rel="stylesheet"/>
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Font Awesome -->
@@ -547,24 +548,27 @@
 </section>
 <section class="page hidden-page" id="expense">
 <div class="page-title">
-<h2>
-       💰 รายรับ–รายจ่าย
-      </h2>
-<p>
-       เปิดระบบเดิมของ Umick Expender
-      </p>
+<h2>💰 รายรับ–รายจ่าย</h2>
+<p>เลือกระบบที่ต้องการใช้งาน</p>
 </div>
-<div class="expense-box">
-<img class="expense-bear" src="images/bear.png"/>
-<h3>
-       Smart Income &amp; Expense
-      </h3>
-<p>
-       ระบบเดิมของคุณจะถูกเปิดทันที
-      </p>
-<button id="openExpense" type="button">
-       เปิดระบบ
-      </button>
+<div class="expense-choice-grid">
+<article class="expense-choice-card">
+<div class="expense-choice-icon">🐻</div>
+<h3>My Expense Tracker 2026-Mick</h3>
+<p>ระบบเดิม / Google Sheet เดิมของ Mick</p>
+<a class="expense-choice-btn expense-choice-mick" href="https://umick.vercel.app/" target="_blank" rel="noopener noreferrer">
+<i class="fas fa-wallet"></i> เปิดระบบ Mick
+</a>
+</article>
+<article class="expense-choice-card">
+<div class="expense-choice-icon">❄️</div>
+<h3>My Expense Tracker 2026 Nu'Ice</h3>
+<p>Google Sheet สำหรับ Nu'Ice</p>
+<button class="expense-choice-btn expense-choice-nuice" id="openNuIceExpense" type="button">
+<i class="fas fa-wallet"></i> เปิดระบบ Nu'Ice
+</button>
+<small class="expense-choice-note">รอใส่ลิงก์ระบบ Nu'Ice จริง</small>
+</article>
 </div>
 </section>
 <section class="page hidden-page" id="location">
@@ -860,8 +864,8 @@
 </footer>
 </main>
 </div>
-<script src="home.js">
-</script>
+<script src="home.js?v=27"></script>
+<script src="expense-choice.js?v=27"></script>
   <!-- Cherry AI Floating Assistant -->
   <script src="cherry-config.js?v=12"></script>
   <script src="cherry-core.js?v=12"></script>
