@@ -1,0 +1,9 @@
+/* Expense choice V27 */
+.expense-choice-grid{width:min(1000px,calc(100% - 28px));margin:22px auto 40px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.expense-choice-card{padding:24px;border-radius:24px;background:linear-gradient(145deg,rgba(11,31,55,.96),rgba(18,20,50,.96));border:1px solid rgba(93,200,255,.32);box-shadow:0 18px 42px rgba(0,0,0,.28);text-align:center}
+.expense-choice-card h3{margin:8px 0;color:#fff;font-size:1.35rem}.expense-choice-card p{color:#b8c8d9;line-height:1.6}.expense-choice-icon{font-size:2.8rem}
+.expense-choice-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin-top:12px;padding:12px 16px;border:none;border-radius:14px;color:#fff;text-decoration:none;font-weight:700;cursor:pointer}
+.expense-choice-mick{background:linear-gradient(135deg,#2563eb,#06b6d4)}.expense-choice-nuice{background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.expense-choice-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.expense-choice-note{display:block;margin-top:9px;color:#94a3b8}
+@media(max-width:700px){.expense-choice-grid{grid-template-columns:1fr;width:calc(100% - 18px);gap:14px}.expense-choice-card{padding:18px;border-radius:18px}.expense-choice-card h3{font-size:1.15rem}}
+@media(hover:none) and (pointer:coarse){.expense-choice-btn{min-height:52px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}}
