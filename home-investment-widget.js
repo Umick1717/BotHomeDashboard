@@ -1,5 +1,7 @@
 (function(){
  const mount=document.getElementById('mickInvestmentWidget'); if(!mount)return;
+ if(location.hash==='#expense'){ mount.replaceChildren(); mount.hidden=true; return; }
+ mount.hidden=false;
  const fmt=()=>new Intl.DateTimeFormat('th-TH',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Bangkok'}).format(new Date());
  const usaFlag=`<span class="mick-country-flag mick-flag-us" role="img" aria-label="ธงชาติสหรัฐอเมริกา"><svg viewBox="0 0 741 390" aria-hidden="true"><rect width="741" height="390" fill="#fff"/><g fill="#b22234"><rect width="741" height="30"/><rect y="60" width="741" height="30"/><rect y="120" width="741" height="30"/><rect y="180" width="741" height="30"/><rect y="240" width="741" height="30"/><rect y="300" width="741" height="30"/><rect y="360" width="741" height="30"/></g><rect width="296.4" height="210" fill="#3c3b6e"/><g fill="#fff" font-size="28" font-family="Arial,sans-serif"><text x="18" y="32">★ ★ ★ ★ ★ ★</text><text x="42" y="62">★ ★ ★ ★ ★</text><text x="18" y="92">★ ★ ★ ★ ★ ★</text><text x="42" y="122">★ ★ ★ ★ ★</text><text x="18" y="152">★ ★ ★ ★ ★ ★</text><text x="42" y="182">★ ★ ★ ★ ★</text></g></svg></span>`;
  const thaiFlag=`<span class="mick-country-flag mick-flag-th" role="img" aria-label="ธงชาติไทย"><svg viewBox="0 0 900 600" aria-hidden="true"><rect width="900" height="600" fill="#a51931"/><rect y="100" width="900" height="400" fill="#fff"/><rect y="200" width="900" height="200" fill="#2d2a4a"/></svg></span>`;
