@@ -26,7 +26,7 @@
     if (!btn || btn.dataset.nuiceBound === '1') return;
     btn.dataset.nuiceBound = '1';
     btn.addEventListener('click', () => {
-      const url = window.NUICE_EXPENSE_URL || '';
+      const url = window.NUICE_EXPENSE_URL || 'https://bot-home-dashboard.vercel.app/nuice-expense.html';
       if (!url) {
         if (typeof showToast === 'function') {
           showToast("ยังไม่ได้ตั้งค่าลิงก์ My Expense Tracker 2026 Nu'Ice", 'warning', 4200);
