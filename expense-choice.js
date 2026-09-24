@@ -39,11 +39,29 @@
     });
   };
 
+  const syncExpenseFocus = () => {
+    const isExpense = location.hash === '#expense';
+    document.body.classList.toggle('expense-focus-mode', isExpense);
+    const selectors = [
+      '.market-intelligence',
+      '#marketIntelligence',
+      '[data-home-market-intelligence]',
+      '.home-market-intelligence',
+      '.market-dashboard',
+      '.market-intelligence-section'
+    ];
+    document.querySelectorAll(selectors.join(',')).forEach(el => {
+      el.hidden = isExpense;
+    });
+  };
+
   const init = () => {
     bindHeroButton();
     bindNuIce();
+    syncExpenseFocus();
   };
 
+  window.addEventListener('hashchange', syncExpenseFocus);
   init();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once:true });
