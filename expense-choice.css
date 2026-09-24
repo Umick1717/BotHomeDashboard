@@ -7,3 +7,22 @@
 .expense-choice-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.expense-choice-note{display:block;margin-top:9px;color:#94a3b8}
 @media(max-width:700px){.expense-choice-grid{grid-template-columns:1fr;width:calc(100% - 18px);gap:14px}.expense-choice-card{padding:18px;border-radius:18px}.expense-choice-card h3{font-size:1.15rem}}
 @media(hover:none) and (pointer:coarse){.expense-choice-btn{min-height:52px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}}
+
+
+/* Expense page focus mode: hide Home-only Market Intelligence */
+body:has(#expense.active) .market-intelligence,
+body:has(#expense.active) #marketIntelligence,
+body:has(#expense.active) [data-home-market-intelligence],
+body:has(#expense.active) .home-market-intelligence,
+body:has(#expense.active) .market-dashboard,
+body:has(#expense.active) .market-intelligence-section {
+  display: none !important;
+}
+
+/* Keep expense choices close to the header for easier access */
+#expense.active {
+  padding-top: 18px;
+}
+#expense.active .page-title {
+  margin-top: 0;
+}
